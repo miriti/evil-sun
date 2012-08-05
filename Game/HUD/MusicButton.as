@@ -26,6 +26,11 @@ package Game.HUD
 		override public function set state(value:Boolean):void
 		{
 			super.state = value;
+			
+			if (value)
+				Main.Music.play();
+			else
+				Main.Music.stop();
 		}
 	}
 

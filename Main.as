@@ -26,6 +26,8 @@ package
 		static public const MOCHI_GAME_ID:String = "d8ba1df8df94d299";
 		static public const MOCHI_BOT_ID:String = "6c617154";
 		
+		static public var Music:FjSndItem = new FjSndItem(new Assets.musicMain());
+		
 		/**
 		 * Application entry point
 		 *
@@ -99,6 +101,9 @@ package
 			
 			Camera.zoom = SCENE_WIDTH / CONTENT_WIDTH;
 			Camera.LookAt(new Menu());
+			Music.loop = true;
+			Music.volume = 0.5;
+			Music.play();
 		}
 	}
 }

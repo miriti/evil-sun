@@ -60,7 +60,7 @@ package Game
 		static public var fireballDamageMax:Array = [50, 75, 100, 150, 300];
 		static public var fireballDamageRadius:Array = [150, 160, 170, 180, 300];
 		static public var fireballPowerInc:Array = [1.5, 1.5, 1.5, 1.5, 1.5];
-		static public var fireballPowerMin:Array = [0.5, 0.5, 0.5, 0.5, 0.5];		
+		static public var fireballPowerMin:Array = [0.5, 0.5, 0.5, 0.5, 0.5];
 		static public var fireballRecovery:Array = [50, 50, 50, 50, 50];
 		static public var fireballUpgrageCost:Array = [1000, 2000, 8000, 16000, 100000];
 		static public var fireballSpeed:Number = 400;
@@ -69,7 +69,7 @@ package Game
 		public static var shotgunDamageMin:Array = [10, 15, 25, 50, 100];
 		public static var shotgunDamageMax:Array = [10, 15, 25, 50, 100];
 		public static var shotgunPowerInc:Array = [3, 3, 3, 3, 3];
-		public static var shotgunPowerMin:Array = [3, 3, 3, 3, 3];
+		public static var shotgunPowerMin:Array = [1, 1, 1, 1, 1];
 		static public var shotgunRecovery:Array = [50, 50, 50, 50, 50];
 		static public var shotgunBulletCount:Array = [3, 4, 5, 5, 6];
 		public static var shotgunUpdateCost:Array = [1000, 2000, 8000, 32000, 100000];
@@ -84,7 +84,7 @@ package Game
 		static public var rayUpgrageCost:Array = [1000, 2000, 4000, 10000, 50000];
 		static public var rayBulletCount:Array = [1, 2, 3, 4, 5];
 		
-		static public var cloudStrikePower:Number = 75;		
+		static public var cloudStrikePower:Number = 75;
 	}
 
 }

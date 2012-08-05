@@ -15,10 +15,12 @@ package
 		
 		[Embed(source="_assets/bmp/hud/shop_back.png")]
 		static public var bitmapShopBack:Class;
-
+		
 		/***************
 		 * S O U N D S *
 		 ***************/
+		[Embed(source="_assets/snd/music/evilsun-original.mp3")]
+		static public var musicMain:Class;
 		
 		// Bonus
 		[Embed(source="_assets/snd/bounus.mp3")]
