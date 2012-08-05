@@ -97,12 +97,10 @@ package
 			// TODO add on release
 			// MochiServices.connect(MOCHI_GAME_ID, stage, onMochiConnectError);
 			
-			// TODO Change to Intro (if present) it in release
-			
-			Camera.zoom = SCENE_WIDTH / CONTENT_WIDTH;
+			//Camera.zoom = SCENE_WIDTH / CONTENT_WIDTH;
 			Camera.LookAt(new Menu());
 			Music.loop = true;
-			Music.volume = 0.5;
+			Music.volume = 0.3;
 			Music.play();
 		}
 	}

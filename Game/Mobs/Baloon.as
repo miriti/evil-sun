@@ -104,8 +104,8 @@ import flinjin.graphics.FjSprite;
 import flinjin.sound.FjSnd;
 import Game.Balance;
 import Game.GameMain;
-import Game.Objects.parcticles.DeathParticle;
 import Game.Mobs.Baloon;
+import Game.Objects.parcticles.CommonExplosion;
 
 class BombSprite extends FjSprite
 {
@@ -131,7 +131,7 @@ class BombSprite extends FjSprite
 			{
 				Delete();
 				GameMain.Instance.factory.Hit(_damage, Baloon);
-				(parent as GameMain).addSprite(new DeathParticle(), x, y, zIndex);
+				(parent as GameMain).addSprite(new CommonExplosion(), x, y, zIndex);
 				FjSnd.playSound("explosion");
 			}
 			else

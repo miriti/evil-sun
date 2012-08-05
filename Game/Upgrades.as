@@ -86,6 +86,9 @@ package Game
 			
 			_repairFactoryButton = new Button(new _bitmapRepairFactoryButton(), null, new Point(270, 57));
 			_repairFactoryButton.setCenter();
+			_repairFactoryButton.interactive = false;
+			_repairFactoryButton.alpha = 0.5;
+			_repairFactoryButton.addEventListener(MouseEvent.MOUSE_DOWN, onRepairFactory);
 			addSprite(_repairFactoryButton, width - 200, 80);
 			
 			_backmenuButton = new Button(new _bitmapBackmenuButton(), null, new Point(238, 51));
@@ -101,6 +104,16 @@ package Game
 			addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			
 			interactive = true;
+		}
+		
+		private function onRepairFactory(e:MouseEvent):void
+		{
+			if (GameMain.gameScore >= GameMain.Instance.factory.repairPrice)
+			{				
+				GameMain.gameScore -= GameMain.Instance.factory.repairPrice;
+				GameMain.Instance.factory.repair();
+				updateCosts();
+			}
 		}
 		
 		override protected function onMouseEvent(e:MouseEvent):void
@@ -168,9 +181,17 @@ package Game
 			_gradeButtons["shotgun"].price = GameMain.Instance.sun.weaponShotgun.upgradeCost;
 			_gradeButtons["fireball"].price = GameMain.Instance.sun.weaponFireball.upgradeCost;
 			_gradeButtons["apocalypse"].price = GameMain.Instance.sun.weaponApocalypce.upgradeCost;
-		
-			//_gradeButtons["factory"].text = "Repair factory: $" + GameMain.Instance.factory.repairPrice;
-			//_gradeButtons["factory"].price = GameMain.Instance.factory.repairPrice;
+			
+			if ((GameMain.gameScore >= GameMain.Instance.factory.repairPrice) || (GameMain.Instance.factory.healthPoints < GameMain.Instance.factory.healthPointsMax))
+			{
+				_repairFactoryButton.alpha = 1;
+				_repairFactoryButton.interactive = true;
+			}
+			else
+			{
+				_repairFactoryButton.alpha = 0.5;
+				_repairFactoryButton.interactive = false;
+			}
 		}
 		
 		private function onKeyDown(e:KeyboardEvent):void

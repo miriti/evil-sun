@@ -37,7 +37,7 @@ package Game.HUD
 			
 			if (value)
 			{
-				currentFrame = 1;
+				currentFrame = 0;
 				animation.play();
 			}
 		}

@@ -26,8 +26,7 @@ package Game.Objects
 		private var _smokeEmitter1:FactorySmokeEmitter = new FactorySmokeEmitter();
 		private var _smokeEmitter2:FactorySmokeEmitter = new FactorySmokeEmitter();
 		
-		private var _level:Number = 0;
-		private var _repairPrice:Array = [500, 1000, 2000, 4000, 8000, 16000];
+		private var _repairPrice:Number = 500;
 		
 		public function Factory()
 		{
@@ -81,13 +80,13 @@ package Game.Objects
 		
 		public function get repairPrice():Number
 		{
-			return _repairPrice[_level];
+			return _repairPrice;
 		}
 		
 		public function repair():void
 		{
 			healthPoints = Balance.factoryHealth;
-			_level++;
+			_repairPrice *= 2;
 		}
 	}
 

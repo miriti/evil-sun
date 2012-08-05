@@ -3,6 +3,7 @@ package Game.Rounds
 	import flash.events.MouseEvent;
 	import flinjin.FjObjectPool;
 	import Game.GameMain;
+	import Game.GameMainScenario;
 	import Game.HUD.Instructions;
 	import Game.HUD.instructions.AimInstructions;
 	import Game.HUD.instructions.DestroyInstruction;
@@ -55,9 +56,16 @@ package Game.Rounds
 			WeaponChose.weaponRay();
 			
 			GameMain.Instance.sun.weaponRay.recovery = 0;
-			GameMain.Instance.sun.weaponShotgun.recovery = -1;
-			GameMain.Instance.sun.weaponFireball.recovery = -1;
-			GameMain.Instance.sun.weaponApocalypce.recovery = -1;
+			if (GameMainScenario.helpEnabled)
+			{
+				GameMain.Instance.sun.weaponShotgun.recovery = -1;
+				GameMain.Instance.sun.weaponFireball.recovery = -1;
+				GameMain.Instance.sun.weaponApocalypce.recovery = -1;
+			}else {
+				GameMain.Instance.sun.weaponShotgun.recovery = 0;
+				GameMain.Instance.sun.weaponFireball.recovery = 0;
+				GameMain.Instance.sun.weaponApocalypce.recovery = 0;
+			}
 		}
 		
 		override public function update(deltaTime:Number):void

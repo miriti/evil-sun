@@ -93,7 +93,7 @@ class FireballSprite extends BalisticSprite
 					(parent as GameMain).addSprite(new FireballExplosion(), x, GameMain.groundLevel, zIndex);
 					FjSnd.playSound("fire");
 					
-					for (var i:int = 0; i < GameMain.Instance.mobsCollection.length; i++)
+					for (var i:int = GameMain.Instance.mobsCollection.length - 1; i >= 0; i--)
 					{
 						var _m:Mob = GameMain.Instance.mobsCollection[i];
 						var dis:Number = Math.floor(_m.x - x);

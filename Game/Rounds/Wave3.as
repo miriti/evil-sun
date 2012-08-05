@@ -1,6 +1,7 @@
 package Game.Rounds
 {
 	import Game.GameMain;
+	import Game.GameMainScenario;
 	import Game.HUD.WeaponChose;
 	import Game.Mobs.Plane;
 	
@@ -16,8 +17,11 @@ package Game.Rounds
 		private var _createdPlanes:Number = 0;
 		private var _createDelay:Number = 0;
 		
-		private static const PLANE_NUM:Number = 6;
+		private static const PLANE_NUM:Number = 5;
 		private var _upgradeHint:Boolean = false;
+		
+		[Embed(source="../../_assets/bmp/hud/wave-titles/watchTheSky.png")]
+		private static var _titleBmp:Class;
 		
 		public function Wave3()
 		{
@@ -25,14 +29,16 @@ package Game.Rounds
 			
 			_roundName = "Wave 3: Watch the Sky";
 			_nextRound = Wave4;
+			_titleBitmap = new _titleBmp();
 			
 			for (var i:int = 0; i < PLANE_NUM; i++)
 			{
-				addMobEvent(i * 2000, new Plane());
+				addMobEvent(i * 3000, new Plane());
 			}
 			
 			GameMain.Instance.sun.weaponShotgun.recovery = GameMain.Instance.sun.weaponShotgun.recoveryTime;
-			WeaponChose.weaponShotgun();
+			if (GameMainScenario.helpEnabled)
+				WeaponChose.weaponShotgun();
 		}
 		
 		override public function update(deltaTime:Number):void

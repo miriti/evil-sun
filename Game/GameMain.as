@@ -31,10 +31,10 @@ package Game
 		
 		public var ground:Ground = new Ground();
 		public var sky:Sky = new Sky();
-		public var sun:Sun = new Sun();
+		public var sun:Sun;
 		public var factory:Factory = new Factory();
 		public var skyclouds:SkyClouds = new SkyClouds();
-		public var weaponChose:WeaponChose = new WeaponChose();
+		public var weaponChose:WeaponChose;
 		public var scenario:GameMainScenario;
 		public var upgrades:Upgrades;
 		
@@ -45,6 +45,7 @@ package Game
 		static public var groundLevel:Number = Main.CONTENT_HEIGHT;
 		static public var scoreCounter:ScoreCounter;
 		static public var gameIsOver:Boolean;
+		static public var highScore:Number = 0;
 		
 		/** collection of created mobs **/
 		public var mobsCollection:Vector.<Mob> = new Vector.<Mob>();
@@ -77,6 +78,8 @@ package Game
 			
 			_gameScore = 0;
 			
+			sun = new Sun();
+			
 			groundLevel = Main.CONTENT_HEIGHT - ground.height + 7;
 			addSprite(sky, 0, 0, 1);
 			addSprite(_raysMaskSprite, 0, 0, 2);
@@ -86,6 +89,8 @@ package Game
 			addSprite(skyclouds, 0, 0, 9);
 			addSprite(ground, 0, Main.CONTENT_HEIGHT - ground.height, 10);
 			addSprite(_fadeMaskSprite, 0, 0, 30);
+			
+			weaponChose = new WeaponChose();
 			
 			addSprite(weaponChose, Main.CONTENT_WIDTH - weaponChose.width, groundLevel + 15, 40);
 			addSprite(scoreCounter, 10, groundLevel + 25, 50);
@@ -183,20 +188,19 @@ package Game
 		 */
 		public function onGameOver():void
 		{
-			trace('game over');
 			scenario.running = false;
 			gameIsOver = true;
 			addSprite(new FactoryExplosion(), factory.x, factory.y, factory.zIndex);
 			
-			for (var i:int = 0; i < mobsCollection.length; i++)
+			for (var i:int = mobsCollection.length - 1; i >= 0; i--)
 			{
-				mobsCollection[i].healthPoints = 0;
+				mobsCollection[i].die();
 			}
 			
 			fadeBlack.show();
 			
 			var _gameOverDie:GameOver = new GameOver();
-			addSprite(_gameOverDie, (width - _gameOverDie.width) / 2, -_gameOverDie.height, 1000);
+			addSprite(_gameOverDie, (width - _gameOverDie.width) / 2, -_gameOverDie.height * 1.5, 1000);
 		}
 		
 		/**

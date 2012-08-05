@@ -42,10 +42,11 @@ package Game.HUD
 		public function WeaponChose()
 		{
 			I = this;
-			_buttons.push(new WeaponButton(new _bitmapRay()));
-			_buttons.push(new WeaponButton(new _bitmapFireball()));
-			_buttons.push(new WeaponButton(new _bitmapShotgun()));
-			_buttons.push(new WeaponButton(new _bitmapApocalypse()));
+			_sun = GameMain.Instance.sun;
+			_buttons.push(new WeaponButton(new _bitmapRay(), _sun.weaponRay));
+			_buttons.push(new WeaponButton(new _bitmapFireball(), _sun.weaponFireball));
+			_buttons.push(new WeaponButton(new _bitmapShotgun(), _sun.weaponShotgun));
+			_buttons.push(new WeaponButton(new _bitmapApocalypse(), _sun.weaponApocalypce));
 			
 			super(_buttons.length * (_buttons[0].width * 0.85), _buttons[0].height);
 			
@@ -67,7 +68,6 @@ package Game.HUD
 			interactive = true;
 			
 			addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			addEventListener(FlinjinSpriteEvent.ADDED_TO_LAYER, onAdded);
 		}
 		
 		public function deactivateAll():void
@@ -76,11 +76,6 @@ package Game.HUD
 			{
 				_buttons[i].active = false;
 			}
-		}
-		
-		private function onAdded(e:FlinjinSpriteEvent):void
-		{
-			_sun = GameMain.Instance.sun;
 		}
 		
 		private function onKeyDown(e:KeyboardEvent):void
@@ -151,15 +146,13 @@ package Game.HUD
 		
 		override public function Move(deltaTime:Number):void
 		{
-			super.Move(deltaTime);
-			
 			var pa:Number = _buttons[3].alpha;
-			_buttons[3].alpha = _sun.weaponApocalypce.recovery / _sun.weaponApocalypce.recoveryTime;
+			
+			super.Move(deltaTime);
 			
 			if ((pa != 1) && (_buttons[3].alpha == 1))
 			{
 				_shines[3].visible = true;
-				trace("shine");
 			}
 		}
 		
@@ -180,19 +173,38 @@ import flash.events.MouseEvent;
 import flash.geom.Point;
 import flinjin.graphics.FjSprite;
 import flinjin.graphics.FjSpriteAnimation;
+import Game.Weapons.Weapon;
 
 class WeaponButton extends FjSprite
 {
 	private var _active:Boolean = false;
 	private var _callback:Function = null;
+	private var _weapon:Weapon;
 	
-	function WeaponButton(bmp:Bitmap):void
+	function WeaponButton(bmp:Bitmap, wep:Weapon):void
 	{
 		super(bmp, null, new Point(92, 87), new FjSpriteAnimation("states"));
 		animation.stop();
 		interactive = true;
 		active = false;
+		_weapon = wep;
 		addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+	}
+	
+	override public function Move(deltaTime:Number):void
+	{
+		super.Move(deltaTime);
+		if (_weapon.recoveryTime > 500)
+		{
+			alpha = _weapon.recovery / _weapon.recoveryTime;
+		}
+		else
+		{
+			if (_weapon.recovery == -1)
+				alpha = 0;
+			else
+				alpha = 1;
+		}
 	}
 	
 	private function onMouseDown(e:MouseEvent):void

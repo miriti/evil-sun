@@ -2,6 +2,7 @@ package Game.Rounds
 {
 	import flash.events.MouseEvent;
 	import Game.GameMain;
+	import Game.GameMainScenario;
 	import Game.HUD.WeaponChose;
 	import Game.Mobs.Tank;
 	import Game.Mobs.Troop;
@@ -32,7 +33,8 @@ package Game.Rounds
 		{
 			super.finish();
 			GameMain.Instance.sun.weaponFireball.recovery = GameMain.Instance.sun.weaponFireball.recoveryTime;
-			WeaponChose.weaponFire();
+			if (GameMainScenario.helpEnabled)
+				WeaponChose.weaponFire();
 		}
 	}
 

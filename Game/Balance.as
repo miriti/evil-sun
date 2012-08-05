@@ -12,7 +12,7 @@ package Game
 		static public var baloonSpeed:Number = 15;
 		static public var baloonScore:Number = 250;
 		
-		static public var btrHealth:Number = 500;
+		static public var btrHealth:Number = 400;
 		static public var btrScore:Number = 150;
 		static public var btrSpeed:Number = 70;
 		static public var btrAttackDamage:Number = 25;
@@ -34,7 +34,7 @@ package Game
 		
 		static public var troopGroupScore:Number = 75;
 		static public var troopGroupSpeed:Number = 40;
-		static public var troopGroupHealth:Number = 500;
+		static public var troopGroupHealth:Number = 300;
 		static public var troopGroupExplosionDamage:Number = 60;
 		
 		static public var troopBossHealth:Number = 4000;
