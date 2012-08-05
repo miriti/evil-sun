@@ -6,6 +6,8 @@ package Game.Mobs
 	import flinjin.sound.FjSnd;
 	import Game.Balance;
 	import Game.GameMain;
+	import Game.Weapons.Ray;
+	import Game.Weapons.Shotgun;
 	
 	/**
 	 * ...
@@ -46,7 +48,7 @@ package Game.Mobs
 					{
 						if ((parent as GameMain).factory != null)
 						{
-							(parent as GameMain).factory.Hit(Balance.tankGunDamage);
+							(parent as GameMain).factory.Hit(Balance.tankGunDamage, Tank);
 							FjSnd.playSound("shot");
 							_tankAnim.currentFrame = 2;
 						}
@@ -59,6 +61,14 @@ package Game.Mobs
 					}
 				}
 			}
+		}
+		
+		override public function Hit(val:Number, weapon:Class):void
+		{
+			if ((weapon == Shotgun) || (weapon == Ray))
+				val *= 0.5;
+			
+			super.Hit(val, weapon);
 		}
 	
 	}

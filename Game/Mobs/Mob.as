@@ -11,6 +11,7 @@ package Game.Mobs
 	import Game.HUD.HealthBarItem;
 	import Game.Objects.Factory;
 	import Game.Objects.parcticles.CommonExplosion;
+	import Game.Weapons.Weapon;
 	
 	/**
 	 * ...
@@ -113,7 +114,7 @@ package Game.Mobs
 				if (x - width / 2 <= GameMain.Instance.factory.x + GameMain.Instance.factory.width / 2)
 				{
 					die();
-					GameMain.Instance.factory.Hit(_explosionDamage);
+					GameMain.Instance.factory.Hit(_explosionDamage, Mob);
 				}
 			}
 			
@@ -123,7 +124,7 @@ package Game.Mobs
 			}
 		}
 		
-		public function Hit(val:Number):void
+		public function Hit(val:Number, weapon:Class):void
 		{
 			colorTransform.redMultiplier = 2;
 			colorTransform.greenMultiplier = 2;

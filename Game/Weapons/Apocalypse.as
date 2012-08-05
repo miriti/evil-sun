@@ -47,7 +47,7 @@ package Game.Weapons
 						
 						for (var i:int = 0; i < GameMain.Instance.mobsCollection.length; i++)
 						{
-							GameMain.Instance.mobsCollection[i].Hit(_hitPower);
+							GameMain.Instance.mobsCollection[i].Hit(_hitPower, Apocalypse);
 						}
 					}
 				}

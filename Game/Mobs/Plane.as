@@ -7,6 +7,8 @@ package Game.Mobs
 	import flinjin.types.BoundingRect;
 	import Game.Balance;
 	import Game.GameMain;
+	import Game.Weapons.Fireball;
+	import Game.Weapons.Shotgun;
 	
 	/**
 	 * ...
@@ -50,6 +52,17 @@ package Game.Mobs
 			
 			y = _initY + Math.sin(_wave) * 50;
 			_wave += 0.05 * r(deltaTime);
+		}
+		
+		override public function Hit(val:Number, weapon:Class):void
+		{
+			if (weapon == Shotgun)
+				val *= 2;
+			
+			if (weapon == Fireball)
+				return;
+				
+			super.Hit(val, weapon);
 		}
 	
 	}

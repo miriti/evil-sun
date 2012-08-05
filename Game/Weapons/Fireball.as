@@ -60,6 +60,7 @@ import Game.Mobs.Mob;
 import Game.Objects.BalisticSprite;
 import Game.Objects.FadingTrail;
 import Game.Objects.FireballExplosion;
+import Game.Weapons.Fireball;
 
 class FireballSprite extends BalisticSprite
 {
@@ -88,17 +89,18 @@ class FireballSprite extends BalisticSprite
 			{
 				if (y > GameMain.groundLevel - 10)
 				{
+					var dam:Number = Balance.fireballDamageMin[level] + (Balance.fireballDamageMax[level] - Balance.fireballDamageMin[level]) * _power;
 					(parent as GameMain).addSprite(new FireballExplosion(), x, GameMain.groundLevel, zIndex);
 					FjSnd.playSound("fire");
 					
 					for (var i:int = 0; i < GameMain.Instance.mobsCollection.length; i++)
 					{
 						var _m:Mob = GameMain.Instance.mobsCollection[i];
-						var _p:Point = new Point(x - _m.x, y - _m.y);
+						var dis:Number = Math.floor(_m.x - x);
 						
-						if (_p.length <= Balance.fireballDamageRadius[level])
+						if (dis <= Balance.fireballDamageRadius[level])
 						{
-							_m.Hit(Balance.fireballDamageMin[level] + (Balance.fireballDamageMax[level] - Balance.fireballDamageMin[level]) * _power);
+							_m.Hit(dam, Fireball);
 						}
 					}
 					_exploded = true;

@@ -45,7 +45,7 @@ package Game.Mobs
 					{
 						_anim.currentFrame = 3;
 						FjSnd.playSound("shot");
-						GameMain.Instance.factory.Hit(Balance.btrAttackDamage);
+						GameMain.Instance.factory.Hit(Balance.btrAttackDamage, BTR);
 						_shotDelay = 0;
 					}
 					else

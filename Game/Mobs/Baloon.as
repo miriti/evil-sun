@@ -6,6 +6,8 @@ package Game.Mobs
 	import flinjin.graphics.FjSpriteAnimation;
 	import Game.Balance;
 	import Game.GameMain;
+	import Game.Weapons.Fireball;
+	import Game.Weapons.Shotgun;
 	
 	public class Baloon extends Mob
 	{
@@ -69,6 +71,17 @@ package Game.Mobs
 			}
 		}
 		
+		override public function Hit(val:Number, weapon:Class):void
+		{
+			if (weapon == Shotgun)
+				val *= 2;
+			
+			if (weapon == Fireball)
+				return;
+			
+			super.Hit(val, weapon);
+		}
+		
 		private function _dropTheBomb():void
 		{
 			_baloonAnim.animation.play();
@@ -92,6 +105,7 @@ import flinjin.sound.FjSnd;
 import Game.Balance;
 import Game.GameMain;
 import Game.Objects.parcticles.DeathParticle;
+import Game.Mobs.Baloon;
 
 class BombSprite extends FjSprite
 {
@@ -116,7 +130,7 @@ class BombSprite extends FjSprite
 			if (y >= GameMain.Instance.factory.y)
 			{
 				Delete();
-				GameMain.Instance.factory.Hit(_damage);
+				GameMain.Instance.factory.Hit(_damage, Baloon);
 				(parent as GameMain).addSprite(new DeathParticle(), x, y, zIndex);
 				FjSnd.playSound("explosion");
 			}

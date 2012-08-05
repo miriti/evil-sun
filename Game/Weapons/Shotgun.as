@@ -1,13 +1,10 @@
 package Game.Weapons
 {
 	import flash.geom.Point;
-	import flinjin.graphics.FjSprite;
 	import flinjin.FjInput;
 	import flinjin.sound.FjSnd;
-	import flinjin.types.BoundingRect;
 	import Game.Balance;
 	import Game.GameMain;
-	import Game.Mobs.Mob;
 	
 	/**
 	 * ...
@@ -29,7 +26,7 @@ package Game.Weapons
 		}
 		
 		override protected function _fire():void
-		{
+		{			
 			super._fire();
 			
 			var _mainAngle:Number = Math.atan2(FjInput.mousePosition.y - _shotPosition.y, FjInput.mousePosition.x - _shotPosition.x);
@@ -45,34 +42,6 @@ package Game.Weapons
 			FjSnd.playSound("shotgun", 0.4);
 		}
 		
-		private function _traceRayHit(startPoint:Point, endPoint:Point):Number
-		{
-			var _rayVector:Point = new Point(endPoint.x - startPoint.x, endPoint.y - startPoint.y);
-			var leng:Number = _rayVector.length;
-			_rayVector.x /= leng;
-			_rayVector.y /= leng;
-			
-			var _rayPoint:Point = startPoint.clone();
-			
-			while ((_rayPoint.x > 0) && (_rayPoint.y > 0) && (_rayPoint.x < Main.CONTENT_WIDTH) && (_rayPoint.y < GameMain.groundLevel))
-			{
-				for (var i:int = 0; i < GameMain.Instance.mobsCollection.length; i++)
-				{
-					var mob:Mob = GameMain.Instance.mobsCollection[i];
-					
-					if ((mob.collisionShape != null) && (mob.collisionShape.containPoint(_rayPoint)))
-					{
-						mob.Hit(Balance.shotgunDamageMin[_level] + (Balance.shotgunDamageMax[_level] - Balance.shotgunDamageMin[_level]) * _power);
-						return new Point(_rayPoint.x - startPoint.x, _rayPoint.y - startPoint.y).length;
-					}
-				}
-				_rayPoint.x += _rayVector.x * RAYTRACE_STEP;
-				_rayPoint.y += _rayVector.y * RAYTRACE_STEP;
-			}
-			
-			return 1000;
-		}
-		
 		override public function update(deltaTime:Number):void
 		{
 			super.update(deltaTime);
@@ -84,6 +53,7 @@ package Game.Weapons
 		override public function upgrade(lvl:int):void
 		{
 			super.upgrade(lvl);
+			_powerMin = Balance.shotgunPowerMin[lvl];
 			_powerIncVal = Balance.shotgunPowerInc[lvl];
 			_recoveryTime = Balance.shotgunRecovery[lvl];
 			_upgradeCost = Balance.shotgunUpdateCost[lvl];
@@ -100,6 +70,7 @@ import Game.GameMain;
 import Game.Mobs.Baloon;
 import Game.Mobs.Mob;
 import Game.Mobs.Plane;
+import Game.Weapons.Shotgun;
 
 class ShotgunBullet extends FjSprite
 {
@@ -146,10 +117,7 @@ class ShotgunBullet extends FjSprite
 				if (m.collisionShape.containPoint(_cp))
 				{
 					var dam:Number = Balance.shotgunDamageMax[_level];
-					if ((m is Plane) || (m is Baloon))
-						dam *= 2;
-						
-					m.Hit(dam);
+					m.Hit(dam, Shotgun);
 					Delete(true);
 					return;
 				}

@@ -22,17 +22,10 @@ package Game.Rounds
 			_roundName = "Wave 1";
 			_nextRound = Wave2;
 			
-			addMobEvent(0, new Troop());
-			addMobEvent(2000, new Tank());
-			
-			addMobEvent(6000, new Troop());
-			addMobEvent(8000, new Tank());
-			
-			addMobEvent(11000, new Troop());
-			addMobEvent(13000, new Tank());
-			
-			addMobEvent(16000, new Troop());
-			addMobEvent(18000, new Troop());
+			for (var i:int = 0; i < 8; i++)
+			{
+				addMobEvent(i * 1500, new Troop());
+			}
 		}
 		
 		override public function finish():void

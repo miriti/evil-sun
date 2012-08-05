@@ -91,10 +91,10 @@ package Game.HUD
 					weaponRay();
 					break;
 				case Keyboard.NUMBER_2: 
-					weaponShotgun();
+					weaponFire();
 					break;
 				case Keyboard.NUMBER_3: 
-					weaponFire();
+					weaponShotgun();
 					break;
 				case Keyboard.NUMBER_4: 
 					weaponApocalypse();

@@ -147,7 +147,7 @@ package Game.Mobs
 		{
 			if (_strikeDelay == 0)
 			{
-				_targetMob.Hit(Balance.cloudStrikePower);
+				_targetMob.Hit(Balance.cloudStrikePower, null);
 				_strike.alpha = 1;
 				_strikeDelay = STRIKE_DELAY;
 				FjSnd.playSound('strike');

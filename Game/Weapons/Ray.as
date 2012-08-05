@@ -13,6 +13,8 @@ package Game.Weapons
 	 */
 	public class Ray extends Weapon
 	{
+		private var _bulletCount:Number = 0;
+		
 		public function Ray()
 		{
 			super();
@@ -25,17 +27,39 @@ package Game.Weapons
 		{
 			super._fire();
 			var _s:Sun = GameMain.Instance.sun;
-			var _r:LaserRaySprite = new LaserRaySprite();
-			_r.level = level;
-			_r.power = power;
-			_r.vector = new Point(FjInput.mousePosition.x - (_s.x + _s.shotPosition.x), FjInput.mousePosition.y - (_s.y + _s.shotPosition.y));
-			GameMain.Instance.addSprite(_r, _s.x + _s.shotPosition.x, _s.y + _s.shotPosition.y, _s.zIndex + 1);
+			var _mainAngle:Number = Math.atan2(FjInput.mousePosition.y - (_s.y + _s.shotPosition.y), FjInput.mousePosition.x - (_s.x - _s.shotPosition.x));
+			var _angleMin:Number = _mainAngle - Math.PI / 16;
+			var _angleMax:Number = _mainAngle + Math.PI / 16;
+			var da:Number = _angleMax - _angleMin;
+			
+			for (var i:int = 0; i < _bulletCount; i++)
+			{
+				var v:Point = new Point();
+				
+				if (_bulletCount == 1)
+				{
+					v.x = Math.cos(_mainAngle);
+					v.y = Math.sin(_mainAngle);
+				}
+				else
+				{
+					v.x = Math.cos(_angleMin + da * (i / _bulletCount));
+					v.y = Math.sin(_angleMin + da * (i / _bulletCount));
+				}
+				
+				var _r:LaserRaySprite = new LaserRaySprite();
+				_r.level = level;
+				_r.power = power;
+				_r.vector = v;
+				GameMain.Instance.addSprite(_r, _s.x + _s.shotPosition.x, _s.y + _s.shotPosition.y, _s.zIndex + 1);
+			}
 			FjSnd.playSound('ray');
 		}
 		
 		override public function upgrade(lvl:int):void
 		{
 			super.upgrade(lvl);
+			_bulletCount = Balance.rayBulletCount[lvl];
 			_powerMin = Balance.rayPowerMin[lvl];
 			_powerIncVal = Balance.rayPowerInc[lvl];
 			_recoveryTime = Balance.rayRecovery[lvl];
@@ -54,6 +78,7 @@ import Game.GameMain;
 import Game.Mobs.Mob;
 import Game.Objects.BalisticSprite;
 import Game.Objects.FadingTrail;
+import Game.Weapons.Ray;
 
 class LaserRaySprite extends BalisticSprite
 {
@@ -106,7 +131,7 @@ class LaserRaySprite extends BalisticSprite
 					
 					if (_m.collisionShape.containPoint(position))
 					{
-						_m.Hit(Balance.rayDamage[_level]);
+						_m.Hit(Balance.rayDamage[_level], Ray);
 						_exp();
 					}
 				}

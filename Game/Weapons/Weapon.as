@@ -77,7 +77,8 @@ package Game.Weapons
 				}
 				else
 				{
-					_powerInc = false;
+					_power = 1;
+					powerEnd();
 				}
 			}
 			else
