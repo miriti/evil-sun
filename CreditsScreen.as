@@ -5,6 +5,7 @@ package
 	import flinjin.algorithms.camera.Dissolve;
 	import flinjin.Flinjin;
 	import flinjin.graphics.FjLayer;
+	import flinjin.graphics.FjSprite;
 	import flinjin.graphics.FjSpriteText;
 	
 	/**
@@ -13,24 +14,16 @@ package
 	 */
 	public class CreditsScreen extends FjLayer
 	{
-		private var _format:TextFormat = new TextFormat("gameFont", 40, 0x888888);
-		private var _titles:Vector.<FjSpriteText> = new Vector.<FjSpriteText>();
+		[Embed(source="_assets/bmp/credits.jpg")]
+		static private var _titlesBitmap:Class;
+		
+		private var _titlesSprite:FjSprite = new FjSprite(new _titlesBitmap());
 		
 		public function CreditsScreen()
 		{
 			super(Main.CONTENT_WIDTH, Main.CONTENT_HEIGHT);
-			
-			_titles.push(new FjSpriteText("Game by:", _format));
-			_titles.push(new FjSpriteText("Dmitry Gorbachev - art", _format));
-			_titles.push(new FjSpriteText("Michael Miriti - code", _format));
-			_titles.push(new FjSpriteText("Philip Situmorang - music", _format));
-			_titles.push(new FjSpriteText(" ", _format));
-			_titles.push(new FjSpriteText("MMXII", _format));
-			
-			for (var i:int = 0; i < _titles.length; i++)
-			{
-				addSprite(_titles[i], (width - _titles[i].width) / 2, (height - _titles.length * 60) / 2 + i * 60);
-			}
+
+			addSprite(_titlesSprite);
 			
 			interactive = true;
 			

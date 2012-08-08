@@ -47,8 +47,11 @@ package
 		[Embed(source="_assets/snd/machine.mp3")]
 		static public var soundMachineGun:Class;
 		
-		[Embed(source="_assets/snd/menu-item.mp3")]
-		static public var soundMenuItem:Class;
+		[Embed(source="_assets/snd/menu/click.mp3")]
+		static public var soundMenuClick:Class;
+		
+		[Embed(source="_assets/snd/menu/hover.mp3")]
+		static public var soundMenuHover:Class;
 		
 		// Rocket
 		[Embed(source="_assets/snd/rocket.mp3")]

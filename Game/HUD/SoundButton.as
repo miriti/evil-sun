@@ -1,5 +1,6 @@
 package Game.HUD
 {
+	import flash.display.Bitmap;
 	import flash.geom.Point;
 	import flinjin.sound.FjSnd;
 	
@@ -12,9 +13,16 @@ package Game.HUD
 		[Embed(source="../../_assets/bmp/menu/sound-83x71.png")]
 		private static var _buttonSoundBitmap:Class;
 		
+		protected var _buttonBitmap:Bitmap;
+		protected var _frameSize:Point;
+		
 		public function SoundButton()
 		{
-			super(new _buttonSoundBitmap(), null, new Point(83, 71));
+			if (_buttonBitmap == null)
+				_buttonBitmap = new _buttonSoundBitmap();
+			if (_frameSize == null)
+				_frameSize = new Point(83, 71);
+			super(_buttonBitmap, null, _frameSize);
 		}
 		
 		override public function get state():Boolean

@@ -13,9 +13,16 @@ package Game.HUD
 		[Embed(source="../../_assets/bmp/menu/music-67x69.png")]
 		private static var _musicButtonBitmap:Class;
 		
+		protected var _buttonBitmap:Bitmap;
+		protected var _frameSize:Point;
+		
 		public function MusicButton()
 		{
-			super(new _musicButtonBitmap(), null, new Point(67, 69));
+			if (_buttonBitmap == null)
+				_buttonBitmap = new _musicButtonBitmap();
+			if (_frameSize == null)
+				_frameSize = new Point(67, 69);
+			super(_buttonBitmap, null, _frameSize);
 		}
 		
 		override public function get state():Boolean

@@ -13,6 +13,7 @@ package Game
 	import flinjin.graphics.FjSprite;
 	import flinjin.graphics.FjSpriteAnimation;
 	import flinjin.graphics.FjSpriteText;
+	import Game.HUD.AreYouSureDialog;
 	import Game.HUD.Button;
 	import Game.HUD.MusicButton;
 	import Game.HUD.SoundButton;
@@ -93,6 +94,7 @@ package Game
 			
 			_backmenuButton = new Button(new _bitmapBackmenuButton(), null, new Point(238, 51));
 			_backmenuButton.setCenter();
+			_backmenuButton.addEventListener(MouseEvent.MOUSE_DOWN, onBackMenu);
 			addSprite(_backmenuButton, width - 200, _repairFactoryButton.y + _repairFactoryButton.height + 20);
 			
 			addSprite(_musicButton, width - 200 - _musicButton.width - 10, _backmenuButton.y + _backmenuButton.height + 20);
@@ -106,10 +108,26 @@ package Game
 			interactive = true;
 		}
 		
+		private function onBackMenu(e:MouseEvent):void
+		{
+			var _ays:AreYouSureDialog = new AreYouSureDialog();
+			_ays.noCallBack = function():void
+			{
+				interactive = true;
+			};
+			
+			_ays.yesCallback = function():void
+			{
+				Flinjin.Instance.Camera.LookAt(new Menu());
+			};
+			parent.addSprite(_ays, (parent.width - _ays.width) / 2, (parent.height - _ays.height) / 2, zIndex + 1);
+			interactive = false;
+		}
+		
 		private function onRepairFactory(e:MouseEvent):void
 		{
 			if (GameMain.gameScore >= GameMain.Instance.factory.repairPrice)
-			{				
+			{
 				GameMain.gameScore -= GameMain.Instance.factory.repairPrice;
 				GameMain.Instance.factory.repair();
 				updateCosts();

@@ -7,6 +7,7 @@ package Game.HUD
 	import flinjin.graphics.FjSprite;
 	import flinjin.graphics.FjSpriteAnimation;
 	import flinjin.FjInput;
+	import flinjin.sound.FjSnd;
 	
 	/**
 	 * ...
@@ -28,6 +29,15 @@ package Game.HUD
 			addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 		}
 		
+		override public function mouseOver(localX:Number, localY:Number):void
+		{
+			var _m:Boolean = _mouseOver;
+			super.mouseOver(localX, localY);
+			
+			if (!_m && _mouseOver)
+				FjSnd.playSound('menu-hover');
+		}
+		
 		private function onMouseUp(e:MouseEvent):void
 		{
 			_mouseDown = false;
@@ -36,6 +46,7 @@ package Game.HUD
 		private function onMouseDown(e:MouseEvent):void
 		{
 			_mouseDown = true;
+			FjSnd.playSound('menu-click');
 		}
 		
 		override public function Move(deltaTime:Number):void
@@ -46,8 +57,7 @@ package Game.HUD
 			{
 				if (!_mouseDown)
 				{
-					currentFrame = _activeFrame;
-					
+					currentFrame = _activeFrame;					
 				}
 				else
 				{

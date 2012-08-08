@@ -1,10 +1,19 @@
 package
 {
+	import flash.events.MouseEvent;
+	import flash.geom.Point;
+	import flash.net.navigateToURL;
+	import flash.net.URLRequest;
+	import flinjin.Flinjin;
 	import flinjin.graphics.FjLayer;
 	import flinjin.graphics.FjSprite;
 	import Game.GameMain;
 	import Game.HUD.BlackFade;
+	import Game.HUD.Button;
+	import Game.HUD.MainMenu.MMMusicButton;
+	import Game.HUD.MainMenu.MMSoundButton;
 	import Game.Rounds.MenuDummyRound;
+	import Game.SkyClouds;
 	
 	/**
 	 * ...
@@ -12,102 +21,59 @@ package
 	 */
 	public class Menu extends FjLayer
 	{
-		private var _dummyGame:GameMain;
-		private var _fade:BlackFade = new BlackFade(false);
-		private var _menuLayer:MenuLayer = new MenuLayer();
+		[Embed(source="_assets/bmp/menu/main_menu_back.jpg")]
+		private static var _backBitmap:Class;
+		private var _menuBack:FjSprite = new FjSprite(new _backBitmap());
+		private var _clouds:SkyClouds = new SkyClouds();
+		
+		[Embed(source="_assets/bmp/menu/start-206x92.png")]
+		static private var _btnStartBmp:Class;
+		private var _btnStart:Button = new Button(new _btnStartBmp(), null, new Point(206, 92)).setCenter() as Button;
+		
+		[Embed(source="_assets/bmp/menu/scores-251x92.png")]
+		static private var _btnScoresBmp:Class;
+		private var _btnScores:Button = new Button(new _btnScoresBmp(), null, new Point(251, 92)).setCenter() as Button;
+		
+		private var _btnMusic:MMMusicButton = new MMMusicButton().setCenter() as MMMusicButton;
+		private var _btnSound:MMSoundButton = new MMSoundButton().setCenter() as MMSoundButton;
+		
+		[Embed(source="_assets/bmp/menu/more-games-383x92.png")]
+		static private var _btnMoreGamesBmp:Class;
+		private var _btnMoreGames:Button = new Button(new _btnMoreGamesBmp(), null, new Point(383, 92)).setCenter() as Button;
+		
+		[Embed(source="_assets/bmp/menu/host-this-game-481x92.png")]
+		static private var _btnHostThisGameBmp:Class;
+		private var _btnHostThisGame:Button = new Button(new _btnHostThisGameBmp(), null, new Point(481, 92)).setCenter() as Button;
+		
+		private var _gameMain:GameMain = new GameMain();
 		
 		public function Menu()
 		{
 			super(Main.CONTENT_WIDTH, Main.CONTENT_HEIGHT);
-			_dummyGame = new GameMain();
-			_dummyGame.interactive = false;
-			_dummyGame.scenario.startRound(new MenuDummyRound());
 			
-			addSprite(_dummyGame);
-			addSprite(_fade);
-			addSprite(_menuLayer, (width - _menuLayer.width) / 2, (height - _menuLayer.height) / 2);
+			addSprite(_menuBack);
+			addSprite(_clouds);
 			
-			_fade.show();
+			addSprite(_btnStart, width / 2, 100);
+			addSprite(_btnScores, width / 2, 190);
+			addSprite(_btnMusic, width / 2 - _btnMusic.width / 2 - 20, 280);
+			addSprite(_btnSound, width / 2 + _btnSound.width / 2 + 20, 280);
+			addSprite(_btnMoreGames, width / 2, 370);
+			addSprite(_btnHostThisGame, width / 2, 460);
+			
+			_btnStart.addEventListener(MouseEvent.MOUSE_DOWN, onStartBtn);
+			_btnHostThisGame.addEventListener(MouseEvent.MOUSE_DOWN, onHostThisGame);
 		}
-	}
-}
-import flash.events.MouseEvent;
-import flash.geom.Point;
-import flinjin.algorithms.camera.Dissolve;
-import flinjin.Flinjin;
-import flinjin.graphics.FjLayer;
-import flinjin.graphics.FjSprite;
-import Game.HUD.Button;
-import Game.HUD.ButtonSwitch;
-import Game.HUD.MusicButton;
-import Game.HUD.SoundButton;
-
-class MenuLayer extends FjLayer
-{
-	[Embed(source="_assets/bmp/menu/start-140x57.png")]
-	private static var _bitmapStart:Class;
-	
-	[Embed(source="_assets/bmp/menu/scores-176x57.png")]
-	private static var _bitmapScores:Class;
-	
-	[Embed(source="_assets/bmp/menu/more-games-272x57.png")]
-	private static var _bitmapMoreGames:Class;
-	
-	[Embed(source="_assets/bmp/menu/music-67x69.png")]
-	private static var _bitmapMusic:Class;
-	
-	[Embed(source="_assets/bmp/menu/sound-83x71.png")]
-	private static var _bitmapSound:Class;
-	
-	private var _buttonStart:Button = new Button(new _bitmapStart(), null, new Point(140, 57));
-	private var _buttonScores:Button = new Button(new _bitmapScores(), null, new Point(176, 57));
-	private var _buttonMoreGames:Button = new Button(new _bitmapMoreGames(), null, new Point(272, 57));
-	
-	private var _buttonMusc:ButtonSwitch = new MusicButton();
-	private var _buttonSound:ButtonSwitch = new SoundButton();
-	
-	private var _menuBg:FjSprite = new FjSprite(new Assets.bitmapShopBack());
-	private var _gotoStart:Boolean = false;
-	
-	function MenuLayer():void
-	{
-		super(_menuBg.width, _menuBg.height);
-		interactive = true;
-		addSprite(_menuBg);
 		
-		addSprite(_buttonStart, (width - _buttonStart.width) / 2, 50);
-		addSprite(_buttonScores, (width - _buttonScores.width) / 2, 120);
-		
-		addSprite(_buttonMusc, (width / 2) - _buttonMusc.width - 20, 220);
-		addSprite(_buttonSound, (width / 2) + 20, 220);
-		
-		addSprite(_buttonMoreGames, (width - _buttonMoreGames.width) / 2, height - 107);
-		
-		_buttonStart.addEventListener(MouseEvent.MOUSE_DOWN, onStartMouseDown);
-	}
-	
-	private function onStartMouseDown(e:MouseEvent):void
-	{
-		if (!_gotoStart)
+		private function onHostThisGame(e:MouseEvent):void
 		{
-			interactive = false;
-			_gotoStart = true;
+			var hostUrl:URLRequest = new URLRequest('http://www.flinjin.com/p/evil-sun.html?utm_source=ingame&utm_medium=moregames&utm_campaign=Evil%2BSun');
+			navigateToURL(hostUrl, "_blank");
 		}
-		//Flinjin.Instance.Camera.LookAt(new Game.GameMain());
-	}
-	
-	override public function Move(deltaTime:Number):void
-	{
-		super.Move(deltaTime);
 		
-		if (_gotoStart)
+		private function onStartBtn(e:MouseEvent):void
 		{
-			if (y >= Main.CONTENT_HEIGHT)
-			{
-				Flinjin.Instance.Camera.LookAt(new Game.GameMain());
-				return;
-			}
-			y += 600 * s(deltaTime);
+			Flinjin.Instance.Camera.LookAt(_gameMain);
 		}
 	}
 }
