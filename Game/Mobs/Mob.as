@@ -59,7 +59,7 @@ package Game.Mobs
 		
 		protected function _explode():void
 		{
-			Delete();
+			Delete(true);
 			(parent as GameMain).addSprite(new _explosionClass(), x, y, zIndex);
 			FjSnd.playSound("explosion", 1, -1 + (x / Main.CONTENT_WIDTH) * 2);
 		}

@@ -26,41 +26,40 @@ package Game.Rounds
 		
 		public function WaveInfinitie()
 		{
-			_roundName = "Wave " + _waveNum;
 			_nextRound = WaveInfinitie;
 			_waveNum++;
 			
 			for (var i:int = 0; i < _troopCount; i++)
 			{
-				addMobEvent(1500 * i, new Troop());
+				addEvent(1500 * i, new Troop());
 			}
 			
 			for (var j:int = 0; j < _troopGroupCount; j++)
 			{
-				addMobEvent(5000 + j * 2000, new TroopGroup());
+				addEvent(5000 + j * 2000, new TroopGroup());
 			}
 			
 			for (var k:int = 0; k < _tankCount; k++)
 			{
-				addMobEvent(8000 + k * 2000, new Tank());
+				addEvent(8000 + k * 2000, new Tank());
 			}
 			
 			for (var l:int = 0; l < _btrCOunt; l++)
 			{
-				addMobEvent(30000 + l * 3000, new BTR());
+				addEvent(30000 + l * 3000, new BTR());
 			}
 			
 			for (var m:int = 0; m < _planeCount; m++)
 			{
 				for (var n:int = 0; n < _planeGroupCount; n++)
 				{
-					addMobEvent(15000 + m * 5000 + 500 * n, new Plane());
+					addEvent(15000 + m * 5000 + 500 * n, new Plane());
 				}
 			}
 			
 			for (var o:int = 0; o < _baloonCount; o++)
 			{
-				addMobEvent(15000 + o * 15000, new Baloon());
+				addEvent(15000 + o * 15000, new Baloon());
 			}
 			
 			_troopCount *= 1.5;

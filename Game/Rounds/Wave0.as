@@ -39,7 +39,6 @@ package Game.Rounds
 		public function Wave0()
 		{
 			super();
-			_roundName = "Warm Up";
 			_nextRound = Wave1;
 			_titleBitmap = new _warmUp();
 			
@@ -50,68 +49,22 @@ package Game.Rounds
 				if (i == 0)
 					_firstTroop = _newTroop;
 				
-				addMobEvent(4000 + i * 4000, _newTroop);
+				addEvent(4000 + i * 4000, _newTroop);
 			}
 			
-			WeaponChose.weaponRay();
-			
-			GameMain.Instance.sun.weaponRay.recovery = 0;
-			if (GameMainScenario.helpEnabled)
+			if (!GameMainScenario.helpEnabled)
 			{
-				GameMain.Instance.sun.weaponShotgun.recovery = -1;
-				GameMain.Instance.sun.weaponFireball.recovery = -1;
-				GameMain.Instance.sun.weaponApocalypce.recovery = -1;
-			}else {
+				addEvent(4000, null, new ProtectInstruction(this));
+				addEvent(5900, null, new DestroyInstruction(this));
+				addEvent(6000, null, new AimInstructions(this));
+				addEvent(6100, null, new PowerInstruction(this));
+			
+				GameMain.Instance.sun.weaponRay.recovery = 0;
 				GameMain.Instance.sun.weaponShotgun.recovery = 0;
 				GameMain.Instance.sun.weaponFireball.recovery = 0;
 				GameMain.Instance.sun.weaponApocalypce.recovery = 0;
 			}
 		}
-		
-		override public function update(deltaTime:Number):void
-		{
-			super.update(deltaTime);
-			
-			if ((_protectTimeout >= 4000) && (!_protectShown))
-			{
-				_instProtect = new ProtectInstruction(this);
-				_instProtect.show();
-				_protectShown = true;
-			}
-			else
-			{
-				_protectTimeout += deltaTime;
-			}
-			
-			if (!_destroyShown)
-			{
-				if ((_firstTroop.x <= 930) && (_firstTroop.parent != null))
-				{
-					_instDestroy = new DestroyInstruction(this);
-					_instDestroy.show();
-					_destroyShown = true;
-				}
-			}
-			else
-			{
-				if (!_aimShown)
-				{
-					_instAim = new AimInstructions(this);
-					_instAim.show();
-					_aimShown = true;
-				}
-				else
-				{
-					if (!_powerShown)
-					{
-						_instPower = new PowerInstruction(this);
-						_instPower.show();
-						_powerShown = true;
-					}
-				}
-			}
-		}
-	
 	}
 
 }

@@ -72,8 +72,8 @@ package Game
 			_gradeButtons["apocalypse"] = new UpgradeButton(GameMain.Instance.sun.weaponApocalypce, new _bitmapApocalypseButton());
 			
 			addSprite(_gradeButtons["laserray"], 40, 40);
-			addSprite(_gradeButtons["shotgun"], 40, 123);
-			addSprite(_gradeButtons["fireball"], 40, 206);
+			addSprite(_gradeButtons["fireball"], 40, 123);
+			addSprite(_gradeButtons["shotgun"], 40, 206);			
 			addSprite(_gradeButtons["apocalypse"], 40, 289);
 			
 			_arrowButton = new Button(new _bitmapArrowButton(), null, new Point(80, 83), new FjSpriteAnimation());
@@ -210,6 +210,8 @@ package Game
 				_repairFactoryButton.alpha = 0.5;
 				_repairFactoryButton.interactive = false;
 			}
+			
+			_moneyTitle.text = '$ ' + GameMain.gameScore;
 		}
 		
 		private function onKeyDown(e:KeyboardEvent):void

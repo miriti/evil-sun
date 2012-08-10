@@ -45,7 +45,7 @@ package Game.Weapons
 						_rise = false;
 						var _hitPower:Number = Balance.apocalypseDamageMin[level] + (Balance.apocalypseDamageMax[level] - Balance.apocalypseDamageMin[level]) * _firePower;
 						
-						for (var i:int = 0; i < GameMain.Instance.mobsCollection.length; i++)
+						for (var i:int = GameMain.Instance.mobsCollection.length - 1; i >= 0; i--)
 						{
 							GameMain.Instance.mobsCollection[i].Hit(_hitPower, Apocalypse);
 						}

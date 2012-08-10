@@ -35,6 +35,7 @@ package
 		public function Main():void
 		{
 			super(SCENE_WIDTH, SCENE_HEIGHT);
+			Camera.stackEnabled = false;
 			contextMenuAddItem("Credits", _showCredits);
 			FjSprite.SharpBlitting = false;
 			FjSprite.Smoothing = true;

@@ -1,7 +1,9 @@
 package Game.HUD.instructions
 {
 	import flinjin.graphics.FjSprite;
+	import Game.GameMain;
 	import Game.HUD.Instructions;
+	import Game.HUD.WeaponChose;
 	import Game.Rounds.GameRound;
 	
 	/**
@@ -15,6 +17,10 @@ package Game.HUD.instructions
 		
 		public function ProtectInstruction(wave:GameRound)
 		{
+			WeaponChose.weaponRay();
+			GameMain.Instance.sun.weaponShotgun.recovery = -1;
+			GameMain.Instance.sun.weaponFireball.recovery = -1;
+			GameMain.Instance.sun.weaponApocalypce.recovery = -1;
 			super(wave);
 		}
 		

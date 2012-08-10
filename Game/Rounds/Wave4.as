@@ -2,6 +2,9 @@ package Game.Rounds
 {
 	import flinjin.graphics.FjSpriteText;
 	import Game.GameMain;
+	import Game.GameMainScenario;
+	import Game.HUD.instructions.ArmagedonInstructions;
+	import Game.HUD.instructions.SwitchWeaponsInstruction;
 	import Game.Mobs.Plane;
 	import Game.Mobs.Tank;
 	
@@ -16,8 +19,8 @@ package Game.Rounds
 		private var _hintText:FjSpriteText;
 		private var _hint:Boolean = false;
 		private var _hintDone:Boolean = false;
-		static private const TANK_COUNT:Number = 15;
-		static private const TANK_DELAY:Number = 1500;
+		static private const TANK_COUNT:Number = 8;
+		static private const TANK_DELAY:Number = 2800;
 		private var _upgradeHint:Boolean = false;
 		static public const PLANE_COUNT:Number = 7;
 		
@@ -25,27 +28,27 @@ package Game.Rounds
 		{
 			super();
 			
-			_roundName = "Wave 4: Real Deal";
 			_nextRound = Wave5;
 			
 			for (var i:int = 0; i < TANK_COUNT; i++)
 			{
-				addMobEvent(i * TANK_DELAY, new Tank());
+				addEvent(i * TANK_DELAY, new Tank());
 			}
 			
 			for (var j:int = 0; j < PLANE_COUNT; j++)
 			{
-				addMobEvent(2000 + j * 2000, new Plane());
+				addEvent(2000 + j * 2000, new Plane());
 			}
 			
-			GameMain.Instance.sun.weaponShotgun.recovery = 0;
-			GameMain.Instance.sun.weaponFireball.recovery = 0;
-			GameMain.Instance.sun.weaponApocalypce.recovery = GameMain.Instance.sun.weaponApocalypce.recoveryTime / 2;
-		}
-		
-		override public function update(deltaTime:Number):void
-		{
-			super.update(deltaTime);
+			if (GameMainScenario.helpEnabled)
+			{
+				addEvent(100, null, new SwitchWeaponsInstruction(this));
+				addEvent(200, null, new ArmagedonInstructions(this));
+				
+				GameMain.Instance.sun.weaponShotgun.recovery = 0;
+				GameMain.Instance.sun.weaponFireball.recovery = 0;
+				GameMain.Instance.sun.weaponApocalypce.recovery = GameMain.Instance.sun.weaponApocalypce.recoveryTime / 2;
+			}
 		}
 	}
 }

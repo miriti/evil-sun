@@ -16,12 +16,11 @@ package Game.Rounds
 		
 		public function Wave5()
 		{
-			_roundName = "Wave 5";
 			_nextRound = Wave6;
 			
 			for (var i:int = 0; i < 6; i++)
 			{
-				addMobEvent(i * 2500, new TroopGroup());
+				addEvent(i * 2500, new TroopGroup());
 			}
 		}
 	}

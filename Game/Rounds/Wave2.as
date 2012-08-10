@@ -1,6 +1,9 @@
 package Game.Rounds
 {
 	import flinjin.graphics.FjSpriteText;
+	import Game.GameMainScenario;
+	import Game.HUD.instructions.FireballInstruction;
+	import Game.HUD.instructions.TankShotLine;
 	import Game.Mobs.Tank;
 	
 	/**
@@ -21,12 +24,17 @@ package Game.Rounds
 		{
 			super();
 			
-			_roundName = "Wave 2: Tank Attack";
 			_nextRound = Wave3;
 			
 			for (var i:int = 0; i < 5; i++)
 			{
-				addMobEvent(i * 750, new Tank());
+				addEvent(i * 750, new Tank());
+			}
+			
+			if (GameMainScenario.helpEnabled)
+			{
+				addEvent(2000, null, new TankShotLine(this));
+				addEvent(2100, null, new FireballInstruction(this));
 			}
 		}
 	}

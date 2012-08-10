@@ -2,6 +2,7 @@ package Game.Rounds
 {
 	import Game.GameMain;
 	import Game.GameMainScenario;
+	import Game.HUD.instructions.ShotgunInstructions;
 	import Game.HUD.WeaponChose;
 	import Game.Mobs.Plane;
 	
@@ -27,23 +28,21 @@ package Game.Rounds
 		{
 			super();
 			
-			_roundName = "Wave 3: Watch the Sky";
 			_nextRound = Wave4;
 			_titleBitmap = new _titleBmp();
 			
 			for (var i:int = 0; i < PLANE_NUM; i++)
 			{
-				addMobEvent(i * 3000, new Plane());
+				addEvent(i * 3000, new Plane());
 			}
 			
-			GameMain.Instance.sun.weaponShotgun.recovery = GameMain.Instance.sun.weaponShotgun.recoveryTime;
+			addEvent(500, null, new ShotgunInstructions(this));
+			
 			if (GameMainScenario.helpEnabled)
+			{
+				GameMain.Instance.sun.weaponShotgun.recovery = GameMain.Instance.sun.weaponShotgun.recoveryTime;
 				WeaponChose.weaponShotgun();
-		}
-		
-		override public function update(deltaTime:Number):void
-		{
-			super.update(deltaTime);
+			}
 		}
 	}
 }

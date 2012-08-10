@@ -3,6 +3,7 @@ package Game.Rounds
 	import flash.display.Bitmap;
 	import flash.text.TextFormat;
 	import Game.GameMain;
+	import Game.HUD.Instructions;
 	import Game.HUD.WaveTitleDie;
 	import Game.Mobs.Mob;
 	import mochi.as3.MochiEvents;
@@ -16,13 +17,11 @@ package Game.Rounds
 		private var _finishDelayTime:Number = -1;
 		private var _running:Boolean = true;
 		
-		protected var _roundName:String = "";
 		protected var _textFormat:TextFormat = new TextFormat("gameFont", 35, 0x00cc00);
 		protected var _timeTotal:Number = 0;
 		protected var _creationEvents:Vector.<GameRoundCreationEvent> = new Vector.<GameRoundCreationEvent>();
 		protected var _nextRound:Class = null;
 		protected var _finishDelay:Number = 3000;
-		protected var _finishDie:String = "Clear!";
 		protected var _titleBitmap:Bitmap;
 		
 		[Embed(source="../../_assets/bmp/hud/wave-titles/clear.png")]
@@ -31,6 +30,7 @@ package Game.Rounds
 		[Embed(source="../../_assets/bmp/hud/wave-titles/excellent.png")]
 		private static var _excelentBitmap:Class;
 		private var _factoryHealth:Number;
+		private var _mobCount:int = 0;
 		
 		public function GameRound()
 		{
@@ -38,9 +38,12 @@ package Game.Rounds
 			_factoryHealth = GameMain.Instance.factory.healthPoints;
 		}
 		
-		public function addMobEvent(timeStamp:Number, mob:Mob):void
+		public function addEvent(timeStamp:Number, mob:Mob = null, help:Instructions = null):void
 		{
-			_creationEvents.push(new GameRoundCreationEvent(timeStamp, mob));
+			_creationEvents.push(new GameRoundCreationEvent(timeStamp, mob, help));
+			
+			if (mob != null)
+				_mobCount++;
 		}
 		
 		public function finish():void
@@ -71,15 +74,23 @@ package Game.Rounds
 				{
 					if ((_timeTotal >= _creationEvents[i].timestamp) && (!_creationEvents[i].done))
 					{
-						var _mob:Mob = _creationEvents[i].mob;
-						_mob.x = Main.CONTENT_WIDTH + _mob.width / 2;
-						_mob.y = GameMain.groundLevel - _mob.height / 2;
-						GameMain.Instance.addMob(_mob);
+						if (_creationEvents[i].mob != null)
+						{
+							var _mob:Mob = _creationEvents[i].mob;
+							_mob.x = Main.CONTENT_WIDTH + _mob.width / 2;
+							_mob.y = GameMain.groundLevel - _mob.height / 2;
+							GameMain.Instance.addMob(_mob);
+						}
+						else if (_creationEvents[i].help != null)
+						{
+							var _help:Instructions = _creationEvents[i].help;
+							_help.show();
+						}
 						_creationEvents[i].done = true;
 					}
 				}
 				
-				if (GameMain.Instance.deadMobs == _creationEvents.length)
+				if (GameMain.Instance.deadMobs == _mobCount)
 				{
 					if (_finishDelayTime == -1)
 					{
@@ -101,16 +112,6 @@ package Game.Rounds
 			}
 		}
 		
-		public function get roundName():String
-		{
-			return _roundName;
-		}
-		
-		public function set roundName(value:String):void
-		{
-			_roundName = value;
-		}
-		
 		public function get running():Boolean
 		{
 			return _running;
@@ -123,18 +124,21 @@ package Game.Rounds
 	}
 
 }
+import Game.HUD.Instructions;
 import Game.Mobs.Mob;
 
 class GameRoundCreationEvent
 {
 	private var _timestamp:Number;
 	private var _mob:Mob;
+	private var _help:Instructions;
 	public var done:Boolean = false;
 	
-	function GameRoundCreationEvent(newTimeStamp:Number, newMob:Mob):void
+	function GameRoundCreationEvent(newTimeStamp:Number, newMob:Mob = null, newHelp:Instructions = null):void
 	{
 		_timestamp = newTimeStamp;
 		_mob = newMob;
+		_help = newHelp;
 	}
 	
 	public function get timestamp():Number
@@ -155,5 +159,15 @@ class GameRoundCreationEvent
 	public function set mob(value:Mob):void
 	{
 		_mob = value;
+	}
+	
+	public function get help():Instructions
+	{
+		return _help;
+	}
+	
+	public function set help(value:Instructions):void
+	{
+		_help = value;
 	}
 }

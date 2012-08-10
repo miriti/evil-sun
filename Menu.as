@@ -12,7 +12,6 @@ package
 	import Game.HUD.Button;
 	import Game.HUD.MainMenu.MMMusicButton;
 	import Game.HUD.MainMenu.MMSoundButton;
-	import Game.Rounds.MenuDummyRound;
 	import Game.SkyClouds;
 	
 	/**
@@ -45,8 +44,6 @@ package
 		static private var _btnHostThisGameBmp:Class;
 		private var _btnHostThisGame:Button = new Button(new _btnHostThisGameBmp(), null, new Point(481, 92)).setCenter() as Button;
 		
-		private var _gameMain:GameMain = new GameMain();
-		
 		public function Menu()
 		{
 			super(Main.CONTENT_WIDTH, Main.CONTENT_HEIGHT);
@@ -73,7 +70,7 @@ package
 		
 		private function onStartBtn(e:MouseEvent):void
 		{
-			Flinjin.Instance.Camera.LookAt(_gameMain);
+			Flinjin.Instance.Camera.LookAt(new GameMain());
 		}
 	}
 }

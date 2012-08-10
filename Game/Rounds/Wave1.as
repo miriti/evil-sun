@@ -20,21 +20,12 @@ package Game.Rounds
 		public function Wave1()
 		{
 			super();
-			_roundName = "Wave 1";
 			_nextRound = Wave2;
 			
-			for (var i:int = 0; i < 8; i++)
+			for (var i:int = 0; i < 6; i++)
 			{
-				addMobEvent(i * 1500, new Troop());
+				addEvent(i * 1800, new Troop());
 			}
-		}
-		
-		override public function finish():void
-		{
-			super.finish();
-			GameMain.Instance.sun.weaponFireball.recovery = GameMain.Instance.sun.weaponFireball.recoveryTime;
-			if (GameMainScenario.helpEnabled)
-				WeaponChose.weaponFire();
 		}
 	}
 

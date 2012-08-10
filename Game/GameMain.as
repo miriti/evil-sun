@@ -99,6 +99,8 @@ package Game
 			scoreCounter.text = '$0';
 			_shopButton.interactive = true;
 			_shopButton.addEventListener(MouseEvent.MOUSE_DOWN, showUpgardes);
+			if (GameMainScenario.helpEnabled)
+				_shopButton.visible = false;
 			
 			scenario = new GameMainScenario();
 			upgrades = new Upgrades();
