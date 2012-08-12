@@ -2,6 +2,7 @@ package Game.Mobs
 {
 	import flash.geom.Point;
 	import flinjin.events.FlinjinSpriteEvent;
+	import flinjin.FjObjectPool;
 	import flinjin.graphics.FjSprite;
 	import flinjin.graphics.FjSpriteAnimation;
 	import Game.Balance;
@@ -27,7 +28,14 @@ package Game.Mobs
 			_baloonAnim.animation.stop();
 			addSprite(_baloonAnim, 0, 0);
 			addSprite(_bombSprite, 30, 115);
+			addEventListener(FlinjinSpriteEvent.ADDED_TO_LAYER, onAdded);
 			
+			initMob();
+		}
+		
+		override protected function initMob():void
+		{
+			super.initMob();
 			_healthPoints = Balance.baloonHealth;
 			_healthPointsMax = Balance.baloonHealth;
 			_score = Balance.baloonScore;
@@ -35,8 +43,6 @@ package Game.Mobs
 			_attackDamage = Balance.baloonBombDamage;
 			_healthBarPosition = 1;
 			_hitTheFactory = false;
-			
-			addEventListener(FlinjinSpriteEvent.ADDED_TO_LAYER, onAdded);
 		}
 		
 		override public function Move(deltaTime:Number):void
@@ -86,7 +92,7 @@ package Game.Mobs
 		{
 			_baloonAnim.animation.play();
 			_bombSprite.Delete();
-			var newBomb:BombSprite = new BombSprite();
+			var newBomb:BombSprite = FjObjectPool.pull(BombSprite) as BombSprite;
 			newBomb.damage = _attackDamage;
 			newBomb.fall = true;
 			GameMain.Instance.addSprite(newBomb, x, y + (height / 2 - newBomb.height), zIndex + 1);
@@ -129,7 +135,7 @@ class BombSprite extends FjSprite
 		{
 			if (y >= GameMain.Instance.factory.y)
 			{
-				Delete();
+				Delete(true);
 				GameMain.Instance.factory.Hit(_damage, Baloon);
 				(parent as GameMain).addSprite(new CommonExplosion(), x, y, zIndex);
 				FjSnd.playSound("explosion");

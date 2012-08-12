@@ -32,12 +32,12 @@ package Game.Rounds
 			
 			for (var i:int = 0; i < TANK_COUNT; i++)
 			{
-				addEvent(i * TANK_DELAY, new Tank());
+				addEvent(i * TANK_DELAY, Tank);
 			}
 			
 			for (var j:int = 0; j < PLANE_COUNT; j++)
 			{
-				addEvent(2000 + j * 2000, new Plane());
+				addEvent(2000 + j * 2000, Plane);
 			}
 			
 			if (GameMainScenario.helpEnabled)

@@ -23,6 +23,7 @@ package Game
 		
 		public function GameMainScenario()
 		{
+			GameRound.resetWavesCount();
 		}
 		
 		public function update(deltaTime:Number):void

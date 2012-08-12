@@ -1,116 +1,147 @@
 package
 {
-	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
 	import flash.utils.getDefinitionByName;
 	import flinjin.FjLog;
-	import flinjin.FjPreloader;
 	import flinjin.Flinjin;
 	
 	/**
 	 * ...
 	 * @author Michael Miriti
 	 */
-	public class Preloader extends FjPreloader
+	public class Preloader extends MovieClip
 	{
-		//private var _applicationClass:String = "Main";
-		
-		[Embed(source="_assets/bmp/loader/loader back.jpg")]
-		private static var _bgBitmap:Class;
-		
-		[Embed(source="_assets/bmp/loader/loader_sun.png")]
-		private static var _bgSunFace:Class;
-		
-		[Embed(source="_assets/bmp/loader/loader_sun_crona.png")]
-		private static var _sunCoronaBitmap:Class;
-		
-		private var _sunCorona:Bitmap = new _sunCoronaBitmap() as Bitmap;
-		private var _mcCorona:Sprite = new Sprite();
-		
-		//private var _progressBar:PreloaderProgressBar;
+		private var _loader:PreloaderDisplay = new PreloaderDisplay();
 		
 		public function Preloader()
 		{
-			/*if (stage)
-			   {
-			   stage.scaleMode = StageScaleMode.NO_SCALE;
-			   stage.align = StageAlign.TOP_LEFT;
-			
-			   addChild(new _bgBitmap());
-			
-			   var sunFace:Bitmap = new _bgSunFace();
-			   sunFace.x = width / 2 - sunFace.width / 2;
-			   sunFace.y = height / 2 - sunFace.height / 2;
-			   addChild(sunFace);
-			
-			   _sunCorona.x = -_sunCorona.width / 2;
-			   _sunCorona.y = -_sunCorona.height / 2;
-			   _mcCorona.addChild(_sunCorona);
-			
-			   _mcCorona.x = width / 2;
-			   _mcCorona.y = height / 2;
-			   addChild(_mcCorona);
-			
-			   _progressBar = new PreloaderProgressBar(856, 15);
-			   _progressBar.x = 88;
-			   _progressBar.y = 491;
-			   addChild(_progressBar);
-			 } */
-			
 			if (Main.CONTENT_WIDTH == Main.SCENE_WIDTH)
-				Flinjin.applicationName = "Evil Sun HD";
-			else
+			{
 				Flinjin.applicationName = "Evil Sun";
+			}
+			else
+			{
+				Flinjin.applicationName = "Evil Sun HD";
+			}
 			
-			applicationClass = "Main";
+			if (stage)
+			{
+				stage.scaleMode = StageScaleMode.NO_SCALE;
+				stage.align = StageAlign.TOP_LEFT;
+			}
+			addEventListener(Event.ENTER_FRAME, checkFrame);
+			loaderInfo.addEventListener(ProgressEvent.PROGRESS, progress);
+			loaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioError);
+			
+			// TODO show loader
+			addChild(_loader);
+			_loader.startCallback = startup;
+		}
 		
-		/*addEventListener(Event.ENTER_FRAME, checkFrame);
-		   loaderInfo.addEventListener(ProgressEvent.PROGRESS, progress);
-		 loaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioError);*/
+		private function ioError(e:IOErrorEvent):void
+		{
+			FjLog.l(e.text);
+		}
+		
+		private function progress(e:ProgressEvent):void
+		{
+			// TODO update loader
+			_loader.progress = e.bytesLoaded / e.bytesTotal;
+		}
+		
+		private function checkFrame(e:Event):void
+		{
+			if (currentFrame == totalFrames)
+			{
+				stop();
+				loadingFinished();
+			}
+		}
+		
+		private function loadingFinished():void
+		{
+			removeEventListener(Event.ENTER_FRAME, checkFrame);
+			loaderInfo.removeEventListener(ProgressEvent.PROGRESS, progress);
+			loaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, ioError);
+		
+			// TODO hide loader
+		
+		}
+		
+		private function startup():void
+		{
+			removeChild(_loader);
+			var mainClass:Class = getDefinitionByName("Main") as Class;
+			addChild(new mainClass() as DisplayObject);
 		}
 	
 	}
 
-} /*
-   import flash.display.MovieClip;
+}
+import flash.display.Bitmap;
+import flash.display.Sprite;
+import flash.events.MouseEvent;
 
-   class PreloaderProgressBar extends MovieClip
-   {
-   private var _progress:uint;
-   private var _maxWidth:Number;
-   private var _barHeight:Number;
-
-   function PreloaderProgressBar(maxWidth:Number, barHeight:Number = 16)
-   {
-   super();
-   _maxWidth = maxWidth;
-   _barHeight = barHeight;
-
-   graphics.clear();
-   graphics.beginFill(0x000000);
-   graphics.drawRect(0, 0, _maxWidth, _barHeight);
-   graphics.endFill();
-   }
-
-   public function get progress():uint
-   {
-   return _progress;
-   }
-
-   public function set progress(value:uint):void
-   {
-   _progress = value;
-
-   graphics.clear();
-   graphics.beginFill(0xffffff);
-   graphics.drawRect(0, 0, _maxWidth * (100 / _progress), _barHeight);
-   graphics.endFill();
-   }
- }*/
+class PreloaderDisplay extends Sprite
+{
+	[Embed(source="_assets/bmp/loader/loader back.jpg")]
+	private static var _backgourndImage:Class;
+	
+	[Embed(source="_assets/bmp/loader/loading.png")]
+	private static var _loadingImage:Class;
+	private static var _loadingBitmap:Bitmap = new _loadingImage();
+	
+	private var _rotatingSun:flmcLoaderRotatigSun = new flmcLoaderRotatigSun();
+	
+	private var _playGameButton:flmcPlayGameButton = new flmcPlayGameButton();
+	
+	public var startCallback:Function;
+	
+	private var progressBar:Sprite = new Sprite();
+	
+	public function PreloaderDisplay():void
+	{
+		addChild(new _backgourndImage());
+		_rotatingSun.x = 520;
+		_rotatingSun.y = 280;
+		addChild(_rotatingSun);
+		
+		_loadingBitmap.x = (width - _loadingBitmap.width) / 2;
+		_loadingBitmap.y = 445 - _loadingBitmap.height / 2;
+		addChild(_loadingBitmap);
+		
+		_playGameButton.x = width / 2;
+		_playGameButton.y = 445;
+		_playGameButton.addEventListener(MouseEvent.MOUSE_DOWN, onPlayGame);
+		
+		progressBar.x = 83;
+		progressBar.y = 486;
+		addChild(progressBar);
+	}
+	
+	private function onPlayGame(e:MouseEvent):void
+	{
+		startCallback.call();
+	}
+	
+	public function set progress(val:Number):void
+	{
+		if (val == 1)
+		{
+			removeChild(_loadingBitmap);
+			addChild(_playGameButton);
+		}
+		
+		progressBar.graphics.beginFill(0xffffff);
+		progressBar.graphics.drawRect(0, 0, val * 865, 25);
+		progressBar.graphics.endFill();
+	}
+}

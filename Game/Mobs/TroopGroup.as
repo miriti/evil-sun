@@ -19,6 +19,14 @@ package Game.Mobs
 		{
 			super(_animSprtie.width, _animSprtie.height);
 			addSprite(_animSprtie);
+			
+			initMob();
+		}
+		
+		override protected function initMob():void
+		{
+			super.initMob();
+			
 			_healthPoints = Balance.troopGroupHealth;
 			_healthPointsMax = Balance.troopGroupHealth;
 			_speed = Balance.troopGroupSpeed;

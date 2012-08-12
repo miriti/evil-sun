@@ -27,9 +27,8 @@ package Game.HUD
 		
 		public function set hintText(value:String):void 
 		{
+			_hintTextSprite.text = value;
 			_hintText = value;
 		}
-		
 	}
-
 }

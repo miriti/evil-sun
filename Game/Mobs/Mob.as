@@ -1,6 +1,7 @@
 package Game.Mobs
 {
 	import flash.events.Event;
+	import flinjin.events.FlinjinObjectPoolEvent;
 	import flinjin.events.FlinjinSpriteEvent;
 	import flinjin.graphics.FjLayer;
 	import flinjin.FjInput;
@@ -30,8 +31,6 @@ package Game.Mobs
 		protected var _hitTheFactory:Boolean = true;
 		protected var _healthBarPosition:int = 0;
 		
-		private var _dead:Boolean = false;
-		
 		public function Mob(layerWidth:uint, layerHeight:uint)
 		{
 			super(layerWidth, layerHeight);
@@ -41,9 +40,9 @@ package Game.Mobs
 			addEventListener(FlinjinSpriteEvent.REMOVED_FROM_LAYER, removedFromLayer);
 		}
 		
-		public static function upgrade():void
+		protected function initMob():void
 		{
-			trace("upgrade function is not implemented");
+		
 		}
 		
 		private function removedFromLayer(e:FlinjinSpriteEvent):void
@@ -67,6 +66,12 @@ package Game.Mobs
 		public function die():void
 		{
 			_explode();
+		}
+		
+		override protected function restore(e:FlinjinObjectPoolEvent = null):void
+		{
+			super.restore(e);
+			initMob();
 		}
 		
 		override public function Move(deltaTime:Number):void
@@ -146,12 +151,9 @@ package Game.Mobs
 			if (_healthPoints <= 0)
 			{
 				_healthPoints = 0;
-				if (!_dead)
-				{
-					GameMain.gameScore += _score;
-					die();
-					_dead = true;
-				}
+				
+				GameMain.addScore(_score);
+				die();
 			}
 		}
 		

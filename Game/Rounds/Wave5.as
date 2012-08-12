@@ -20,7 +20,7 @@ package Game.Rounds
 			
 			for (var i:int = 0; i < 6; i++)
 			{
-				addEvent(i * 2500, new TroopGroup());
+				addEvent(i * 2500, TroopGroup);
 			}
 		}
 	}

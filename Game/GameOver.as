@@ -9,6 +9,7 @@ package Game
 	import flinjin.graphics.FjSpriteAnimation;
 	import flinjin.graphics.FjSpriteText;
 	import Game.HUD.Button;
+	import mochi.as3.MochiScores;
 	
 	/**
 	 * @author Michael Miriti
@@ -41,7 +42,7 @@ package Game
 		private var _yourScoretxt:FjSpriteText = new FjSpriteText("0", new TextFormat("gameFont", 50, 0xffe090));
 		
 		/**
-		 * 
+		 *
 		 */
 		public function GameOver()
 		{
@@ -55,10 +56,13 @@ package Game
 			_yourscoreButton.setCenter();
 			_yourscoreButton.interactive = false;
 			
-			_submitButton.setCenter();
-			_submitButton.inactiveFrame = 1;
-			_submitButton.activeFrame = 0;
-			_submitButton.addEventListener(MouseEvent.MOUSE_DOWN, onSubmit);
+			if (GameMain.highScore == GameMain.score)
+			{
+				_submitButton.setCenter();
+				_submitButton.inactiveFrame = 1;
+				_submitButton.activeFrame = 0;
+				_submitButton.addEventListener(MouseEvent.MOUSE_DOWN, onSubmit);
+			}
 			
 			_backToMenuButton.setCenter();
 			_backToMenuButton.addEventListener(MouseEvent.MOUSE_DOWN, onBackMenu);
@@ -68,7 +72,7 @@ package Game
 			_playAgainButton.addEventListener(MouseEvent.MOUSE_DOWN, onPlayAgain);
 			
 			_highScoretxt.text = GameMain.highScore.toString();
-			_yourScoretxt.text = GameMain.gameScore.toString();
+			_yourScoretxt.text = GameMain.score.toString();
 			
 			addSprite(_highscoreButton, 210, 80);
 			addSprite(_highScoretxt, width / 2 + 20, 80 - _highScoretxt.height / 2);
@@ -79,25 +83,32 @@ package Game
 			addSprite(_playAgainButton, width - _playAgainButton.width - 60, height - _playAgainButton.height - 60);
 		}
 		
-		private function onPlayAgain(e:MouseEvent):void 
+		private function onPlayAgain(e:MouseEvent):void
 		{
 			GameMainScenario.helpEnabled = false;
 			Flinjin.Instance.Camera.LookAt(new GameMain());
 		}
 		
-		private function onBackMenu(e:MouseEvent):void 
+		private function onBackMenu(e:MouseEvent):void
 		{
 			Flinjin.Instance.Camera.LookAt(new Menu());
 		}
 		
-		private function onSubmit(e:MouseEvent):void 
+		private function onSubmit(e:MouseEvent):void
 		{
-			// TODO submit to mochi
-			trace("TODO");
+			var o:Object = {n: [15, 0, 9, 13, 6, 14, 12, 13, 6, 12, 13, 12, 3, 4, 9, 3], f: function(i:Number, s:String):String
+				{
+					if (s.length == 16)
+						return s;
+					return this.f(i + 1, s + this.n[i].toString(16));
+				}};
+			var boardID:String = o.f(0, "");
+			MochiScores.showLeaderboard( { boardID: boardID, score: GameMain.score } );
+			_submitButton.visible = false;
 		}
 		
 		/**
-		 * 
+		 *
 		 * @param	deltaTime
 		 */
 		override public function Move(deltaTime:Number):void
@@ -110,7 +121,8 @@ package Game
 			{
 				y += s(deltaTime) * 500;
 				
-				if (y > _gY) {
+				if (y > _gY)
+				{
 					y = _gY;
 					interactive = true;
 				}

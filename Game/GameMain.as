@@ -2,21 +2,16 @@ package Game
 {
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	import flash.events.TimerEvent;
-	import flash.text.TextFormat;
+	import flash.net.SharedObject;
 	import flash.ui.Keyboard;
-	import flash.utils.Timer;
 	import flinjin.events.FlinjinSpriteEvent;
 	import flinjin.FjConsole;
 	import flinjin.graphics.FjLayer;
 	import flinjin.graphics.FjSprite;
-	import flinjin.graphics.FjSpriteText;
 	import flinjin.sound.FjSnd;
 	import Game.HUD.BlackFade;
-	import Game.HUD.GameOverDie;
 	import Game.HUD.ScoreCounter;
 	import Game.HUD.WeaponChose;
-	import Game.Mobs.Cloud;
 	import Game.Mobs.Mob;
 	import Game.Objects.Factory;
 	import Game.Objects.parcticles.FactoryExplosion;
@@ -40,7 +35,8 @@ package Game
 		
 		private var _shopButton:ShopButton = new ShopButton();
 		
-		private static var _gameScore:Number = 0;
+		private static var _score:Number = 0;
+		private static var _money:Number = 0;
 		
 		static public var groundLevel:Number = Main.CONTENT_HEIGHT;
 		static public var scoreCounter:ScoreCounter;
@@ -62,8 +58,6 @@ package Game
 		private var _raysMaskSprite:FjSprite = new FjSprite(new _raysMask());
 		
 		private var _upgragesMode:Boolean = false;
-		static private const UPGRADE_COLOR:Number = 0x333333;
-		static private var _totalScore:Number = 0;
 		
 		static private const SUN_X:Number = 250;
 		static private const SUN_Y:Number = 190;
@@ -76,8 +70,13 @@ package Game
 			scoreCounter = new ScoreCounter();
 			gameIsOver = false;
 			
-			_gameScore = 0;
+			_score = 0;
 			
+			var scoreSO:SharedObject = SharedObject.getLocal("gameScore");
+			if (scoreSO.data.highScore != null)
+			{
+				highScore = Number(scoreSO.data.highScore);
+			}
 			sun = new Sun();
 			
 			groundLevel = Main.CONTENT_HEIGHT - ground.height + 7;
@@ -129,16 +128,6 @@ package Game
 			{
 				upgragesMode = !upgragesMode;
 			}
-		}
-		
-		public function get score():Number
-		{
-			return _gameScore;
-		}
-		
-		public function set score(val:Number):void
-		{
-			GameMain.gameScore = val;
 		}
 		
 		private function showUpgardes(e:MouseEvent):void
@@ -199,39 +188,39 @@ package Game
 				mobsCollection[i].die();
 			}
 			
+			if (_score > highScore)
+			{
+				var scoreSO:SharedObject = SharedObject.getLocal("gameScore");
+				scoreSO.data.highScore = _score;
+				highScore = _score;
+			}
+			
 			fadeBlack.show();
 			
 			var _gameOverDie:GameOver = new GameOver();
 			addSprite(_gameOverDie, (width - _gameOverDie.width) / 2, -_gameOverDie.height * 1.5, 1000);
 		}
 		
-		/**
-		 * Call the cloud helper
-		 *
-		 */
-		public function callCloud():void
+		static public function buy(howMutch:Number):Boolean
 		{
-			var _newCloud:Cloud = new Cloud();
-			_newCloud.x = _newCloud.width + Math.random() * (Main.CONTENT_WIDTH - _newCloud.width);
-			_newCloud.y = -_newCloud.height;
-			addSprite(_newCloud, null, null, sun.zIndex + 1);
-		}
-		
-		static public function get gameScore():Number
-		{
-			return _gameScore;
-		}
-		
-		static public function set gameScore(value:Number):void
-		{
-			if (value > _gameScore)
+			if (_money >= howMutch)
 			{
-				_totalScore += value - _gameScore;
+				_money -= howMutch;
+				scoreCounter.text = "$" + _money.toString();
+				scoreCounter.alpha = 1;
+				return true;
 			}
-			_gameScore = value;
+			else
+				return false;
+		}
+		
+		static public function addScore(add:Number):void
+		{
+			_score += add;
+			_money += add;
 			
-			GameMain.scoreCounter.text = "$" + _gameScore.toString();
-			GameMain.scoreCounter.alpha = 1;
+			scoreCounter.text = "$" + _money.toString();
+			scoreCounter.alpha = 1;
 			
 			if ((Instance.upgrades.avail()) && (!Instance.shopButton.avail))
 			{
@@ -278,6 +267,16 @@ package Game
 		public function set pause(value:Boolean):void
 		{
 			_pause = value;
+		}
+		
+		static public function get score():Number
+		{
+			return _score;
+		}
+		
+		static public function get money():Number
+		{
+			return _money;
 		}
 	}
 }

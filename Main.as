@@ -15,6 +15,7 @@ package
 	 * @author Michael Miriti
 	 */
 	[Frame(factoryClass="Preloader")]
+	
 	public class Main extends Flinjin
 	{
 		static public const CONTENT_WIDTH:Number = 1024;
@@ -24,6 +25,7 @@ package
 		static public const SCENE_HEIGHT:Number = 576;
 		
 		static public const MOCHI_GAME_ID:String = "d8ba1df8df94d299";
+		static public const MOCHI_BOARD_ID:String = "f09d6ecd6cdc3493";
 		static public const MOCHI_BOT_ID:String = "6c617154";
 		
 		static public var Music:FjSndItem = new FjSndItem(new Assets.musicMain());
@@ -35,6 +37,7 @@ package
 		public function Main():void
 		{
 			super(SCENE_WIDTH, SCENE_HEIGHT);
+			
 			Camera.stackEnabled = false;
 			contextMenuAddItem("Credits", _showCredits);
 			FjSprite.SharpBlitting = false;
@@ -42,9 +45,6 @@ package
 			
 			_initSounds();
 			addEventListener(FlinjinEvent.ENGINE_STARTUP, onEngineStartup);
-		
-			// TODO add on release
-			//MochiBot.track(this, MOCHI_BOT_ID);
 		}
 		
 		private function _showCredits():void
@@ -69,23 +69,23 @@ package
 		 */
 		private function _initSounds():void
 		{
-			FjSnd.addSound(new Assets.soundBonus,			'bonus',		['sound']);
-			FjSnd.addSound(new Assets.soundError,			'error',		['sound']);
-			FjSnd.addSound(new Assets.soundExplosion2,		'explosion',	['sound']);
-			FjSnd.addSound(new Assets.soundFire,			'fire',			['sound']);
-			FjSnd.addSound(new Assets.soundFireball,		'fireball',		['sound']);
-			FjSnd.addSound(new Assets.soundHit,				'hit',			['sound']);
-			FjSnd.addSound(new Assets.soundLaser2,			'laser',		['sound']);
-			FjSnd.addSound(new Assets.soundMachineGun,		'machine-gun',	['sound']);
-			FjSnd.addSound(new Assets.soundMenuHover,		'menu-hover',	['sound']);
-			FjSnd.addSound(new Assets.soundMenuClick,		'menu-click',	['sound']);
-			FjSnd.addSound(new Assets.soundRay,				'ray',			['sound']);
-			FjSnd.addSound(new Assets.soundRocket,			'rocket',		['sound']);
-			FjSnd.addSound(new Assets.soundShot,			'shot',			['sound']);
-			FjSnd.addSound(new Assets.soundShotgun,			'shotgun',		['sound']);
-			FjSnd.addSound(new Assets.soundStrike,			'strike',		['sound']);
-			FjSnd.addSound(new Assets.soundStartGame,		'start-game',	['sound']);
-			FjSnd.addSound(new Assets.soundUpgdrade,		'upgrade',		['sound']);
+			FjSnd.addSound(new Assets.soundBonus, 'bonus', ['sound']);
+			FjSnd.addSound(new Assets.soundError, 'error', ['sound']);
+			FjSnd.addSound(new Assets.soundExplosion2, 'explosion', ['sound']);
+			FjSnd.addSound(new Assets.soundFire, 'fire', ['sound']);
+			FjSnd.addSound(new Assets.soundFireball, 'fireball', ['sound']);
+			FjSnd.addSound(new Assets.soundHit, 'hit', ['sound']);
+			FjSnd.addSound(new Assets.soundLaser2, 'laser', ['sound']);
+			FjSnd.addSound(new Assets.soundMachineGun, 'machine-gun', ['sound']);
+			FjSnd.addSound(new Assets.soundMenuHover, 'menu-hover', ['sound']);
+			FjSnd.addSound(new Assets.soundMenuClick, 'menu-click', ['sound']);
+			FjSnd.addSound(new Assets.soundRay, 'ray', ['sound']);
+			FjSnd.addSound(new Assets.soundRocket, 'rocket', ['sound']);
+			FjSnd.addSound(new Assets.soundShot, 'shot', ['sound']);
+			FjSnd.addSound(new Assets.soundShotgun, 'shotgun', ['sound']);
+			FjSnd.addSound(new Assets.soundStrike, 'strike', ['sound']);
+			FjSnd.addSound(new Assets.soundStartGame, 'start-game', ['sound']);
+			FjSnd.addSound(new Assets.soundUpgdrade, 'upgrade', ['sound']);
 		}
 		
 		/**
@@ -97,8 +97,8 @@ package
 		{
 			// connect to Mochi Service
 			// TODO add on release
-			// MochiServices.connect(MOCHI_GAME_ID, stage, onMochiConnectError);
-			
+			MochiServices.connect(MOCHI_GAME_ID, stage, onMochiConnectError);
+			MochiBot.track(this, MOCHI_BOT_ID);
 			//Camera.zoom = SCENE_WIDTH / CONTENT_WIDTH;
 			Camera.LookAt(new Menu());
 			Music.loop = true;

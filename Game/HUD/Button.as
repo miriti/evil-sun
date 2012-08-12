@@ -17,7 +17,6 @@ package Game.HUD
 	{
 		private var _activeFrame:Number = 1;
 		private var _inactiveFrame:Number = 0;
-		private var _hintLayer:FjLayer;
 		private var _hint:ButtonHint;
 		private var _mouseDown:Boolean = false;
 		
@@ -108,19 +107,7 @@ package Game.HUD
 		
 		public function set hint(value:ButtonHint):void
 		{
-			var l:FjLayer = _hintLayer == null ? parent : _hintLayer;
-			l.addSprite(value, x, y);
 			_hint = value;
-		}
-		
-		public function get hintLayer():FjLayer
-		{
-			return _hintLayer;
-		}
-		
-		public function set hintLayer(value:FjLayer):void
-		{
-			_hintLayer = value;
 		}
 	}
 

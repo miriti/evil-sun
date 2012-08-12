@@ -16,17 +16,17 @@ package Game.Rounds
 			
 			for (var i:int = 0; i < 20; i++) 
 			{
-				addEvent(1000 * i, new Troop());
+				addEvent(1000 * i, Troop);
 			}
 			
 			for (var j:int = 0; j < 20; j++) 
 			{
-				addEvent(2000 + 2000 * j, new TroopGroup());
+				addEvent(2000 + 2000 * j, TroopGroup);
 			}
 			
 			for (var k:int = 0; k < 20; k++) 
 			{
-				addEvent(4000 + 1300 * k, new Plane());
+				addEvent(4000 + 1300 * k, Plane);
 			}
 		}
 		

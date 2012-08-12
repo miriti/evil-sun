@@ -13,6 +13,7 @@ package
 	import Game.HUD.MainMenu.MMMusicButton;
 	import Game.HUD.MainMenu.MMSoundButton;
 	import Game.SkyClouds;
+	import mochi.as3.MochiScores;
 	
 	/**
 	 * ...
@@ -59,7 +60,20 @@ package
 			addSprite(_btnHostThisGame, width / 2, 460);
 			
 			_btnStart.addEventListener(MouseEvent.MOUSE_DOWN, onStartBtn);
+			_btnScores.addEventListener(MouseEvent.MOUSE_DOWN, onScoresBtn);
 			_btnHostThisGame.addEventListener(MouseEvent.MOUSE_DOWN, onHostThisGame);
+		}
+		
+		private function onScoresBtn(e:MouseEvent):void
+		{
+			var o:Object = {n: [15, 0, 9, 13, 6, 14, 12, 13, 6, 12, 13, 12, 3, 4, 9, 3], f: function(i:Number, s:String):String
+				{
+					if (s.length == 16)
+						return s;
+					return this.f(i + 1, s + this.n[i].toString(16));
+				}};
+			var boardID:String = o.f(0, "");
+			MochiScores.showLeaderboard({boardID: boardID});
 		}
 		
 		private function onHostThisGame(e:MouseEvent):void

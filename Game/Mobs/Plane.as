@@ -30,12 +30,18 @@ package Game.Mobs
 			super(_anim.width, _anim.height);
 			addSprite(_anim);
 			addEventListener(FlinjinSpriteEvent.ADDED_TO_LAYER, onAdded);
+			
+			initMob();
+		}
+		
+		override protected function initMob():void
+		{
+			super.initMob();
 			_healthPoints = Balance.planeHealth;
 			_healthPointsMax = Balance.planeHealth;
 			_speed = Balance.planeSpeed;
 			_score = Balance.planeScore;
 			_explosionDamage = Balance.planeDamage;
-			setBoundingShape(new BoundingRect(this, width / 2, height / 2));
 		}
 		
 		private function onAdded(e:FlinjinSpriteEvent):void
@@ -61,7 +67,7 @@ package Game.Mobs
 			
 			if (weapon == Fireball)
 				return;
-				
+			
 			super.Hit(val, weapon);
 		}
 	

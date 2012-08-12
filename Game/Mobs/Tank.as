@@ -28,6 +28,13 @@ package Game.Mobs
 			super(_tankAnim.width, _tankAnim.height);
 			addSprite(_tankAnim);
 			
+			initMob();
+		}
+		
+		override protected function initMob():void
+		{
+			super.initMob();
+			
 			_healthPoints = Balance.tankHealth;
 			_healthPointsMax = Balance.tankHealth;
 			_score = Balance.tankScore;

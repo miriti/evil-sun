@@ -26,6 +26,13 @@ package Game.Mobs
 			addSprite(_anim);
 			_anim.addAnimation(new FjSpriteAnimation("fire", [0, 1, 3], 50, true));
 			setCenter();
+			
+			initMob();
+		}
+		
+		override protected function initMob():void
+		{
+			super.initMob();
 			_healthPoints = Balance.btrHealth;
 			_healthPointsMax = Balance.btrHealth;
 			_score = Balance.btrScore;

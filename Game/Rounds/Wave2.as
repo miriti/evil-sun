@@ -28,7 +28,7 @@ package Game.Rounds
 			
 			for (var i:int = 0; i < 5; i++)
 			{
-				addEvent(i * 750, new Tank());
+				addEvent(i * 750, Tank);
 			}
 			
 			if (GameMainScenario.helpEnabled)

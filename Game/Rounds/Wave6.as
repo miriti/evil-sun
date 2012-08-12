@@ -16,12 +16,12 @@ package Game.Rounds
 			
 			for (var i:int = 0; i < 7; i++)
 			{
-				addEvent(2000 * i, new BTR());
+				addEvent(2000 * i, BTR);
 			}
 			
 			for (var j:int = 0; j < 7; j++) 
 			{
-				addEvent(1500 * j, new Tank());
+				addEvent(1500 * j, Tank);
 			}
 		}
 	

@@ -2,6 +2,7 @@ package Game.Rounds
 {
 	import flash.display.Bitmap;
 	import flash.text.TextFormat;
+	import flinjin.FjObjectPool;
 	import Game.GameMain;
 	import Game.HUD.Instructions;
 	import Game.HUD.WaveTitleDie;
@@ -32,13 +33,15 @@ package Game.Rounds
 		private var _factoryHealth:Number;
 		private var _mobCount:int = 0;
 		
+		private static var _wavesPassed:int = 0;
+		
 		public function GameRound()
 		{
 			GameMain.Instance.deadMobs = 0;
 			_factoryHealth = GameMain.Instance.factory.healthPoints;
 		}
 		
-		public function addEvent(timeStamp:Number, mob:Mob = null, help:Instructions = null):void
+		public function addEvent(timeStamp:Number, mob:Class = null, help:Instructions = null):void
 		{
 			_creationEvents.push(new GameRoundCreationEvent(timeStamp, mob, help));
 			
@@ -48,8 +51,8 @@ package Game.Rounds
 		
 		public function finish():void
 		{
-			// TODO MochiEvents on release
-			//MochiEvents.trackEvent(_roundName + ' passed');				
+			_wavesPassed++;
+			MochiEvents.trackEvent("wave_passed", _wavesPassed);
 			if (_nextRound != null)
 			{
 				GameMain.Instance.scenario.startRound(new _nextRound());
@@ -58,6 +61,7 @@ package Game.Rounds
 		
 		public function start():void
 		{
+			MochiEvents.trackEvent("wave_started", _wavesPassed + 1);
 			if (_titleBitmap != null)
 			{
 				new WaveTitleDie(_titleBitmap);
@@ -76,7 +80,7 @@ package Game.Rounds
 					{
 						if (_creationEvents[i].mob != null)
 						{
-							var _mob:Mob = _creationEvents[i].mob;
+							var _mob:Mob = FjObjectPool.pull(_creationEvents[i].mob) as Mob;
 							_mob.x = Main.CONTENT_WIDTH + _mob.width / 2;
 							_mob.y = GameMain.groundLevel - _mob.height / 2;
 							GameMain.Instance.addMob(_mob);
@@ -121,20 +125,24 @@ package Game.Rounds
 		{
 			_running = value;
 		}
+		
+		public static function resetWavesCount():void
+		{
+			_wavesPassed = 0;
+		}
 	}
 
 }
 import Game.HUD.Instructions;
-import Game.Mobs.Mob;
 
 class GameRoundCreationEvent
 {
 	private var _timestamp:Number;
-	private var _mob:Mob;
+	private var _mob:Class;
 	private var _help:Instructions;
 	public var done:Boolean = false;
 	
-	function GameRoundCreationEvent(newTimeStamp:Number, newMob:Mob = null, newHelp:Instructions = null):void
+	function GameRoundCreationEvent(newTimeStamp:Number, newMob:Class = null, newHelp:Instructions = null):void
 	{
 		_timestamp = newTimeStamp;
 		_mob = newMob;
@@ -151,12 +159,12 @@ class GameRoundCreationEvent
 		_timestamp = value;
 	}
 	
-	public function get mob():Mob
+	public function get mob():Class
 	{
 		return _mob;
 	}
 	
-	public function set mob(value:Mob):void
+	public function set mob(value:Class):void
 	{
 		_mob = value;
 	}

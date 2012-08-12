@@ -73,7 +73,7 @@ package Game
 			
 			addSprite(_gradeButtons["laserray"], 40, 40);
 			addSprite(_gradeButtons["fireball"], 40, 123);
-			addSprite(_gradeButtons["shotgun"], 40, 206);			
+			addSprite(_gradeButtons["shotgun"], 40, 206);
 			addSprite(_gradeButtons["apocalypse"], 40, 289);
 			
 			_arrowButton = new Button(new _bitmapArrowButton(), null, new Point(80, 83), new FjSpriteAnimation());
@@ -126,10 +126,12 @@ package Game
 		
 		private function onRepairFactory(e:MouseEvent):void
 		{
-			if (GameMain.gameScore >= GameMain.Instance.factory.repairPrice)
+			if (GameMain.money >= GameMain.Instance.factory.repairPrice)
 			{
-				GameMain.gameScore -= GameMain.Instance.factory.repairPrice;
-				GameMain.Instance.factory.repair();
+				if (GameMain.buy(GameMain.Instance.factory.repairPrice))
+				{
+					GameMain.Instance.factory.repair();
+				}
 				updateCosts();
 			}
 		}
@@ -175,7 +177,7 @@ package Game
 		public function avail():Boolean
 		{
 			var _sun:Sun = GameMain.Instance.sun;
-			return (Math.min(_sun.weaponRay.upgradeCost, _sun.weaponApocalypce.upgradeCost, _sun.weaponFireball.upgradeCost, _sun.weaponShotgun.upgradeCost) <= GameMain.gameScore);
+			return (Math.min(_sun.weaponRay.upgradeCost, _sun.weaponApocalypce.upgradeCost, _sun.weaponFireball.upgradeCost, _sun.weaponShotgun.upgradeCost) <= GameMain.money);
 		}
 		
 		public function hide():void
@@ -186,7 +188,7 @@ package Game
 		
 		public function show():void
 		{
-			_moneyTitle.text = "$ " + GameMain.gameScore;
+			_moneyTitle.text = "$ " + GameMain.money;
 			visible = true;
 			_open = true;
 			_moving = true;
@@ -200,7 +202,7 @@ package Game
 			_gradeButtons["fireball"].price = GameMain.Instance.sun.weaponFireball.upgradeCost;
 			_gradeButtons["apocalypse"].price = GameMain.Instance.sun.weaponApocalypce.upgradeCost;
 			
-			if ((GameMain.gameScore >= GameMain.Instance.factory.repairPrice) || (GameMain.Instance.factory.healthPoints < GameMain.Instance.factory.healthPointsMax))
+			if ((GameMain.money >= GameMain.Instance.factory.repairPrice) || (GameMain.Instance.factory.healthPoints < GameMain.Instance.factory.healthPointsMax))
 			{
 				_repairFactoryButton.alpha = 1;
 				_repairFactoryButton.interactive = true;
@@ -211,7 +213,7 @@ package Game
 				_repairFactoryButton.interactive = false;
 			}
 			
-			_moneyTitle.text = '$ ' + GameMain.gameScore;
+			_moneyTitle.text = '$ ' + GameMain.money;
 		}
 		
 		private function onKeyDown(e:KeyboardEvent):void
@@ -291,7 +293,7 @@ class UpgradeButton extends FjLayer
 	private function onPlusMouseDown(e:MouseEvent):void
 	{
 		_weapon.upgrade(_weapon.level + 1);
-		GameMain.gameScore -= _price;
+		GameMain.buy(_price);
 		GameMain.Instance.upgrades.updateCosts();
 	}
 	
@@ -312,7 +314,7 @@ class UpgradeButton extends FjLayer
 			}
 		}
 		
-		if ((_price <= GameMain.gameScore) && (((_weapon != null) && (_weapon.recovery >= 0)) || ((_factory != null) && (_factory.healthPoints < _factory.healthPointsMax))))
+		if ((_price <= GameMain.money) && (((_weapon != null) && (_weapon.recovery >= 0)) || ((_factory != null) && (_factory.healthPoints < _factory.healthPointsMax))))
 		{
 			_plusButton.visible = true;
 		}

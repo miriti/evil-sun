@@ -22,15 +22,20 @@ package Game.Mobs
 		public function Troop()
 		{
 			super(_anim.width, _anim.height);
-			addSprite(_anim);
+			addSprite(_anim);			
+			setBoundingShape(new BoundingRect(this, _anim.width / 2, _anim.height / 2));
 			
+			initMob();
+		}
+		
+		override protected function initMob():void
+		{
+			super.initMob();
 			_healthPointsMax = Balance.troopHealth;
 			_healthPoints = Balance.troopHealth;
 			_score = Balance.troopScore;
 			_speed = Balance.troopSpeed;
 			_explosionDamage = Balance.troopDamage;
-			
-			setBoundingShape(new BoundingRect(this, _anim.width / 2, _anim.height / 2));
 		}
 	}
 }

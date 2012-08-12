@@ -22,7 +22,6 @@ package Game.Rounds
 		private var _doneTime:Number;
 		static private const NUM_MOBS:Number = 5;
 		private var _instProtect:ProtectInstruction;
-		private var _firstTroop:Troop;
 		private var _destroyShown:Boolean = false;
 		private var _instDestroy:DestroyInstruction;
 		private var _aimShown:Boolean = false;
@@ -44,12 +43,7 @@ package Game.Rounds
 			
 			for (var i:int = 0; i < NUM_MOBS; i++)
 			{
-				var _newTroop:Troop = FjObjectPool.pull(Troop) as Troop;
-				
-				if (i == 0)
-					_firstTroop = _newTroop;
-				
-				addEvent(4000 + i * 4000, _newTroop);
+				addEvent(4000 + i * 4000, Troop);
 			}
 			
 			if (!GameMainScenario.helpEnabled)

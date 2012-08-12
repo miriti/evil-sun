@@ -33,7 +33,7 @@ package Game.Rounds
 			
 			for (var i:int = 0; i < PLANE_NUM; i++)
 			{
-				addEvent(i * 3000, new Plane());
+				addEvent(i * 3000, Plane);
 			}
 			
 			addEvent(500, null, new ShotgunInstructions(this));
