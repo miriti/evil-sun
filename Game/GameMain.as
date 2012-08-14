@@ -49,9 +49,7 @@ package Game
 		public var fadeBlack:BlackFade = new BlackFade(false);
 		private var _pause:Boolean = false;
 		
-		[Embed(source="../_assets/bmp/new mask.png")]
-		private var _fadeMask:Class;
-		private var _fadeMaskSprite:FjSprite = new FjSprite(new _fadeMask());
+		private var _fadeMaskSprite:FjSprite = new FjSprite(new Assets.bitmapFadeMask());
 		
 		[Embed(source="../_assets/bmp/luchi_2.png")]
 		private var _raysMask:Class;
@@ -71,11 +69,14 @@ package Game
 			gameIsOver = false;
 			
 			_score = 0;
+			_money = 0;
 			
 			var scoreSO:SharedObject = SharedObject.getLocal("gameScore");
 			if (scoreSO.data.highScore != null)
 			{
 				highScore = Number(scoreSO.data.highScore);
+				GameMainScenario.helpEnabled = scoreSO.data.helpEnabled == undefined ? true : scoreSO.data.helpEnabled;
+				scoreSO.data.helpEnabled = false;
 			}
 			sun = new Sun();
 			
@@ -98,11 +99,12 @@ package Game
 			scoreCounter.text = '$0';
 			_shopButton.interactive = true;
 			_shopButton.addEventListener(MouseEvent.MOUSE_DOWN, showUpgardes);
-			if (GameMainScenario.helpEnabled)
-				_shopButton.visible = false;
 			
 			scenario = new GameMainScenario();
 			upgrades = new Upgrades();
+			
+			if (GameMainScenario.helpEnabled)
+				_shopButton.visible = false;
 			
 			fadeBlack.interactive = true;
 			fadeBlack.addEventListener(MouseEvent.MOUSE_DOWN, function(e:MouseEvent):void
@@ -114,10 +116,6 @@ package Game
 			addSprite(upgrades, (width - upgrades.width) / 2, -upgrades.height, 100);
 			
 			interactive = true;
-			
-			FjConsole.inspect(this, "deadMobs", "Dead mobs", true);
-			FjConsole.inspect(this, "score", "Game score", true);
-			FjConsole.inspect(this.factory, "healthPoints", "Factory health", true);
 			
 			addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 		}
@@ -152,6 +150,19 @@ package Game
 			if (scoreCounter.alpha > 0.3)
 			{
 				scoreCounter.alpha -= (deltaTime / 1000) * 0.5;
+			}
+			
+			if ((Instance.upgrades.avail()) && (!Instance.shopButton.avail))
+			{
+				FjSnd.playSound("upgrade");
+				Instance.shopButton.avail = true;
+			}
+			else
+			{
+				if ((!Instance.upgrades.avail()) && (Instance.shopButton.avail))
+				{
+					Instance.shopButton.avail = false;
+				}
 			}
 		}
 		
@@ -221,17 +232,6 @@ package Game
 			
 			scoreCounter.text = "$" + _money.toString();
 			scoreCounter.alpha = 1;
-			
-			if ((Instance.upgrades.avail()) && (!Instance.shopButton.avail))
-			{
-				FjSnd.playSound("upgrade");
-				Instance.shopButton.avail = true;
-			}
-			
-			if ((!Instance.upgrades.avail()) && (Instance.shopButton.avail))
-			{
-				Instance.shopButton.avail = false;
-			}
 		}
 		
 		public function get upgragesMode():Boolean
@@ -306,10 +306,7 @@ class ShopButton extends FjSprite
 	public function set avail(value:Boolean):void
 	{
 		if (value)
-		{
-			currentFrame = 0;
 			animation.play();
-		}
 		else
 		{
 			animation.stop();

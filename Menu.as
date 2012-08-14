@@ -52,6 +52,8 @@ package
 			addSprite(_menuBack);
 			addSprite(_clouds);
 			
+			addSprite(new FjSprite(new Assets.bitmapFadeMask()));
+			
 			addSprite(_btnStart, width / 2, 100);
 			addSprite(_btnScores, width / 2, 190);
 			addSprite(_btnMusic, width / 2 - _btnMusic.width / 2 - 20, 280);

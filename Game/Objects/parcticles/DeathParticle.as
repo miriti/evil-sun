@@ -11,12 +11,18 @@ package Game.Objects.parcticles
 	 */
 	public class DeathParticle extends ClumpsParticles 
 	{
-		[Embed(source="../../../_assets/bmp/particles/death-13x13.png")]
+		[Embed(source="../../../_assets/bmp/particles/death-10x10.png")]
 		private static var _particleBitmap:Class;
 		
 		public function DeathParticle()
 		{
-			super(new _particleBitmap(), null, new Point(13, 13), new FjSpriteAnimation("anim", null, 200));
+			super(new _particleBitmap(), null, new Point(10, 10), new FjSpriteAnimation("anim", null, 200));
+		}
+		
+		override public function Move(deltaTime:Number):void 
+		{
+			super.Move(deltaTime);
+			alpha = timeToLive / TIME_TO_LIVE;
 		}
 		
 		override protected function restore(e:FlinjinObjectPoolEvent = null):void 

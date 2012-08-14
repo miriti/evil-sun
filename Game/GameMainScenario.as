@@ -1,5 +1,6 @@
 package Game
 {
+	import flash.net.SharedObject;
 	import Game.HUD.instructions.UpgrageInstructions;
 	import Game.Rounds.GameRound;
 	import Game.Rounds.Wave0;

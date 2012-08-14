@@ -108,6 +108,7 @@ package Game.HUD
 		public function set hint(value:ButtonHint):void
 		{
 			_hint = value;
+			_hint.visible = false;
 		}
 	}
 

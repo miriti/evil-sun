@@ -2,6 +2,8 @@ package Game.Objects
 {
 	import flash.display.Bitmap;
 	import flash.geom.Point;
+	import flinjin.events.FlinjinSpriteEvent;
+	import flinjin.FjObjectPool;
 	import flinjin.graphics.FjSprite;
 	import flinjin.graphics.FjSpriteAnimation;
 	
@@ -18,16 +20,39 @@ package Game.Objects
 		protected var _vector:Point = new Point();
 		protected var _speedVector:Point = new Point();
 		protected var _power:Number = 0;
+		protected var _trailClass:Class = null;
+		protected var _trailLength:Number = 10;
+		
+		private var _lastTrailPos:Point = new Point();
 		
 		public function BalisticSprite(spriteBmp:Bitmap, rotationCenter:Point = null, frameSize:Point = null, spriteAnimation:FjSpriteAnimation = null)
 		{
 			super(spriteBmp, rotationCenter, frameSize, spriteAnimation);
+			
+			addEventListener(FlinjinSpriteEvent.ADDED_TO_LAYER, onAdded);
+		}
 		
+		private function _trail():void
+		{
+			var _trail:FadingTrail = FjObjectPool.pull(_trailClass) as FadingTrail;
+			parent.addSprite(_trail, x, y, zIndex - 1);
+			_lastTrailPos.setTo(x, y);
+		}
+		
+		private function onAdded(e:FlinjinSpriteEvent):void
+		{
+			_lastTrailPos.setTo(x, y);
 		}
 		
 		override public function Move(deltaTime:Number):void
 		{
 			super.Move(deltaTime);
+			
+			if (_trailClass != null)
+			{
+				if (new Point(x - _lastTrailPos.x, y - _lastTrailPos.y).length >= _trailLength)
+					_trail();
+			}
 			
 			x += _speedVector.x * (deltaTime / 1000);
 			y += _speedVector.y * (deltaTime / 1000);

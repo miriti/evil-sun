@@ -38,7 +38,6 @@ package
 		{
 			super(SCENE_WIDTH, SCENE_HEIGHT);
 			
-			Camera.stackEnabled = false;
 			contextMenuAddItem("Credits", _showCredits);
 			FjSprite.SharpBlitting = false;
 			FjSprite.Smoothing = true;
@@ -54,16 +53,6 @@ package
 		}
 		
 		/**
-		 * Something wrong with Mochi connection
-		 *
-		 * @param	status
-		 */
-		private function onMochiConnectError(status:String):void
-		{
-			FjLog.l("Mochi connection error: " + status);
-		}
-		
-		/**
 		 * Init sounds
 		 *
 		 */
@@ -74,6 +63,7 @@ package
 			FjSnd.addSound(new Assets.soundExplosion2, 'explosion', ['sound']);
 			FjSnd.addSound(new Assets.soundFire, 'fire', ['sound']);
 			FjSnd.addSound(new Assets.soundFireball, 'fireball', ['sound']);
+			FjSnd.addSound(new Assets.soundFireballFly, 'fireball-fly', ['sound']);
 			FjSnd.addSound(new Assets.soundHit, 'hit', ['sound']);
 			FjSnd.addSound(new Assets.soundLaser2, 'laser', ['sound']);
 			FjSnd.addSound(new Assets.soundMachineGun, 'machine-gun', ['sound']);
@@ -86,6 +76,17 @@ package
 			FjSnd.addSound(new Assets.soundStrike, 'strike', ['sound']);
 			FjSnd.addSound(new Assets.soundStartGame, 'start-game', ['sound']);
 			FjSnd.addSound(new Assets.soundUpgdrade, 'upgrade', ['sound']);
+			FjSnd.addSound(new Assets.soundWeaponSelect, 'weapon-select', ['sound']);
+		}
+		
+		/**
+		 * Something wrong with Mochi connection
+		 *
+		 * @param	status
+		 */
+		private function onMochiConnectError(status:String):void
+		{
+			FjLog.l("Mochi connection error: " + status);
 		}
 		
 		/**
@@ -95,11 +96,7 @@ package
 		 */
 		private function onEngineStartup(e:FlinjinEvent):void
 		{
-			// connect to Mochi Service
-			// TODO add on release
-			MochiServices.connect(MOCHI_GAME_ID, stage, onMochiConnectError);
-			MochiBot.track(this, MOCHI_BOT_ID);
-			//Camera.zoom = SCENE_WIDTH / CONTENT_WIDTH;
+			MochiServices.connect(Main.MOCHI_GAME_ID, root, onMochiConnectError);
 			Camera.LookAt(new Menu());
 			Music.loop = true;
 			Music.volume = 0.3;

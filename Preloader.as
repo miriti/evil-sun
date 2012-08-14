@@ -12,6 +12,7 @@ package
 	import flash.utils.getDefinitionByName;
 	import flinjin.FjLog;
 	import flinjin.Flinjin;
+	import mochi.as3.MochiServices;
 	
 	/**
 	 * ...
@@ -53,7 +54,6 @@ package
 		
 		private function progress(e:ProgressEvent):void
 		{
-			// TODO update loader
 			_loader.progress = e.bytesLoaded / e.bytesTotal;
 		}
 		
@@ -71,9 +71,6 @@ package
 			removeEventListener(Event.ENTER_FRAME, checkFrame);
 			loaderInfo.removeEventListener(ProgressEvent.PROGRESS, progress);
 			loaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, ioError);
-		
-			// TODO hide loader
-		
 		}
 		
 		private function startup():void
@@ -82,17 +79,16 @@ package
 			var mainClass:Class = getDefinitionByName("Main") as Class;
 			addChild(new mainClass() as DisplayObject);
 		}
-	
 	}
-
 }
+
 import flash.display.Bitmap;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 
 class PreloaderDisplay extends Sprite
 {
-	[Embed(source="_assets/bmp/loader/loader back.jpg")]
+	[Embed(source="_assets/bmp/loader/loader-back.jpg")]
 	private static var _backgourndImage:Class;
 	
 	[Embed(source="_assets/bmp/loader/loading.png")]

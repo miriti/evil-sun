@@ -43,7 +43,7 @@ package Game.Weapons
 			_newFireBall.power = _power;
 			_newFireBall.vector = new Point(FjInput.mousePosition.x - GameMain.Instance.sun.x + GameMain.Instance.sun.shotPosition.x, FjInput.mousePosition.y - GameMain.Instance.sun.y + GameMain.Instance.sun.shotPosition.y);
 			GameMain.Instance.addSprite(_newFireBall, GameMain.Instance.sun.x + GameMain.Instance.sun.shotPosition.x, GameMain.Instance.sun.y + GameMain.Instance.sun.shotPosition.y, GameMain.Instance.sun.zIndex + 10);
-			FjSnd.playSound("fireball");
+			FjSnd.playSound("fireball", 1, -0.8);
 		}
 	}
 
@@ -54,6 +54,7 @@ import flinjin.events.FlinjinSpriteEvent;
 import flinjin.FjObjectPool;
 import flinjin.graphics.FjSpriteAnimation;
 import flinjin.sound.FjSnd;
+import flinjin.sound.FjSndItem;
 import Game.Balance;
 import Game.GameMain;
 import Game.Mobs.Mob;
@@ -67,6 +68,7 @@ class FireballSprite extends BalisticSprite
 	[Embed(source="../../_assets/bmp/weapons/fireball-anim-57x57.png")]
 	private static var _fireballBitmap:Class;
 	private var _exploded:Boolean = false;
+	private var _snd:FjSndItem;
 	
 	function FireballSprite()
 	{
@@ -74,14 +76,24 @@ class FireballSprite extends BalisticSprite
 		_followDirection = false;
 		setCenter();
 		addAnimation(new FjSpriteAnimation("end", [3, 4, 5]));
+		_trailClass = FireBallTrail;
+		_trailLength = 25;
+		_snd = FjSnd.playSound("fireball-fly");
+	}
+	
+	override public function Delete(doDispose:Boolean = false):void
+	{
+		if (_snd != null)
+			_snd.stop();
+		super.Delete(doDispose);
 	}
 	
 	override public function Move(deltaTime:Number):void
 	{
 		super.Move(deltaTime);
 		
-		var _trail:FireBallTrail = FjObjectPool.pull(FireBallTrail) as FireBallTrail;
-		parent.addSprite(_trail, x, y, zIndex - 1);
+		if (_snd != null)
+			_snd.pan = -1 + (x / Main.CONTENT_WIDTH) * 2;
 		
 		if (!_exploded)
 		{

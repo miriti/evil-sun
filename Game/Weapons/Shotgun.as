@@ -26,7 +26,7 @@ package Game.Weapons
 		}
 		
 		override protected function _fire():void
-		{			
+		{
 			super._fire();
 			
 			var _mainAngle:Number = Math.atan2(FjInput.mousePosition.y - _shotPosition.y, FjInput.mousePosition.x - _shotPosition.x);
@@ -39,7 +39,7 @@ package Game.Weapons
 				_newBullet.level = _level;
 				GameMain.Instance.addSprite(_newBullet, _shotPosition.x, _shotPosition.y, GameMain.Instance.sun.zIndex + i);
 			}
-			FjSnd.playSound("shotgun", 0.4);
+			FjSnd.playSound("shotgun", 1, -0.8);
 		}
 		
 		override public function update(deltaTime:Number):void
@@ -56,13 +56,14 @@ package Game.Weapons
 			_powerMin = Balance.shotgunPowerMin[lvl];
 			_powerIncVal = Balance.shotgunPowerInc[lvl];
 			_recoveryTime = Balance.shotgunRecovery[lvl];
-			_upgradeCost = Balance.shotgunUpdateCost[lvl];
+			_upgradeCost = Balance.shotgunUpgradeCost[lvl];
 			_bulletsCount = Balance.shotgunBulletCount[lvl];
 			_autofire = Balance.shotgunAutofire[lvl];
 		}
 	}
 }
 import flash.geom.Point;
+import flinjin.FjObjectPool;
 import flinjin.graphics.FjSprite;
 import flinjin.graphics.FjSpriteAnimation;
 import Game.Balance;
@@ -70,6 +71,7 @@ import Game.GameMain;
 import Game.Mobs.Baloon;
 import Game.Mobs.Mob;
 import Game.Mobs.Plane;
+import Game.Objects.FadingTrail;
 import Game.Weapons.Shotgun;
 
 class ShotgunBullet extends FjSprite
@@ -80,8 +82,8 @@ class ShotgunBullet extends FjSprite
 	private var _toangle:Number = 0;
 	private var _vector:Point;
 	private var _level:int = 0;
-	static private const BULLET_SPEED:Number = 1500;
-	static private const TRACE_DEEP:Number = 10;
+	static private const BULLET_SPEED:Number = 2000;
+	static private const TRACE_DEEP:Number = 20;
 	
 	public function ShotgunBullet():void
 	{
@@ -123,6 +125,8 @@ class ShotgunBullet extends FjSprite
 				}
 			}
 			
+			parent.addSprite(FjObjectPool.pull(ShotGunTrail) as ShotGunTrail, _cp.x, _cp.y, zIndex);
+			
 			_cv.x += _v.x * TRACE_DEEP;
 			_cv.y += _v.y * TRACE_DEEP;
 			
@@ -150,5 +154,17 @@ class ShotgunBullet extends FjSprite
 	public function set level(value:int):void
 	{
 		_level = value;
+	}
+}
+
+class ShotGunTrail extends FadingTrail
+{
+	[Embed(source="../../_assets/bmp/weapons/shotgun_mask.png")]
+	private static var _trailBitmap:Class;
+	
+	public function ShotGunTrail():void
+	{
+		super(new _trailBitmap());
+		setCenter();
 	}
 }

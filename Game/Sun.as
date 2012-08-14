@@ -185,10 +185,15 @@ package Game
 		
 		public function set currentWeapon(value:Weapon):void
 		{
-			if (_currentWeapon != null)
-				_currentWeapon.current = false;
-			_currentWeapon = value;
-			_currentWeapon.current = true;
+			if (_currentWeapon != value)
+			{
+				if (_currentWeapon != null)
+					_currentWeapon.current = false;
+				
+				_currentWeapon = value;
+				_currentWeapon.current = true;
+				FjSnd.playSound('weapon-select');
+			}
 		}
 		
 		public function get shotPosition():Point

@@ -53,7 +53,7 @@ package Game
 		static private var _bitmapBackmenuButton:Class;
 		
 		private var _arrowButton:Button;
-		private var _repairFactoryButton:Button;
+		private var _repairFactoryButton:RepairFactoryButton;
 		private var _backmenuButton:Button;
 		private var _moneyTitle:FjSpriteText;
 		private var _soundButton:SoundButton = new SoundButton();
@@ -85,11 +85,12 @@ package Game
 				});
 			addSprite(_arrowButton, width - _arrowButton.width - 50, height - _arrowButton.height - 40);
 			
-			_repairFactoryButton = new Button(new _bitmapRepairFactoryButton(), null, new Point(270, 57));
+			_repairFactoryButton = new RepairFactoryButton(new _bitmapRepairFactoryButton(), null, new Point(270, 57));
 			_repairFactoryButton.setCenter();
 			_repairFactoryButton.interactive = false;
 			_repairFactoryButton.alpha = 0.5;
 			_repairFactoryButton.addEventListener(MouseEvent.MOUSE_DOWN, onRepairFactory);
+			
 			addSprite(_repairFactoryButton, width - 200, 80);
 			
 			_backmenuButton = new Button(new _bitmapBackmenuButton(), null, new Point(238, 51));
@@ -104,8 +105,14 @@ package Game
 			addSprite(_moneyTitle, _gradeButtons["apocalypse"].x + _gradeButtons["apocalypse"].width, 307);
 			
 			addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			addEventListener(FlinjinSpriteEvent.ADDED_TO_LAYER, onAdded);
 			
 			interactive = true;
+		}
+		
+		private function onAdded(e:FlinjinSpriteEvent):void
+		{
+		
 		}
 		
 		private function onBackMenu(e:MouseEvent):void
@@ -213,6 +220,7 @@ package Game
 				_repairFactoryButton.interactive = false;
 			}
 			
+			_repairFactoryButton.repairPrice = GameMain.Instance.factory.repairPrice;
 			_moneyTitle.text = '$ ' + GameMain.money;
 		}
 		
@@ -237,6 +245,7 @@ import flinjin.graphics.FjSpriteAnimation;
 import flinjin.FjInput;
 import Game.GameMain;
 import Game.HUD.Button;
+import Game.HUD.ButtonHintSmall;
 import Game.Objects.Factory;
 import Game.Weapons.Weapon;
 
@@ -255,6 +264,8 @@ class UpgradeButton extends FjLayer
 	
 	private var _points:Vector.<FjSprite> = new Vector.<FjSprite>();
 	private var _plusButton:Button = new Button(new _bitmapPlusButton(), null, new Point(68, 67), new FjSpriteAnimation());
+	
+	private var _hint:ButtonHintSmall = new ButtonHintSmall("$ 0");
 	
 	function UpgradeButton(atWeapon:Weapon = null, icon:Bitmap = null)
 	{
@@ -283,11 +294,28 @@ class UpgradeButton extends FjLayer
 		
 		addSprite(_plusButton, _iconSprite.width + 5 + 5 * 30, 10);
 		_weapon = atWeapon;
+		
+		addEventListener(FlinjinSpriteEvent.ADDED_TO_LAYER, onAdded);
 	}
 	
-	override protected function onMouseEvent(e:MouseEvent):void
+	override public function Move(deltaTime:Number):void
 	{
-		super.onMouseEvent(e);
+		super.Move(deltaTime);
+		
+		if (_mouseOver && !_hint.visible)
+			_hint.visible = true;
+		if (!_mouseOver && _hint.visible)
+			_hint.visible = false;
+	}
+	
+	private function onAdded(e:FlinjinSpriteEvent):void
+	{
+		parent.addEventListener(FlinjinSpriteEvent.ADDED_TO_LAYER, onParentAdded);
+	}
+	
+	private function onParentAdded(e:FlinjinSpriteEvent):void
+	{
+		parent.parent.addSprite(_hint, x + Main.CONTENT_WIDTH / 2 - 65, y + Main.CONTENT_HEIGHT / 2 - parent.height / 2 + 20, 1000);
 	}
 	
 	private function onPlusMouseDown(e:MouseEvent):void
@@ -306,6 +334,8 @@ class UpgradeButton extends FjLayer
 	{
 		_price = value;
 		
+		_hint.hintText = "$ " + value.toString();
+		
 		if (_weapon != null)
 		{
 			for (var i:int = 0; i < _weapon.level; i++)
@@ -314,7 +344,7 @@ class UpgradeButton extends FjLayer
 			}
 		}
 		
-		if ((_price <= GameMain.money) && (((_weapon != null) && (_weapon.recovery >= 0)) || ((_factory != null) && (_factory.healthPoints < _factory.healthPointsMax))))
+		if ((_price <= GameMain.money) && (((_weapon != null) && (_weapon.recovery >= 0)) || ((_factory != null) && (_factory.healthPoints < _factory.healthPointsMax))) && (_weapon.level < 6))
 		{
 			_plusButton.visible = true;
 		}
@@ -332,5 +362,48 @@ class UpgradeButton extends FjLayer
 	public function set factory(value:Factory):void
 	{
 		_factory = value;
+	}
+}
+
+class RepairFactoryButton extends Button
+{
+	private var _hint:ButtonHintSmall = new ButtonHintSmall("$ 0");
+	
+	private var _repairPrice:Number = 0;
+	
+	public function RepairFactoryButton(spriteBmp:Bitmap, rotationCenter:Point = null, frameSize:Point = null, spriteAnimation:FjSpriteAnimation = null):void
+	{
+		super(spriteBmp, rotationCenter, frameSize, spriteAnimation);
+		addEventListener(FlinjinSpriteEvent.ADDED_TO_LAYER, onAdded);
+	}
+	
+	private function onAdded(e:FlinjinSpriteEvent):void
+	{
+		parent.addEventListener(FlinjinSpriteEvent.ADDED_TO_LAYER, onParentAdded);
+	}
+	
+	private function onParentAdded(e:FlinjinSpriteEvent):void
+	{
+		parent.parent.addSprite(_hint, Main.CONTENT_WIDTH / 2 + parent.width / 2 - 60, Main.CONTENT_HEIGHT / 2 - parent.height / 2 + 55, 1000);
+	}
+	
+	override public function Move(deltaTime:Number):void
+	{
+		super.Move(deltaTime);
+		if (_mouseOver && !_hint.visible)
+			_hint.visible = true;
+		if (!_mouseOver && _hint.visible)
+			_hint.visible = false;
+	}
+	
+	public function get repairPrice():Number 
+	{
+		return _repairPrice;
+	}
+	
+	public function set repairPrice(value:Number):void 
+	{
+		_repairPrice = value;
+		_hint.hintText = "$ " + value.toString();
 	}
 }

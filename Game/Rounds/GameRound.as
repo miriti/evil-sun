@@ -61,7 +61,6 @@ package Game.Rounds
 		
 		public function start():void
 		{
-			MochiEvents.trackEvent("wave_started", _wavesPassed + 1);
 			if (_titleBitmap != null)
 			{
 				new WaveTitleDie(_titleBitmap);

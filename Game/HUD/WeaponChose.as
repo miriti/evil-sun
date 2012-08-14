@@ -170,6 +170,8 @@ package Game.HUD
 }
 import flash.display.Bitmap;
 import flash.events.MouseEvent;
+import flash.filters.ColorMatrixFilter;
+import flash.filters.ShaderFilter;
 import flash.geom.Point;
 import flinjin.graphics.FjSprite;
 import flinjin.graphics.FjSpriteAnimation;
@@ -196,7 +198,10 @@ class WeaponButton extends FjSprite
 		super.Move(deltaTime);
 		if (_weapon.recoveryTime > 500)
 		{
-			alpha = _weapon.recovery / _weapon.recoveryTime;
+			if (_weapon.recovery < _weapon.recoveryTime)
+				alpha = (_weapon.recovery / _weapon.recoveryTime) * 0.5;
+			else
+				alpha = 1;
 		}
 		else
 		{

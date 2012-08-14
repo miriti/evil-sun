@@ -53,7 +53,7 @@ package Game.Weapons
 				_r.vector = v;
 				GameMain.Instance.addSprite(_r, _s.x + _s.shotPosition.x, _s.y + _s.shotPosition.y, _s.zIndex + 1);
 			}
-			FjSnd.playSound('ray');
+			FjSnd.playSound('ray', 1, -0.8);
 		}
 		
 		override public function upgrade(lvl:int):void
@@ -92,6 +92,7 @@ class LaserRaySprite extends BalisticSprite
 		setCenter();
 		addAnimation(new FjSpriteAnimation("exp", [3, 4, 5], 50));
 		_followDirection = false;
+		_trailClass = ShotTrail;
 	}
 	
 	private function _exp():void
@@ -111,9 +112,6 @@ class LaserRaySprite extends BalisticSprite
 	override public function Move(deltaTime:Number):void
 	{
 		super.Move(deltaTime);
-		
-		var _trail:ShotTrail = FjObjectPool.pull(ShotTrail) as ShotTrail;
-		parent.addSprite(_trail, x, y, zIndex);
 		
 		if (!_exploded)
 		{
