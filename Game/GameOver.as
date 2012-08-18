@@ -16,7 +16,7 @@ package Game
 	 */
 	public class GameOver extends FjLayer
 	{
-		private var _backSpt:FjSprite = new FjSprite(new Assets.bitmapShopBack());
+		private var _backSpt:FjSprite = new FjSprite(new (Assets.i().bitmapShopBack));
 		
 		[Embed(source="../_assets/bmp/hud/gameover/highscore-293x56.png")]
 		private static var _bmpHighscore:Class;
@@ -72,13 +72,16 @@ package Game
 			_playAgainButton.addEventListener(MouseEvent.MOUSE_DOWN, onPlayAgain);
 			
 			_highScoretxt.text = GameMain.highScore.toString();
+			_highScoretxt.alpha = 0.5;
+			
 			_yourScoretxt.text = GameMain.score.toString();
 			
 			addSprite(_highscoreButton, 210, 80);
 			addSprite(_highScoretxt, width / 2 + 20, 80 - _highScoretxt.height / 2);
 			addSprite(_yourscoreButton, 210, 165);
 			addSprite(_yourScoretxt, width / 2 + 20, 165 - _yourScoretxt.height / 2);
-			addSprite(_submitButton, 210, 250);
+			if (GameMain.highScore == GameMain.score)
+				addSprite(_submitButton, 210, 250);
 			addSprite(_backToMenuButton, 210, 335);
 			addSprite(_playAgainButton, width - _playAgainButton.width - 60, height - _playAgainButton.height - 60);
 		}
@@ -103,7 +106,7 @@ package Game
 					return this.f(i + 1, s + this.n[i].toString(16));
 				}};
 			var boardID:String = o.f(0, "");
-			MochiScores.showLeaderboard( { boardID: boardID, score: GameMain.score } );
+			MochiScores.showLeaderboard({boardID: boardID, score: GameMain.score});
 			_submitButton.visible = false;
 		}
 		

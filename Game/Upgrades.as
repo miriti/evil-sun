@@ -28,6 +28,7 @@ package Game
 		private var _background:Bitmap;
 		private var _open:Boolean = false;
 		private var _moving:Boolean = false;
+		
 		static private const DOWN_SPEED:Number = 40;
 		static private const UP_SPEED:Number = 40;
 		
@@ -61,7 +62,7 @@ package Game
 		
 		public function Upgrades()
 		{
-			_background = new Assets.bitmapShopBack() as Bitmap;
+			_background = new (Assets.i().bitmapShopBack) as Bitmap;
 			
 			super(_background.width, _background.height);
 			addSprite(new FjSprite(_background));
@@ -346,11 +347,13 @@ class UpgradeButton extends FjLayer
 		
 		if ((_price <= GameMain.money) && (((_weapon != null) && (_weapon.recovery >= 0)) || ((_factory != null) && (_factory.healthPoints < _factory.healthPointsMax))) && (_weapon.level < 6))
 		{
-			_plusButton.visible = true;
+			_plusButton.interactive = true;
+			_plusButton.alpha = 1;
 		}
 		else
 		{
-			_plusButton.visible = false;
+			_plusButton.interactive = false;
+			_plusButton.alpha = 0.5;
 		}
 	}
 	
@@ -396,12 +399,12 @@ class RepairFactoryButton extends Button
 			_hint.visible = false;
 	}
 	
-	public function get repairPrice():Number 
+	public function get repairPrice():Number
 	{
 		return _repairPrice;
 	}
 	
-	public function set repairPrice(value:Number):void 
+	public function set repairPrice(value:Number):void
 	{
 		_repairPrice = value;
 		_hint.hintText = "$ " + value.toString();

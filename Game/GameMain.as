@@ -15,6 +15,7 @@ package Game
 	import Game.Mobs.Mob;
 	import Game.Objects.Factory;
 	import Game.Objects.parcticles.FactoryExplosion;
+	import mochi.as3.MochiEvents;
 	
 	/**
 	 * ...
@@ -49,11 +50,9 @@ package Game
 		public var fadeBlack:BlackFade = new BlackFade(false);
 		private var _pause:Boolean = false;
 		
-		private var _fadeMaskSprite:FjSprite = new FjSprite(new Assets.bitmapFadeMask());
+		private var _fadeMaskSprite:FjSprite = new FjSprite(new (Assets.i().bitmapFadeMask));
 		
-		[Embed(source="../_assets/bmp/luchi_2.png")]
-		private var _raysMask:Class;
-		private var _raysMaskSprite:FjSprite = new FjSprite(new _raysMask());
+		private var _raysMaskSprite:FjSprite = new FjSprite(new (Assets.i().bitmapRayMask));
 		
 		private var _upgragesMode:Boolean = false;
 		
@@ -107,10 +106,7 @@ package Game
 				_shopButton.visible = false;
 			
 			fadeBlack.interactive = true;
-			fadeBlack.addEventListener(MouseEvent.MOUSE_DOWN, function(e:MouseEvent):void
-				{
-					upgragesMode = false;
-				});
+			fadeBlack.addEventListener(MouseEvent.MOUSE_DOWN, fadeBlackMouseDown);
 			
 			addSprite(fadeBlack, null, null, 99);
 			addSprite(upgrades, (width - upgrades.width) / 2, -upgrades.height, 100);
@@ -118,6 +114,13 @@ package Game
 			interactive = true;
 			
 			addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			
+			MochiEvents.startPlay();
+		}
+		
+		private function fadeBlackMouseDown(e:MouseEvent):void
+		{
+			upgragesMode = false;
 		}
 		
 		private function onKeyDown(e:KeyboardEvent):void
@@ -205,7 +208,7 @@ package Game
 				scoreSO.data.highScore = _score;
 				highScore = _score;
 			}
-			
+			fadeBlack.removeEventListener(MouseEvent.MOUSE_DOWN, fadeBlackMouseDown);
 			fadeBlack.show();
 			
 			var _gameOverDie:GameOver = new GameOver();

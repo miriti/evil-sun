@@ -23,8 +23,8 @@ package Game
 			
 			super(Main.CONTENT_WIDTH, Main.CONTENT_HEIGHT);
 			
-			addSprite(_skyTiles[0], 0, -_skyTiles[0].height);
-			addSprite(_skyTiles[1]);
+			addSprite(_skyTiles[0], 0, -_skyTiles[0].height + Main.CONTENT_HEIGHT);
+			addSprite(_skyTiles[1], 0, Main.CONTENT_HEIGHT);
 		
 		}
 		

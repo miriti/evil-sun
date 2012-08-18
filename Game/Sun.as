@@ -1,23 +1,18 @@
 package Game
 {
+	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	import flinjin.events.FlinjinSpriteEvent;
 	import flinjin.FjConsole;
-	import flinjin.Flinjin;
+	import flinjin.FjInput;
 	import flinjin.graphics.FjLayer;
 	import flinjin.graphics.FjSprite;
 	import flinjin.graphics.FjSpriteAnimation;
-	import flinjin.FjInput;
 	import flinjin.sound.FjSnd;
-	import Game.HUD.HealthBar;
-	import Game.HUD.PowerBar;
-	import Game.HUD.PowerBarItem;
 	import Game.HUD.SunPowerBar;
-	import Game.Mobs.Mob;
-	import Game.Objects.Factory;
 	import Game.Weapons.Apocalypse;
 	import Game.Weapons.Fireball;
 	import Game.Weapons.Ray;
@@ -50,6 +45,7 @@ package Game
 		private var _currentWeapon:Weapon = null;
 		
 		private var _powerBar:SunPowerBar;
+		private var _flash:SunShotFlash = new SunShotFlash();
 		
 		private var _shotPosition:Point = new Point();
 		private var _mouseVector:Point = new Point();
@@ -80,13 +76,25 @@ package Game
 			weaponFireball.recovery = -1;
 			weaponShotgun.recovery = -1;
 			
-			FjConsole.inspect(weaponFireball, "recovery", "Fireball recovery", true);
-			FjConsole.inspect(weaponShotgun, "recovery", "Shotgun recovery", true);
-			FjConsole.inspect(weaponApocalypce, "recovery", "Apocalypse recovery", true);
+			weaponRay.addEventListener("fire", onFire);
+			weaponFireball.addEventListener("fire", onFire);
+			weaponShotgun.addEventListener("fire", onFire);
+			weaponApocalypce.addEventListener("fire", onFire);
 			
 			currentWeapon = weaponRay;
 			
 			addEventListener(FlinjinSpriteEvent.ADDED_TO_LAYER, onAdded);
+		}
+		
+		private function onFire(e:Event):void
+		{
+			_flash.x = _sunEye.x;
+			_flash.y = _sunEye.y;
+			
+			if (_flash.parent == null)
+				addSprite(_flash);
+			
+			_flash.boom();
 		}
 		
 		private function onAdded(e:FlinjinSpriteEvent):void
@@ -94,7 +102,7 @@ package Game
 			_powerBar = new SunPowerBar();
 			_powerBar.value = 0;
 			_powerBar.visible = false;
-			(parent as GameMain).addSprite(_powerBar, x, y + _sunface.height / 4, zIndex + 1);
+			(parent as GameMain).addSprite(_powerBar, x + 4, y + _sunface.height / 4, zIndex + 1);
 			
 			(parent as GameMain).addEventListener(MouseEvent.MOUSE_DOWN, onFireStart);
 			(parent as GameMain).addEventListener(MouseEvent.MOUSE_UP, onFireEnd);
@@ -161,7 +169,7 @@ package Game
 			var _f:int = Math.floor((_currentWeapon.power) * 3);
 			_sunCrown.currentFrame = _f == 3 ? 2 : _f;
 			
-			setColorMults(1, 1 - _currentWeapon.power / 2, 1 - _currentWeapon.power / 2);
+			setColorMults(1, 1 - _currentWeapon.power / 2.5, 1 - _currentWeapon.power / 2.5);
 			
 			_shotPosition.setTo(mouseVector.x * 15, mouseVector.y * 15);
 			
@@ -205,5 +213,37 @@ package Game
 		{
 			_shotPosition = value;
 		}
+	}
+}
+
+import flash.display.Bitmap;
+import flash.geom.Point;
+import flinjin.events.FlinjinSpriteEvent;
+import flinjin.graphics.FjSprite;
+import flinjin.graphics.FjSpriteAnimation;
+
+class SunShotFlash extends FjSprite
+{
+	
+	[Embed(source="../_assets/bmp/mobs/sun/fire-flash-46x48.png")]
+	private var _flashBitmap:Class;
+	
+	function SunShotFlash():void
+	{
+		super(new _flashBitmap() as Bitmap, null, new Point(46, 48), new FjSpriteAnimation("def", null, 50, false, 1));
+		setCenter();
+		addEventListener(FlinjinSpriteEvent.ANIMATION_FINISHED, onAnimFinished);
+	}
+	
+	private function onAnimFinished(e:FlinjinSpriteEvent):void
+	{
+		visible = false;
+	}
+	
+	public function boom():void
+	{
+		visible = true;
+		currentFrame = 0;
+		animation.play();
 	}
 }

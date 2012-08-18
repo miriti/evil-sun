@@ -6,6 +6,7 @@ package Game.HUD
 	import flash.events.MouseEvent;
 	import flash.ui.Keyboard;
 	import flinjin.events.FlinjinSpriteEvent;
+	import flinjin.FjInput;
 	import flinjin.graphics.FjLayer;
 	import flinjin.graphics.FjSprite;
 	import flinjin.sound.FjSnd;
@@ -102,6 +103,8 @@ package Game.HUD
 			if (_sun.weaponRay.recovery >= _sun.weaponRay.recoveryTime)
 			{
 				_sun.currentWeapon = _sun.weaponRay;
+				if (FjInput.isMouseDown)
+					_sun.currentWeapon.powerStart();
 				I.deactivateAll();
 				I.buttons[0].active = true;
 			}
@@ -114,6 +117,8 @@ package Game.HUD
 			if (_sun.weaponShotgun.recovery >= _sun.weaponShotgun.recoveryTime)
 			{
 				_sun.currentWeapon = _sun.weaponShotgun;
+				if (FjInput.isMouseDown)
+					_sun.currentWeapon.powerStart();
 				I.deactivateAll();
 				I.buttons[2].active = true;
 			}
@@ -126,6 +131,8 @@ package Game.HUD
 			if (_sun.weaponFireball.recovery >= _sun.weaponFireball.recoveryTime)
 			{
 				_sun.currentWeapon = _sun.weaponFireball;
+				if (FjInput.isMouseDown)
+					_sun.currentWeapon.powerStart();
 				I.deactivateAll();
 				I.buttons[1].active = true;
 			}

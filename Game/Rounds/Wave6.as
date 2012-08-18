@@ -14,14 +14,9 @@ package Game.Rounds
 		{
 			_nextRound = Wave7;
 			
-			for (var i:int = 0; i < 7; i++)
+			for (var i:int = 0; i < 5; i++)
 			{
-				addEvent(2000 * i, BTR);
-			}
-			
-			for (var j:int = 0; j < 7; j++) 
-			{
-				addEvent(1500 * j, Tank);
+				addEvent(3000 * i, BTR);
 			}
 		}
 	

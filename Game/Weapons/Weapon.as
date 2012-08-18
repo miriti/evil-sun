@@ -1,5 +1,7 @@
 package Game.Weapons
 {
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flinjin.FjInput;
 	import Game.GameMain;
 	
@@ -7,7 +9,7 @@ package Game.Weapons
 	 * ...
 	 * @author Michael Miriti
 	 */
-	public class Weapon
+	public class Weapon extends EventDispatcher
 	{
 		protected var _current:Boolean = false;
 		protected var _power:Number = 0;
@@ -23,12 +25,13 @@ package Game.Weapons
 		
 		public function Weapon()
 		{
-		
+			super();
 		}
 		
 		protected function _fire():void
-		{
+		{			
 			_recovery = 0;
+			dispatchEvent(new Event("fire"));
 		}
 		
 		public function fire():void

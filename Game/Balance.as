@@ -45,7 +45,11 @@ package Game
 		static public var planeSpeed:Number = 100;
 		static public var planeHealth:Number = 180;
 		static public var planeScore:Number = 75;
-		static public var planeDamage:Number = 100;	
+		static public var planeDamage:Number = 100;
+		
+		static public var paratrooperHealth:Number = 200;
+		static public var paratrooperScore:Number = 80;
+		static public var paratrooperDamage:Number = 200;
 		
 		/*****************
 		 * W E A P O N S *
@@ -62,7 +66,7 @@ package Game
 		static public var fireballDamageMax:Array = [50, 75, 100, 150, 300];
 		static public var fireballDamageRadius:Array = [150, 160, 170, 180, 300];
 		static public var fireballPowerInc:Array = [1.5, 1.5, 1.5, 1.5, 1.5];
-		static public var fireballPowerMin:Array = [0.5, 0.5, 0.5, 0.5, 0.5];
+		static public var fireballPowerMin:Array = [1, 1, 1, 1, 1];
 		static public var fireballRecovery:Array = [50, 50, 50, 50, 50];
 		static public var fireballUpgrageCost:Array = [1000, 2000, 4000, 8000, 16000, 32000, +Infinity];
 		static public var fireballSpeed:Number = 400;
@@ -81,10 +85,9 @@ package Game
 		static public var rayDamage:Array = [50, 50, 50, 50, 50];
 		static public var raySpeed:Array = [500, 500, 500, 500, 500];
 		static public var rayPowerInc:Array = [2, 2, 2, 2, 2];
-		static public var rayPowerMin:Array = [0.5, 0.5, 0.5, 0.5, 0.5];
+		static public var rayPowerMin:Array = [1, 1, 1, 1, 1];
 		static public var rayRecovery:Array = [50, 50, 50, 50, 50];
 		static public var rayUpgrageCost:Array = [1000, 2000, 4000, 8000, 16000, 32000, +Infinity];
 		static public var rayBulletCount:Array = [1, 2, 3, 4, 5];
 	}
-
 }

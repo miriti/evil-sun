@@ -108,7 +108,7 @@ class FireballSprite extends BalisticSprite
 					for (var i:int = GameMain.Instance.mobsCollection.length - 1; i >= 0; i--)
 					{
 						var _m:Mob = GameMain.Instance.mobsCollection[i];
-						var dis:Number = Math.floor(_m.x - x);
+						var dis:Number = Math.abs(Math.floor(_m.x - x));
 						
 						if (dis <= Balance.fireballDamageRadius[level])
 						{

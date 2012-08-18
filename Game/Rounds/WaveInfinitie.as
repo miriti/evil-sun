@@ -27,7 +27,6 @@ package Game.Rounds
 		public function WaveInfinitie()
 		{
 			_nextRound = WaveInfinitie;
-			_waveNum++;
 			
 			for (var i:int = 0; i < _troopCount; i++)
 			{
@@ -67,18 +66,11 @@ package Game.Rounds
 			_tankCount *= 1.5;
 			_btrCOunt *= 0.2;
 			_planeCount *= 1.2;
-			_baloonCount++;
 			
-			Balance.troopHealth *= 1.2;
-			Balance.troopGroupHealth *= 1.2;
-			Balance.planeHealth *= 1.1;
-			Balance.btrHealth *= 1.1;
-			Balance.baloonHealth *= 1.2;
-			
-			Balance.troopSpeed *= 1.1;
-			Balance.troopGroupSpeed *= 1.1;
-			Balance.tankSpeed *= 1.1;
-			Balance.baloonSpeed *= 1.1;
+			if (Math.floor(_waveNum))
+				_baloonCount++;
+				
+			_waveNum++;
 		}
 	
 	}

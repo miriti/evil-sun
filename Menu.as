@@ -52,7 +52,7 @@ package
 			addSprite(_menuBack);
 			addSprite(_clouds);
 			
-			addSprite(new FjSprite(new Assets.bitmapFadeMask()));
+			addSprite(new FjSprite(new (Assets.i().bitmapFadeMask)));
 			
 			addSprite(_btnStart, width / 2, 100);
 			addSprite(_btnScores, width / 2, 190);
