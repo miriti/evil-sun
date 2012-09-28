@@ -23,12 +23,12 @@ package Game.Objects.parcticles
 			_timeToLive = TIME_TO_LIVE;
 		}
 		
-		override public function Move(deltaTime:Number):void
+		override public function update(deltaTime:Number):void
 		{
 			_scale = 1 - (_timeToLive / TIME_TO_LIVE) * 0.6;
 			width = _initialWidth * _scale;
 			height = _initialHeight * _scale;
-			super.Move(deltaTime);
+			super.update(deltaTime);
 		}
 	}
 

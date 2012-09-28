@@ -22,6 +22,9 @@ package
 		/*****************
 		 * B I T M A P S *
 		 *****************/
+		[Embed(source="_assets/bmp/hud/shop/back-to-menu-238x51.png")]
+		static public var bitmapBackmenuButton:Class;
+		
 		[Embed(source="_assets/bmp/hud/shop_back.png")]
 		public var bitmapShopBack:Class;
 		
@@ -30,6 +33,12 @@ package
 		
 		[Embed(source="_assets/bmp/back-rays.png")]
 		public var bitmapRayMask:Class;
+		
+		[Embed(source="_assets/bmp/hud/crosshair-79x78.png")]
+		public var bitmapCrosshair:Class;
+		
+		[Embed(source="_assets/bmp/hud/paused.png")]
+		public var bitmapPaused:Class;
 		
 		/***************
 		 * S O U N D S *

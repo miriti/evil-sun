@@ -7,7 +7,6 @@ package Game.Rounds
 	import Game.HUD.Instructions;
 	import Game.HUD.WaveTitleDie;
 	import Game.Mobs.Mob;
-	import mochi.as3.MochiEvents;
 	
 	/**
 	 * ...
@@ -52,7 +51,7 @@ package Game.Rounds
 		public function finish():void
 		{
 			_wavesPassed++;
-			MochiEvents.trackEvent("wave_passed", _wavesPassed);
+			//MochiEvents.trackEvent("wave_passed", _wavesPassed);
 			if (_nextRound != null)
 			{
 				GameMain.Instance.scenario.startRound(new _nextRound());

@@ -1,6 +1,7 @@
 package Game.Rounds
 {
 	import flinjin.graphics.FjSpriteText;
+	import Game.GameMain;
 	import Game.GameMainScenario;
 	import Game.HUD.instructions.FireballInstruction;
 	import Game.HUD.instructions.TankShotLine;
@@ -29,12 +30,13 @@ package Game.Rounds
 			for (var i:int = 0; i < 5; i++)
 			{
 				addEvent(i * 750, Tank);
+				addEvent(8000 + i * 750, Tank);
 			}
 			
 			if (GameMainScenario.helpEnabled)
-			{
-				addEvent(2000, null, new TankShotLine(this));
-				addEvent(2100, null, new FireballInstruction(this));
+			{				
+				addEvent(2000, null, new FireballInstruction(this));
+				addEvent(8000, null, new TankShotLine(this));				
 			}
 		}
 	}

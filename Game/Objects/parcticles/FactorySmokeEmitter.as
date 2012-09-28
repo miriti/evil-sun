@@ -1,8 +1,8 @@
 package Game.Objects.parcticles
 {
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flinjin.particles.FjEmitter;
+	import flinjin.types.FjVector;
 	
 	/**
 	 * ...
@@ -20,9 +20,9 @@ package Game.Objects.parcticles
 			_active = false;
 		}
 		
-		override protected function _pickNewParticleVector(iteration:int = 0):Point
+		override protected function _pickNewParticleVector(iteration:int = 0):FjVector
 		{
-			return new Point(-0.1, -0.5);
+			return new FjVector(-0.1, -0.5);
 		}
 	}
 

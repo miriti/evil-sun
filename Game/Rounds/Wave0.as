@@ -18,9 +18,10 @@ package Game.Rounds
 	 */
 	public class Wave0 extends GameRound
 	{
+		static private const NUM_MOBS:Number = 5;
+		
 		private var _done:Boolean = false;
 		private var _doneTime:Number;
-		static private const NUM_MOBS:Number = 5;
 		private var _instProtect:ProtectInstruction;
 		private var _destroyShown:Boolean = false;
 		private var _instDestroy:DestroyInstruction;
@@ -39,24 +40,31 @@ package Game.Rounds
 		{
 			super();
 			_nextRound = Wave1;
-			_titleBitmap = new _warmUp();
 			
-			for (var i:int = 0; i < NUM_MOBS; i++)
-			{
-				addEvent(4000 + i * 4000, Troop);
-			}
+			var _mobDelay:Number;
 			
 			if (!GameMainScenario.helpEnabled)
 			{
-				addEvent(4000, null, new ProtectInstruction(this));
-				addEvent(5900, null, new DestroyInstruction(this));
-				addEvent(6000, null, new AimInstructions(this));
-				addEvent(6100, null, new PowerInstruction(this));
-			
+				_titleBitmap = new _warmUp();
 				GameMain.Instance.sun.weaponRay.recovery = 0;
 				GameMain.Instance.sun.weaponShotgun.recovery = 0;
 				GameMain.Instance.sun.weaponFireball.recovery = 0;
 				GameMain.Instance.sun.weaponApocalypce.recovery = 0;
+				_mobDelay = 1000;
+			}
+			else
+			{				
+				addEvent(0, null, new ProtectInstruction(this));
+				addEvent(5000, null, new AimInstructions(this));
+				addEvent(10000, null, new PowerInstruction(this));
+				addEvent(18000, null, new DestroyInstruction(this));				
+				
+				_mobDelay = 17000;
+			}
+			
+			for (var i:int = 0; i < NUM_MOBS; i++)
+			{
+				addEvent(_mobDelay + i * 4000, Troop);
 			}
 		}
 	}

@@ -48,9 +48,9 @@ package Game.HUD
 			FjSnd.playSound('menu-click');
 		}
 		
-		override public function Move(deltaTime:Number):void
+		override public function update(deltaTime:Number):void
 		{
-			super.Move(deltaTime);
+			super.update(deltaTime);
 			
 			if (_mouseOver)
 			{
@@ -109,6 +109,16 @@ package Game.HUD
 		{
 			_hint = value;
 			_hint.visible = false;
+		}
+		
+		public function get mouseDown():Boolean 
+		{
+			return _mouseDown;
+		}
+		
+		public function set mouseDown(value:Boolean):void 
+		{
+			_mouseDown = value;
 		}
 	}
 

@@ -66,6 +66,7 @@ import flash.geom.Point;
 import flinjin.FjObjectPool;
 import flinjin.graphics.FjSprite;
 import flinjin.graphics.FjSpriteAnimation;
+import flinjin.types.FjVector;
 import Game.Balance;
 import Game.GameMain;
 import Game.Mobs.Baloon;
@@ -80,7 +81,7 @@ class ShotgunBullet extends FjSprite
 	private static var _bulletBitmap:Class;
 	
 	private var _toangle:Number = 0;
-	private var _vector:Point;
+	private var _vector:FjVector;
 	private var _level:int = 0;
 	static private const BULLET_SPEED:Number = 2000;
 	static private const TRACE_DEEP:Number = 20;
@@ -91,9 +92,9 @@ class ShotgunBullet extends FjSprite
 		setCenter();
 	}
 	
-	override public function Move(deltaTime:Number):void
+	override public function update(deltaTime:Number):void
 	{
-		super.Move(deltaTime);
+		super.update(deltaTime);
 		
 		if ((x < 0) || (x > Main.CONTENT_WIDTH) || (y < 0) || (y > GameMain.groundLevel))
 		{
@@ -116,7 +117,7 @@ class ShotgunBullet extends FjSprite
 			for (var i:int = 0; i < GameMain.Instance.mobsCollection.length; i++)
 			{
 				var m:Mob = GameMain.Instance.mobsCollection[i];
-				if (m.collisionShape.containPoint(_cp))
+				if (m.rect.containsPoint(_cp))
 				{
 					var dam:Number = Balance.shotgunDamageMax[_level];
 					m.Hit(dam, Shotgun);
@@ -143,7 +144,7 @@ class ShotgunBullet extends FjSprite
 	public function set toangle(value:Number):void
 	{
 		_toangle = value;
-		_vector = new Point(Math.cos(_toangle), Math.sin(_toangle));
+		_vector = new FjVector(Math.cos(_toangle), Math.sin(_toangle));
 	}
 	
 	public function get level():int

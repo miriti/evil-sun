@@ -16,7 +16,7 @@ package Game.HUD
 		protected var _buttonBitmap:Bitmap;
 		protected var _frameSize:Point;
 		
-		protected static var _musicOn:Boolean = true;
+		public static var musicEnabled:Boolean = true;
 		
 		public function MusicButton()
 		{
@@ -26,7 +26,7 @@ package Game.HUD
 				_frameSize = new Point(67, 69);
 			super(_buttonBitmap, null, _frameSize);
 			
-			if (!_musicOn)
+			if (!musicEnabled)
 				hitSwitch();
 		}
 		
@@ -38,7 +38,7 @@ package Game.HUD
 		override public function set state(value:Boolean):void
 		{
 			super.state = value;
-			_musicOn = value;
+			musicEnabled = value;
 			
 			if (value)
 				Main.Music.play();

@@ -36,17 +36,19 @@ package Game.Objects
 		{
 			var _trail:FadingTrail = FjObjectPool.pull(_trailClass) as FadingTrail;
 			parent.addSprite(_trail, x, y, zIndex - 1);
-			_lastTrailPos.setTo(x, y);
+			_lastTrailPos.x = x
+			_lastTrailPos.y = y;
 		}
 		
 		private function onAdded(e:FlinjinSpriteEvent):void
 		{
-			_lastTrailPos.setTo(x, y);
+			_lastTrailPos.x = x;
+			_lastTrailPos.y = y;
 		}
 		
-		override public function Move(deltaTime:Number):void
+		override public function update(deltaTime:Number):void
 		{
-			super.Move(deltaTime);
+			super.update(deltaTime);
 			
 			if (_trailClass != null)
 			{

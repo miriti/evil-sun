@@ -29,19 +29,17 @@ package Game.Rounds
 			super();
 			
 			_nextRound = Wave4;
-			_titleBitmap = new _titleBmp();
+			if (!GameMainScenario.helpEnabled)
+				_titleBitmap = new _titleBmp();
 			
 			for (var i:int = 0; i < PLANE_NUM; i++)
 			{
 				addEvent(i * 3000, Plane);
-			}
-			
-			addEvent(500, null, new ShotgunInstructions(this));
+			}			
 			
 			if (GameMainScenario.helpEnabled)
-			{
-				GameMain.Instance.sun.weaponShotgun.recovery = GameMain.Instance.sun.weaponShotgun.recoveryTime;
-				WeaponChose.weaponShotgun();
+			{				
+				addEvent(2000, null, new ShotgunInstructions(this));
 			}
 		}
 	}

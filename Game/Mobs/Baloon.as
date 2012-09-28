@@ -45,9 +45,9 @@ package Game.Mobs
 			_hitTheFactory = false;
 		}
 		
-		override public function Move(deltaTime:Number):void
+		override public function update(deltaTime:Number):void
 		{
-			super.Move(deltaTime);
+			super.update(deltaTime);
 			
 			if ((x > GameMain.Instance.factory.width + 100) || ((x <= GameMain.Instance.factory.width + 100) && (GameMain.gameIsOver)))
 			{
@@ -127,9 +127,9 @@ class BombSprite extends FjSprite
 		super(new _bombBitmap(), new Point(5, 0));
 	}
 	
-	override public function Move(deltaTime:Number):void
+	override public function update(deltaTime:Number):void
 	{
-		super.Move(deltaTime);
+		super.update(deltaTime);
 		
 		if (_fall)
 		{

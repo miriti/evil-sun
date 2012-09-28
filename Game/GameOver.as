@@ -3,6 +3,7 @@ package Game
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.text.TextFormat;
+	import flash.ui.Mouse;
 	import flinjin.Flinjin;
 	import flinjin.graphics.FjLayer;
 	import flinjin.graphics.FjSprite;
@@ -84,6 +85,8 @@ package Game
 				addSprite(_submitButton, 210, 250);
 			addSprite(_backToMenuButton, 210, 335);
 			addSprite(_playAgainButton, width - _playAgainButton.width - 60, height - _playAgainButton.height - 60);
+			
+			interactive = true;
 		}
 		
 		private function onPlayAgain(e:MouseEvent):void
@@ -94,6 +97,7 @@ package Game
 		
 		private function onBackMenu(e:MouseEvent):void
 		{
+			Mouse.show();
 			Flinjin.Instance.Camera.LookAt(new Menu());
 		}
 		
@@ -114,9 +118,9 @@ package Game
 		 *
 		 * @param	deltaTime
 		 */
-		override public function Move(deltaTime:Number):void
+		override public function update(deltaTime:Number):void
 		{
-			super.Move(deltaTime);
+			super.update(deltaTime);
 			
 			var _gY:Number = (Main.CONTENT_HEIGHT - height) / 2;
 			

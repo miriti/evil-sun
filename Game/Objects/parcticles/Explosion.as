@@ -3,6 +3,7 @@ package Game.Objects.parcticles
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flinjin.particles.FjEmitter;
+	import flinjin.types.FjVector;
 	
 	/**
 	 * ...
@@ -19,11 +20,11 @@ package Game.Objects.parcticles
 			_particlesPerEmmit = 20;
 		}
 		
-		override protected function _pickNewParticleVector(iteration:int = 0):Point
+		override protected function _pickNewParticleVector(iteration:int = 0):FjVector
 		{
 			var _a:Number = (2 * Math.PI / _particlesPerEmmit) * iteration;
 			var _sp:Number = 3 + Math.random() * MAX_CLUMP_SPEED;
-			return new Point(Math.sin(_a) * _sp / 2, Math.cos(_a) * _sp);
+			return new FjVector(Math.sin(_a) * _sp / 2, Math.cos(_a) * _sp);
 		}
 		
 		override protected function _pickNewParticlePosition(iteration:int = 0):Point

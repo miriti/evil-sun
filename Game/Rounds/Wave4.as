@@ -19,10 +19,10 @@ package Game.Rounds
 		private var _hintText:FjSpriteText;
 		private var _hint:Boolean = false;
 		private var _hintDone:Boolean = false;
-		static private const TANK_COUNT:Number = 8;
-		static private const TANK_DELAY:Number = 2800;
+		static private const TANK_COUNT:Number = 6;
+		static private const TANK_DELAY:Number = 3100;
 		private var _upgradeHint:Boolean = false;
-		static public const PLANE_COUNT:Number = 7;
+		static public const PLANE_COUNT:Number = 5;
 		
 		public function Wave4()
 		{
@@ -37,17 +37,18 @@ package Game.Rounds
 			
 			for (var j:int = 0; j < PLANE_COUNT; j++)
 			{
-				addEvent(2000 + j * 2000, Plane);
+				addEvent(2000 + j * 3000, Plane);
 			}
 			
 			if (GameMainScenario.helpEnabled)
 			{
-				addEvent(100, null, new SwitchWeaponsInstruction(this));
-				addEvent(200, null, new ArmagedonInstructions(this));
+				addEvent(0, null, new ArmagedonInstructions(this));
+				addEvent(7000, null, new SwitchWeaponsInstruction(this));
+				
 				
 				GameMain.Instance.sun.weaponShotgun.recovery = 0;
 				GameMain.Instance.sun.weaponFireball.recovery = 0;
-				GameMain.Instance.sun.weaponApocalypce.recovery = GameMain.Instance.sun.weaponApocalypce.recoveryTime / 2;
+				GameMain.Instance.sun.weaponApocalypce.recovery = GameMain.Instance.sun.weaponApocalypce.recoveryTime;
 			}
 		}
 	}

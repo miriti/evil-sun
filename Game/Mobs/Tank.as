@@ -43,9 +43,9 @@ package Game.Mobs
 			_explosionDamage = Balance.tankExplosionPower;
 		}
 		
-		override public function Move(deltaTime:Number):void
+		override public function update(deltaTime:Number):void
 		{
-			super.Move(deltaTime);
+			super.update(deltaTime);
 			
 			if (x < Main.CONTENT_WIDTH / 2)
 			{

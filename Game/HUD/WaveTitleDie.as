@@ -25,9 +25,9 @@ package Game.HUD
 			GameMain.Instance.addSprite(this, Main.CONTENT_WIDTH / 2, Main.CONTENT_HEIGHT / 2, 99);
 		}
 		
-		override public function Move(deltaTime:Number):void
+		override public function update(deltaTime:Number):void
 		{
-			super.Move(deltaTime);
+			super.update(deltaTime);
 			if (_state == 0)
 			{
 				if (alpha < 1)

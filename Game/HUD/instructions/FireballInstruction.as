@@ -16,12 +16,14 @@ package Game.HUD.instructions
 		private static var _image:Class;
 		
 		public function FireballInstruction(wave:GameRound)
-		{			
+		{
 			super(wave);
 		}
 		
-		override public function show():void 
-		{			
+		override public function show():void
+		{
+			GameMain.Instance.sun.weaponFireball.recovery = GameMain.Instance.sun.weaponFireball.recoveryTime;
+			WeaponChose.weaponFire();
 			super.show();
 		}
 		
@@ -33,7 +35,7 @@ package Game.HUD.instructions
 		
 		override protected function _return():void
 		{
-			super._return();			
+			super._return();
 		}
 	
 	}

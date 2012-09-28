@@ -8,6 +8,7 @@ package Game
 	import flinjin.events.FlinjinSpriteEvent;
 	import flinjin.FjConsole;
 	import flinjin.FjInput;
+	import flinjin.FjLog;
 	import flinjin.graphics.FjLayer;
 	import flinjin.graphics.FjSprite;
 	import flinjin.graphics.FjSpriteAnimation;
@@ -139,9 +140,9 @@ package Game
 			}
 		}
 		
-		override public function Move(deltaTime:Number):void
+		override public function update(deltaTime:Number):void
 		{
-			super.Move(deltaTime);
+			super.update(deltaTime);
 			_sunCrown.currentFrame = 0;
 			
 			colorTransform.redMultiplier = 1;
@@ -171,7 +172,8 @@ package Game
 			
 			setColorMults(1, 1 - _currentWeapon.power / 2.5, 1 - _currentWeapon.power / 2.5);
 			
-			_shotPosition.setTo(mouseVector.x * 15, mouseVector.y * 15);
+			_shotPosition.x = mouseVector.x * 15;
+			_shotPosition.y = mouseVector.y * 15;
 			
 			_sunEye.x = width / 2 + _shotPosition.x;
 			_sunEye.y = height / 2 + _shotPosition.y;
@@ -179,7 +181,8 @@ package Game
 		
 		public function get mouseVector():Point
 		{
-			_mouseVector.setTo(FjInput.mousePosition.x - x, FjInput.mousePosition.y - y);
+			_mouseVector.x = FjInput.mousePosition.x - x;
+			_mouseVector.y = FjInput.mousePosition.y - y;
 			var l:Number = _mouseVector.length;
 			_mouseVector.x /= l;
 			_mouseVector.y /= l;

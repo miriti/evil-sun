@@ -1,15 +1,21 @@
 package Game
 {
+	import flash.display.BitmapData;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.net.SharedObject;
 	import flash.ui.Keyboard;
+	import flash.ui.Mouse;
 	import flinjin.events.FlinjinSpriteEvent;
 	import flinjin.FjConsole;
+	import flinjin.FjInput;
+	import flinjin.FjLog;
 	import flinjin.graphics.FjLayer;
 	import flinjin.graphics.FjSprite;
 	import flinjin.sound.FjSnd;
+	import flinjin.types.FjRect;
 	import Game.HUD.BlackFade;
+	import Game.HUD.InGameButtons;
 	import Game.HUD.ScoreCounter;
 	import Game.HUD.WeaponChose;
 	import Game.Mobs.Mob;
@@ -35,6 +41,7 @@ package Game
 		public var upgrades:Upgrades;
 		
 		private var _shopButton:ShopButton = new ShopButton();
+		private var _ingameButtons:InGameButtons = new InGameButtons();
 		
 		private static var _score:Number = 0;
 		private static var _money:Number = 0;
@@ -54,6 +61,10 @@ package Game
 		
 		private var _raysMaskSprite:FjSprite = new FjSprite(new (Assets.i().bitmapRayMask));
 		
+		private var _crosshair:FjSprite = new FjSprite(new (Assets.i().bitmapCrosshair));
+		
+		private var _pausedDie:PauseDie = new PauseDie();
+		
 		private var _upgragesMode:Boolean = false;
 		
 		static private const SUN_X:Number = 250;
@@ -71,12 +82,18 @@ package Game
 			_money = 0;
 			
 			var scoreSO:SharedObject = SharedObject.getLocal("gameScore");
+			
 			if (scoreSO.data.highScore != null)
 			{
 				highScore = Number(scoreSO.data.highScore);
-				GameMainScenario.helpEnabled = scoreSO.data.helpEnabled == undefined ? true : scoreSO.data.helpEnabled;
+			}
+			
+			if (scoreSO.data.helpEnabled == undefined)
+			{
+				GameMainScenario.helpEnabled = true;
 				scoreSO.data.helpEnabled = false;
 			}
+			
 			sun = new Sun();
 			
 			groundLevel = Main.CONTENT_HEIGHT - ground.height + 7;
@@ -84,9 +101,9 @@ package Game
 			addSprite(_raysMaskSprite, 0, 0, 2);
 			
 			addSprite(factory, factory.width / 2, Main.CONTENT_HEIGHT - factory.height / 2 - ground.height + 6, 8);
-			addSprite(sun, SUN_X, SUN_Y, 5);
 			addSprite(skyclouds, 0, 0, 9);
-			addSprite(ground, 0, Main.CONTENT_HEIGHT - ground.height, 10);
+			addSprite(ground, 0, Main.CONTENT_HEIGHT - ground.height, 11);
+			addSprite(sun, SUN_X, SUN_Y, 13);
 			addSprite(_fadeMaskSprite, 0, 0, 30);
 			
 			weaponChose = new WeaponChose();
@@ -94,6 +111,7 @@ package Game
 			addSprite(weaponChose, Main.CONTENT_WIDTH - weaponChose.width, groundLevel + 15, 40);
 			addSprite(scoreCounter, 10, groundLevel + 25, 50);
 			addSprite(_shopButton, (Main.CONTENT_WIDTH - _shopButton.width) / 2, groundLevel + 30, 50);
+			addSprite(_ingameButtons, _shopButton.x + _shopButton.width, groundLevel + 30, 50);
 			
 			scoreCounter.text = '$0';
 			_shopButton.interactive = true;
@@ -113,6 +131,9 @@ package Game
 			
 			interactive = true;
 			
+			_crosshair.setCenter(_crosshair.width / 2, _crosshair.height / 2);
+			addSprite(_crosshair, 0, 0, 100000);
+			
 			addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			
 			MochiEvents.startPlay();
@@ -129,6 +150,17 @@ package Game
 			{
 				upgragesMode = !upgragesMode;
 			}
+			
+			if ((e.keyCode == Keyboard.PAUSE) || (e.keyCode == Keyboard.P))
+			{
+				pause = !pause;
+			}
+			
+			if (e.keyCode == Keyboard.ESCAPE)
+			{
+				if (pause)
+					pause = false;
+			}
 		}
 		
 		private function showUpgardes(e:MouseEvent):void
@@ -136,19 +168,24 @@ package Game
 			upgragesMode = true;
 		}
 		
-		override public function Move(deltaTime:Number):void
+		override public function update(deltaTime:Number):void
 		{
 			if (!_upgragesMode)
 			{
 				if (!_pause)
 				{
-					super.Move(deltaTime);
+					super.update(deltaTime);
+					scenario.update(deltaTime);
 				}
-				scenario.update(deltaTime);
+				else
+				{
+					_pausedDie.update(deltaTime);
+					_ingameButtons.update(deltaTime);
+				}
 			}
 			
-			fadeBlack.Move(deltaTime);
-			upgrades.Move(deltaTime);
+			fadeBlack.update(deltaTime);
+			upgrades.update(deltaTime);
 			
 			if (scoreCounter.alpha > 0.3)
 			{
@@ -167,6 +204,8 @@ package Game
 					Instance.shopButton.avail = false;
 				}
 			}
+			
+			_crosshair.setPosition(FjInput.mousePosition.x, FjInput.mousePosition.y);
 		}
 		
 		/**
@@ -184,7 +223,7 @@ package Game
 		{
 			mobsCollection.push(mob);
 			mob.addEventListener(FlinjinSpriteEvent.REMOVED_FROM_LAYER, onDeleteMob);
-			addSprite(mob, null, null, 4 + mobsCollection.length);
+			addSprite(mob, null, null, 12 + mobsCollection.length);
 		}
 		
 		/**
@@ -193,6 +232,8 @@ package Game
 		 */
 		public function onGameOver():void
 		{
+			if (upgragesMode)
+				upgragesMode = false;
 			scenario.running = false;
 			gameIsOver = true;
 			addSprite(new FactoryExplosion(), factory.x, factory.y, factory.zIndex);
@@ -244,17 +285,20 @@ package Game
 		
 		public function set upgragesMode(value:Boolean):void
 		{
-			if (value)
+			if (!gameIsOver)
 			{
-				upgrades.show();
-				fadeBlack.show();
+				if (value)
+				{
+					upgrades.show();
+					fadeBlack.show();
+				}
+				else
+				{
+					upgrades.hide();
+					fadeBlack.hide();
+				}
+				_upgragesMode = value;
 			}
-			else
-			{
-				upgrades.hide();
-				fadeBlack.hide();
-			}
-			_upgragesMode = value;
 		}
 		
 		public function get shopButton():ShopButton
@@ -269,6 +313,10 @@ package Game
 		
 		public function set pause(value:Boolean):void
 		{
+			if (value)
+				addSprite(_pausedDie, 0, 0, 49);
+			else
+				deleteSprite(_pausedDie);
 			_pause = value;
 		}
 		
@@ -283,9 +331,18 @@ package Game
 		}
 	}
 }
+
+import flash.display.Bitmap;
+import flash.display.BitmapData;
+import flash.events.MouseEvent;
 import flash.geom.Point;
+import flash.ui.Mouse;
+import flinjin.Flinjin;
+import flinjin.graphics.FjLayer;
 import flinjin.graphics.FjSprite;
 import flinjin.graphics.FjSpriteAnimation;
+import Game.HUD.AreYouSureDialog;
+import Game.HUD.Button;
 
 class ShopButton extends FjSprite
 {
@@ -299,6 +356,7 @@ class ShopButton extends FjSprite
 		super(new _buttonBitmap(), null, new Point(141, 60), new FjSpriteAnimation());
 		animation.stop();
 		avail = false;
+		interactive = true;
 	}
 	
 	public function get avail():Boolean
@@ -316,5 +374,44 @@ class ShopButton extends FjSprite
 			currentFrame = 1;
 		}
 		_avail = value;
+	}
+}
+
+class PauseDie extends FjLayer
+{
+	private var _pauseTitle:FjSprite;
+	private var _backButton:Button;
+	
+	public function PauseDie():void
+	{
+		super(Main.CONTENT_WIDTH, Main.CONTENT_HEIGHT);
+		addSprite(new FjSprite(new Bitmap(new BitmapData(Main.CONTENT_WIDTH, Main.CONTENT_HEIGHT, true, 0xaa000000))));
+		
+		_pauseTitle = new FjSprite(new (Assets.i().bitmapPaused));
+		addSprite(_pauseTitle, (width - _pauseTitle.width) / 2, (height - _pauseTitle.height) / 2);
+		
+		_backButton = new Button(new Assets.bitmapBackmenuButton(), null, new Point(238, 51));
+		addSprite(_backButton, (width - _backButton.width) / 2, _pauseTitle.y + _pauseTitle.height + 40);
+		
+		_backButton.addEventListener(MouseEvent.MOUSE_DOWN, onBackToMenu);
+		
+		interactive = true;
+	}
+	
+	private function onBackToMenu(e:MouseEvent):void
+	{
+		var _ays:AreYouSureDialog = new AreYouSureDialog();
+		_ays.noCallBack = function():void
+		{
+			interactive = true;
+		};
+		
+		_ays.yesCallback = function():void
+		{
+			Mouse.show();
+			Flinjin.Instance.Camera.LookAt(new Menu());
+		};
+		parent.addSprite(_ays, (parent.width - _ays.width) / 2, (parent.height - _ays.height) / 2, zIndex + 1);
+		interactive = false;
 	}
 }

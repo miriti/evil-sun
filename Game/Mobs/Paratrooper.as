@@ -27,7 +27,6 @@ package Game.Mobs
 			setCenter(51.5, 15);
 			addEventListener(FlinjinSpriteEvent.ADDED_TO_LAYER, onAdded);
 			_hitTheFactory = false;
-			(collisionShape as BoundingRect).halfHeight *= 2;
 			
 			initMob();
 		}
@@ -46,9 +45,9 @@ package Game.Mobs
 			y = -height;
 		}
 		
-		override public function Move(deltaTime:Number):void
+		override public function update(deltaTime:Number):void
 		{
-			super.Move(deltaTime);
+			super.update(deltaTime);
 			
 			y += s(deltaTime) * 30;
 			angle = Math.sin(_phase) * SWING;

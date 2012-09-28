@@ -88,9 +88,9 @@ class FireballSprite extends BalisticSprite
 		super.Delete(doDispose);
 	}
 	
-	override public function Move(deltaTime:Number):void
+	override public function update(deltaTime:Number):void
 	{
-		super.Move(deltaTime);
+		super.update(deltaTime);
 		
 		if (_snd != null)
 			_snd.pan = -1 + (x / Main.CONTENT_WIDTH) * 2;

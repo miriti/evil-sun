@@ -28,7 +28,7 @@ package Game
 		
 		}
 		
-		override public function Move(deltaTime:Number):void
+		override public function update(deltaTime:Number):void
 		{
 			for (var i:int = 0; i < _skyTiles.length; i++)
 			{
@@ -38,7 +38,7 @@ package Game
 					_skyTiles[i].y = -_skyTiles[i].height + 1;
 				}
 			}
-			super.Move(deltaTime);
+			super.update(deltaTime);
 		
 		}
 	

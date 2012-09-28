@@ -1,7 +1,9 @@
 package Game.HUD.instructions
 {
 	import flinjin.graphics.FjSprite;
+	import Game.GameMain;
 	import Game.HUD.Instructions;
+	import Game.HUD.WeaponChose;
 	import Game.Rounds.GameRound;
 	
 	/**
@@ -16,6 +18,13 @@ package Game.HUD.instructions
 		public function ShotgunInstructions(wave:GameRound)
 		{
 			super(wave);
+		}
+		
+		override public function show():void 
+		{
+			GameMain.Instance.sun.weaponShotgun.recovery = GameMain.Instance.sun.weaponShotgun.recoveryTime;
+			WeaponChose.weaponShotgun();
+			super.show();
 		}
 		
 		override protected function initImages():void

@@ -20,6 +20,7 @@ package Game.Mobs
 	 */
 	public class Mob extends FjLayer
 	{
+		protected var _healthBarShift:Number = 5;
 		protected var _healthPoints:Number;
 		protected var _healthPointsMax:Number;
 		protected var _healthBar:HealthBar;
@@ -35,7 +36,6 @@ package Game.Mobs
 		{
 			super(layerWidth, layerHeight);
 			setCenter();
-			setBoundingShape(new BoundingRect(this, layerWidth / 2, layerHeight / 2));
 			addEventListener(FlinjinSpriteEvent.ADDED_TO_LAYER, initHealthBar);
 			addEventListener(FlinjinSpriteEvent.REMOVED_FROM_LAYER, removedFromLayer);
 		}
@@ -74,9 +74,9 @@ package Game.Mobs
 			initMob();
 		}
 		
-		override public function Move(deltaTime:Number):void
+		override public function update(deltaTime:Number):void
 		{
-			super.Move(deltaTime);
+			super.update(deltaTime);
 			
 			x -= _speed * (deltaTime / 1000);
 			
@@ -100,19 +100,18 @@ package Game.Mobs
 			else if (_healthBar.alpha < 0)
 				_healthBar.alpha = 0;
 			
-			if (collisionShape != null)
+			if (rect.containsPoint(FjInput.mousePosition))
 			{
-				if ((collisionShape as BoundingRect).getRect().containsPoint(FjInput.mousePosition))
-				{
-					_healthBar.alpha = 1;
-				}
+				_healthBar.alpha = 1;
 			}
 			
 			_healthBar.x = x - width / 2;
 			if (_healthBarPosition == 0)
-				_healthBar.y = y - height / 2 - _healthBar.height - 5;
+				_healthBar.y = y - height / 2 - _healthBar.height - _healthBarShift;
 			else if (_healthBarPosition == 1)
-				_healthBar.y = y + height / 2 + _healthBar.height - 5;
+				_healthBar.y = y + height / 2 + _healthBar.height - _healthBarShift;
+			
+			_healthBar.zIndex = zIndex + 1;
 			
 			if (!(this is Factory) && (_hitTheFactory) && (!GameMain.gameIsOver))
 			{

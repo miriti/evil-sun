@@ -151,11 +151,11 @@ package Game.HUD
 				FjSnd.playSound("error");
 		}
 		
-		override public function Move(deltaTime:Number):void
+		override public function update(deltaTime:Number):void
 		{
 			var pa:Number = _buttons[3].alpha;
 			
-			super.Move(deltaTime);
+			super.update(deltaTime);
 			
 			if ((pa != 1) && (_buttons[3].alpha == 1))
 			{
@@ -200,9 +200,9 @@ class WeaponButton extends FjSprite
 		addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 	}
 	
-	override public function Move(deltaTime:Number):void
+	override public function update(deltaTime:Number):void
 	{
-		super.Move(deltaTime);
+		super.update(deltaTime);
 		if (_weapon.recoveryTime > 500)
 		{
 			if (_weapon.recovery < _weapon.recoveryTime)

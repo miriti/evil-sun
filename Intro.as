@@ -36,7 +36,7 @@ package
 			addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 		}
 		
-		override public function Move():void
+		override public function update():void
 		{
 			if (_counter >= 180)
 			{
@@ -55,7 +55,7 @@ package
 			}
 			
 			_counter++;
-			super.Move();
+			super.update();
 		}
 		
 		private function startMenu():void

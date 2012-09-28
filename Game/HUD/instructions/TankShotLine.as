@@ -21,9 +21,7 @@ package Game.HUD.instructions
 		}
 		
 		override public function show():void
-		{
-			GameMain.Instance.sun.weaponFireball.recovery = GameMain.Instance.sun.weaponFireball.recoveryTime;
-			WeaponChose.weaponFire();
+		{			
 			super.show();
 		}
 		

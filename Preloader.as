@@ -3,6 +3,7 @@ package
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.StageAlign;
+	import flash.display.StageQuality;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -10,6 +11,7 @@ package
 	import flash.text.TextFieldAutoSize;
 	import flash.utils.getDefinitionByName;
 	import flinjin.Flinjin;
+	import mochi.as3.MochiServices;
 	
 	/**
 	 * ...
@@ -27,15 +29,22 @@ package
 			{
 				stage.scaleMode = StageScaleMode.NO_SCALE;
 				stage.align = StageAlign.TOP_LEFT;
+				stage.quality = StageQuality.BEST;
+				MochiServices.connect("d8ba1df8df94d299", root, onMochiConnectError);
 			}
 			
 			addEventListener(Event.ENTER_FRAME, checkFrame);
 			loaderInfo.addEventListener(ProgressEvent.PROGRESS, progress);
 			loaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioError);
 			
-			// TODO show loader
+			_loader.scaleX = _loader.scaleY = 800 / 1024;
 			addChild(_loader);
 			_loader.startCallback = startup;
+		}
+		
+		private function onMochiConnectError():void
+		{
+		
 		}
 		
 		private function ioError(e:IOErrorEvent):void
@@ -61,7 +70,7 @@ package
 			removeEventListener(Event.ENTER_FRAME, checkFrame);
 			loaderInfo.removeEventListener(ProgressEvent.PROGRESS, progress);
 			loaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, ioError);
-			
+		
 		}
 		
 		private function startup():void
@@ -134,7 +143,7 @@ class PreloaderDisplay extends Sprite
 		{
 			removeChild(_loadingBitmap);
 			
-			_playButton.x = (width - _playButton.width) / 2 + 5;
+			_playButton.x = width / 2 + 5;
 			_playButton.y = 445 - _playButton.height / 2;
 			addChild(_playButton);
 		}

@@ -1,21 +1,17 @@
 package Game.Objects
 {
-	import flash.events.TimerEvent;
-	import flash.text.TextFormat;
-	import flash.utils.Timer;
 	import flinjin.events.FlinjinSpriteEvent;
-	import flinjin.Flinjin;
 	import flinjin.graphics.FjSprite;
-	import flinjin.graphics.FjSpriteText;
 	import Game.Balance;
 	import Game.GameMain;
+	import Game.Mobs.Mob;
 	import Game.Objects.parcticles.FactorySmokeEmitter;
 	
 	/**
 	 * ...
 	 * @author Michael Miriti
 	 */
-	public class Factory extends GameObject
+	public class Factory extends Mob
 	{
 		[Embed(source="../../_assets/bmp/objects/factory/factory-base.png")]
 		static public var _factoryBaseBitmap:Class;
@@ -48,7 +44,9 @@ package Game.Objects
 			_healthPointsMax = Balance.factoryHealth;
 			
 			addEventListener(FlinjinSpriteEvent.ADDED_TO_LAYER, onAddedToLayer);
-			addEventListener(FlinjinSpriteEvent.REMOVED_FROM_LAYER, onRemoved);
+			addEventListener(FlinjinSpriteEvent.REMOVED_FROM_LAYER, onRemoved);	
+			
+			_healthBarShift = -285;
 		}
 		
 		private function onRemoved(e:FlinjinSpriteEvent):void
@@ -126,9 +124,9 @@ class FactoryStalk extends FjSprite
 		_stalkMaxY = _stalkMinY + 26;
 	}
 	
-	override public function Move(deltaTime:Number):void
+	override public function update(deltaTime:Number):void
 	{
-		super.Move(deltaTime);
+		super.update(deltaTime);
 		
 		if (_dir == UP)
 		{

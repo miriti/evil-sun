@@ -24,7 +24,7 @@ package Game.Rounds
 				addEvent(22000 * i, Baloon);
 			}
 			
-			for (var j:int = 0; j < 10; j++)
+			for (var j:int = 0; j < 9; j++)
 			{
 				addEvent(6000 * j + 2000, Plane);
 			}

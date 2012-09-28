@@ -23,7 +23,6 @@ package Game.Mobs
 		{
 			super(_anim.width, _anim.height);
 			addSprite(_anim);			
-			setBoundingShape(new BoundingRect(this, _anim.width / 2, _anim.height / 2));
 			
 			initMob();
 		}

@@ -19,9 +19,9 @@ package Game.HUD
 			visible = vis;
 		}
 		
-		override public function Move(deltaTime:Number):void
+		override public function update(deltaTime:Number):void
 		{
-			super.Move(deltaTime);
+			super.update(deltaTime);
 			
 			if (_showing)
 			{

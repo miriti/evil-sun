@@ -19,9 +19,9 @@ package Game.Objects.parcticles
 			super(new _particleBitmap(), null, new Point(10, 10), new FjSpriteAnimation("anim", null, 200));
 		}
 		
-		override public function Move(deltaTime:Number):void 
+		override public function update(deltaTime:Number):void 
 		{
-			super.Move(deltaTime);
+			super.update(deltaTime);
 			alpha = timeToLive / TIME_TO_LIVE;
 		}
 		

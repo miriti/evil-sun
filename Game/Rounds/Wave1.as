@@ -13,18 +13,14 @@ package Game.Rounds
 	 */
 	public class Wave1 extends GameRound
 	{
-		private var _done:Boolean = false;
-		private var _doneTime:Number = 0;
-		static private const MOBS_COUNT:Number = 8;
-		
 		public function Wave1()
 		{
 			super();
 			_nextRound = Wave2;
 			
-			for (var i:int = 0; i < 6; i++)
+			for (var i:int = 0; i < 4; i++)
 			{
-				addEvent(i * 1800, Troop);
+				addEvent(i * 1500, Troop);
 			}
 		}
 	}

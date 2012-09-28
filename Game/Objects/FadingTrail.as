@@ -24,9 +24,9 @@ package Game.Objects
 			alpha = 1;
 		}
 		
-		override public function Move(deltaTime:Number):void
+		override public function update(deltaTime:Number):void
 		{
-			super.Move(deltaTime);
+			super.update(deltaTime);
 			alpha -= s(deltaTime) * 3;
 			
 			if (alpha <= 0)

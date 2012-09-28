@@ -34,9 +34,9 @@ package Game.Objects.parcticles
 			height = originalHeight * INITIAL_SCALE;
 		}
 		
-		override public function Move(deltaTime:Number):void
+		override public function update(deltaTime:Number):void
 		{
-			super.Move(deltaTime);
+			super.update(deltaTime);
 			
 			//alpha = _timeToLive / TIME_TO_LIVE;
 			

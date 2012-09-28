@@ -1,17 +1,18 @@
 package
 {
+	import flash.display.StageQuality;
 	import flash.events.Event;
 	import flash.net.LocalConnection;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 	import flinjin.events.FlinjinEvent;
+	import flinjin.FjCamera;
 	import flinjin.FjLog;
 	import flinjin.Flinjin;
 	import flinjin.graphics.FjSprite;
 	import flinjin.sound.FjSnd;
 	import flinjin.sound.FjSndItem;
-	import mochi.as3.MochiServices;
 	
 	/**
 	 * ...
@@ -24,8 +25,8 @@ package
 		static public const CONTENT_WIDTH:Number = 1024;
 		static public const CONTENT_HEIGHT:Number = 576;
 		
-		static public const SCENE_WIDTH:Number = 1024;
-		static public const SCENE_HEIGHT:Number = 576;
+		static public const SCENE_WIDTH:Number = 800;
+		static public const SCENE_HEIGHT:Number = 450;
 		
 		static public const MOCHI_GAME_ID:String = "d8ba1df8df94d299";
 		static public const MOCHI_BOARD_ID:String = "f09d6ecd6cdc3493";
@@ -33,7 +34,7 @@ package
 		
 		static public var Music:FjSndItem = new FjSndItem(new (Assets.i().musicMain));
 		
-		private static var _lockedDomains:Array = ['miriti.ru', 'fgl.com', 'www.fgl.com', 'flashgamelicense.com', 'www.flashgamelicense.com'];
+		private static var _lockedDomains:Array = ['localhost', 'miriti.ru', 'fgl.com', 'www.fgl.com', 'flashgamelicense.com', 'www.flashgamelicense.com'];
 		private var _lockedState:Boolean = false;
 		
 		/**
@@ -42,27 +43,25 @@ package
 		 */
 		public function Main():void
 		{
-			super(SCENE_WIDTH, SCENE_HEIGHT);
+			_stageQuality = StageQuality.BEST;
+			
+			super(SCENE_WIDTH, SCENE_HEIGHT);				
 			
 			var nc:LocalConnection = new LocalConnection();
 			
-			FjLog.l("domain: " + nc.domain);
-			
 			if (_lockedDomains.indexOf(nc.domain) != -1)
 			{
-				contextMenuAddItem("Credits", _showCredits);
 				FjSprite.SharpBlitting = false;
 				FjSprite.Smoothing = true;
-				
 				_initSounds();
-				addEventListener(FlinjinEvent.ENGINE_STARTUP, onEngineStartup);
 			}
 			else
 			{
+				FjLog.l('This domain <' + nc.domain + '> is locked!');
 				_lockedState = true;
 				addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			}
-		}
+		}		
 		
 		private function onAddedToStage(e:Event):void
 		{
@@ -75,12 +74,6 @@ package
 			_locked.x = (width - _locked.width) / 2;
 			_locked.y = (height - _locked.height) / 2;
 			addChild(_locked);
-		}
-		
-		private function _showCredits():void
-		{
-			if (!(Camera.scene is CreditsScreen))
-				Camera.LookAt(new CreditsScreen());
 		}
 		
 		/**
@@ -110,25 +103,11 @@ package
 			FjSnd.addSound(new (Assets.i().soundWeaponSelect), 'weapon-select', ['sound']);
 		}
 		
-		/**
-		 * Something wrong with Mochi connection
-		 *
-		 * @param	status
-		 */
-		private function onMochiConnectError(status:String):void
+		override public function startup():void 
 		{
-			FjLog.l("Mochi connection error: " + status);
-		}
-		
-		/**
-		 * Engine startup
-		 *
-		 * @param	e
-		 */
-		private function onEngineStartup(e:FlinjinEvent):void
-		{
-			MochiServices.connect(Main.MOCHI_GAME_ID, root, onMochiConnectError);
+			Camera.lagCompensation = true;
 			Camera.LookAt(new Menu());
+			Camera.scale = SCENE_WIDTH / CONTENT_WIDTH;			
 			Music.loop = true;
 			Music.volume = 0.3;
 			Music.play();

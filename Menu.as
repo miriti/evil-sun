@@ -4,11 +4,11 @@ package
 	import flash.geom.Point;
 	import flash.net.navigateToURL;
 	import flash.net.URLRequest;
+	import flash.ui.Mouse;
 	import flinjin.Flinjin;
 	import flinjin.graphics.FjLayer;
 	import flinjin.graphics.FjSprite;
 	import Game.GameMain;
-	import Game.HUD.BlackFade;
 	import Game.HUD.Button;
 	import Game.HUD.MainMenu.MMMusicButton;
 	import Game.HUD.MainMenu.MMSoundButton;
@@ -41,9 +41,9 @@ package
 		static private var _btnMoreGamesBmp:Class;
 		private var _btnMoreGames:Button = new Button(new _btnMoreGamesBmp(), null, new Point(383, 92)).setCenter() as Button;
 		
-		[Embed(source="_assets/bmp/menu/host-this-game-481x92.png")]
-		static private var _btnHostThisGameBmp:Class;
-		private var _btnHostThisGame:Button = new Button(new _btnHostThisGameBmp(), null, new Point(481, 92)).setCenter() as Button;
+		[Embed(source="_assets/bmp/menu/credits-270x92.png")]
+		static private var _btnCreditsBmp:Class;
+		private var _btnCredits:Button = new Button(new _btnCreditsBmp(), null, new Point(270, 92)).setCenter() as Button;
 		
 		public function Menu()
 		{
@@ -59,11 +59,18 @@ package
 			addSprite(_btnMusic, width / 2 - _btnMusic.width / 2 - 20, 280);
 			addSprite(_btnSound, width / 2 + _btnSound.width / 2 + 20, 280);
 			addSprite(_btnMoreGames, width / 2, 370);
-			addSprite(_btnHostThisGame, width / 2, 460);
+			addSprite(_btnCredits, width / 2, 460);
 			
 			_btnStart.addEventListener(MouseEvent.MOUSE_DOWN, onStartBtn);
 			_btnScores.addEventListener(MouseEvent.MOUSE_DOWN, onScoresBtn);
-			_btnHostThisGame.addEventListener(MouseEvent.MOUSE_DOWN, onHostThisGame);
+			_btnCredits.addEventListener(MouseEvent.MOUSE_DOWN, onCreditsBtn);
+		}
+		
+		private function onCreditsBtn(e:MouseEvent):void
+		{
+			_btnCredits.mouseDown = false;
+			if (!(Flinjin.Instance.Camera.scene is CreditsScreen))
+				Flinjin.Instance.Camera.LookAt(new CreditsScreen());
 		}
 		
 		private function onScoresBtn(e:MouseEvent):void
@@ -80,12 +87,13 @@ package
 		
 		private function onHostThisGame(e:MouseEvent):void
 		{
-			var hostUrl:URLRequest = new URLRequest('http://www.flinjin.com/p/evil-sun.html?utm_source=ingame&utm_medium=moregames&utm_campaign=Evil%2BSun');
+			var hostUrl:URLRequest = new URLRequest('http://www.flinjin.com/p/evil-sun.html?utm_source=ingame&utm_medium=hostthisgame&utm_campaign=Evil%2BSun');
 			navigateToURL(hostUrl, "_blank");
 		}
 		
 		private function onStartBtn(e:MouseEvent):void
 		{
+			Mouse.hide();
 			Flinjin.Instance.Camera.LookAt(new GameMain());
 		}
 	}

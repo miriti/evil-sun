@@ -25,9 +25,9 @@ package Game
 			addSprite(_clouds[1], -_clouds[1].width);
 		}
 		
-		override public function Move(deltaTime:Number):void
+		override public function update(deltaTime:Number):void
 		{
-			super.Move(deltaTime);
+			super.update(deltaTime);
 			
 			for (var i:int = 0; i < _clouds.length; i++)
 			{

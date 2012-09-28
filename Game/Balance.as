@@ -55,39 +55,39 @@ package Game
 		 * W E A P O N S *
 		 *****************/
 		
-		static public var apocalypseIncVal:Array = [2, 2, 2, 2, 2];
-		static public var apocalypseDamageMin:Array = [100, 300, 400, 500, 600];
-		static public var apocalypseDamageMax:Array = [500, 500, 500, 1000, 1000];
-		static public var apocalypseRecovery:Array = [30000, 20000, 10000, 10000, 8000];
-		static public var apocalypseUpgradeCost:Array = [5000, 7500, 10000, 15000, 20000, 50000, +Infinity];
+		static public var apocalypseIncVal:Array = [2, 2, 2, 2, 2, 2];
+		static public var apocalypseDamageMin:Array = [500, 500, 500, 1000, 1500, 2000];
+		static public var apocalypseDamageMax:Array = [500, 500, 500, 1000, 1500, 2000];
+		static public var apocalypseRecovery:Array = [30000, 20000, 10000, 10000, 8000, 5000];
+		static public var apocalypseUpgradeCost:Array = [5000, 7500, 10000, 15000, 20000, 30000, +Infinity];
 		
-		static public var fireballAutofire:Array = [true, true, true, true, true];
-		static public var fireballDamageMin:Array = [50, 75, 100, 150, 300];
-		static public var fireballDamageMax:Array = [50, 75, 100, 150, 300];
-		static public var fireballDamageRadius:Array = [150, 160, 170, 180, 300];
-		static public var fireballPowerInc:Array = [1.5, 1.5, 1.5, 1.5, 1.5];
-		static public var fireballPowerMin:Array = [1, 1, 1, 1, 1];
-		static public var fireballRecovery:Array = [50, 50, 50, 50, 50];
-		static public var fireballUpgrageCost:Array = [1000, 2000, 4000, 8000, 16000, 32000, +Infinity];
+		static public var fireballAutofire:Array = [true, true, true, true, true, true];
+		static public var fireballDamageMin:Array = [50, 75, 100, 150, 300, 600];
+		static public var fireballDamageMax:Array = [50, 75, 100, 150, 300, 600];
+		static public var fireballDamageRadius:Array = [150, 160, 170, 180, 300, 500];
+		static public var fireballPowerInc:Array = [1.5, 1.5, 1.5, 1.5, 1.5, 1.5];
+		static public var fireballPowerMin:Array = [1, 1, 1, 1, 1, 1];
+		static public var fireballRecovery:Array = [50, 50, 50, 50, 50, 50];
+		static public var fireballUpgrageCost:Array = [1000, 2000, 4000, 8000, 16000, 32000, Infinity];
 		static public var fireballSpeed:Number = 400;
 		
-		static public var shotgunAutofire:Array = [true, true, true, true, true];
-		static public var shotgunDamageMin:Array = [10, 10, 10, 10, 10];
-		static public var shotgunDamageMax:Array = [10, 10, 10, 10, 10];
-		static public var shotgunPowerInc:Array = [3, 3, 3, 3, 3];
-		static public var shotgunPowerMin:Array = [1, 1, 1, 1, 1];
-		static public var shotgunRecovery:Array = [50, 50, 50, 50, 50];
-		static public var shotgunBulletCount:Array = [3, 4, 5, 6, 7];
-		static public var shotgunUpgradeCost:Array = [1000, 2000, 4000, 8000, 16000, 32000, +Infinity];
-		static public var shotgunAngleDisp:Array = [Math.PI / 10, Math.PI / 10, Math.PI / 12, Math.PI / 15, Math.PI / 20];
+		static public var shotgunAutofire:Array = [true, true, true, true, true, true];
+		static public var shotgunDamageMin:Array = [10, 10, 10, 10, 10, 10];
+		static public var shotgunDamageMax:Array = [10, 10, 10, 10, 10, 10];
+		static public var shotgunPowerInc:Array = [3, 3, 3, 3, 3, 3];
+		static public var shotgunPowerMin:Array = [1, 1, 1, 1, 1, 1];
+		static public var shotgunRecovery:Array = [50, 50, 50, 50, 50, 50];
+		static public var shotgunBulletCount:Array = [3, 4, 5, 6, 7, 8];
+		static public var shotgunUpgradeCost:Array = [1000, 2000, 4000, 8000, 16000, 32000, Infinity];
+		static public var shotgunAngleDisp:Array = [Math.PI / 10, Math.PI / 10, Math.PI / 12, Math.PI / 15, Math.PI / 20, Math.PI / 32];
 		
-		static public var rayAutofire:Array = [true, true, true, true, true];
-		static public var rayDamage:Array = [50, 50, 50, 50, 50];
-		static public var raySpeed:Array = [500, 500, 500, 500, 500];
-		static public var rayPowerInc:Array = [2, 2, 2, 2, 2];
-		static public var rayPowerMin:Array = [1, 1, 1, 1, 1];
-		static public var rayRecovery:Array = [50, 50, 50, 50, 50];
-		static public var rayUpgrageCost:Array = [1000, 2000, 4000, 8000, 16000, 32000, +Infinity];
-		static public var rayBulletCount:Array = [1, 2, 3, 4, 5];
+		static public var rayAutofire:Array = [true, true, true, true, true, true];
+		static public var rayDamage:Array = [50, 50, 50, 50, 50, 100];
+		static public var raySpeed:Array = [500, 500, 500, 500, 500, 600];
+		static public var rayPowerInc:Array = [2, 2, 2, 2, 2, 2];
+		static public var rayPowerMin:Array = [1, 1, 1, 1, 1, 1];
+		static public var rayRecovery:Array = [50, 50, 50, 50, 50, 50];
+		static public var rayUpgrageCost:Array = [1000, 2000, 4000, 8000, 16000, 32000, Infinity];
+		static public var rayBulletCount:Array = [1, 2, 3, 4, 5, 8];
 	}
 }

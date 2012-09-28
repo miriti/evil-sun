@@ -97,7 +97,8 @@ class LaserRaySprite extends BalisticSprite
 	
 	private function _exp():void
 	{
-		_speedVector.setTo(0, 0);
+		_speedVector.x = 0;
+		_speedVector.y = 0;
 		_gravity = 0;
 		_exploded = true;
 		setAnimation("exp");
@@ -109,9 +110,9 @@ class LaserRaySprite extends BalisticSprite
 		Delete();
 	}
 	
-	override public function Move(deltaTime:Number):void
+	override public function update(deltaTime:Number):void
 	{
-		super.Move(deltaTime);
+		super.update(deltaTime);
 		
 		if (!_exploded)
 		{
@@ -127,7 +128,7 @@ class LaserRaySprite extends BalisticSprite
 				{
 					var _m:Mob = _g.mobsCollection[i];
 					
-					if (_m.collisionShape.containPoint(position))
+					if (_m.rect.containsPoint(position))
 					{
 						_m.Hit(Balance.rayDamage[_level], Ray);
 						_exp();
@@ -141,7 +142,8 @@ class LaserRaySprite extends BalisticSprite
 	{
 		_vector = value;
 		_vector.normalize(1);
-		_speedVector.setTo(_vector.x * _speed, _vector.y * _speed);
+		_speedVector.x = _vector.x * _speed;
+		_speedVector.y = _vector.y * _speed;
 	}
 	
 	override public function set power(value:Number):void

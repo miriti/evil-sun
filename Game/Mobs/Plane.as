@@ -52,9 +52,9 @@ package Game.Mobs
 			_minX = GameMain.Instance.factory.width * 0.7;
 		}
 		
-		override public function Move(deltaTime:Number):void
+		override public function update(deltaTime:Number):void
 		{
-			super.Move(deltaTime);
+			super.update(deltaTime);
 			
 			y = _initY + Math.sin(_wave) * 50;
 			_wave += 0.05 * r(deltaTime);
