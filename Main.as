@@ -1,8 +1,11 @@
 package
 {
+	import flash.display.Loader;
 	import flash.display.StageQuality;
 	import flash.events.Event;
 	import flash.net.LocalConnection;
+	import flash.net.URLRequest;
+	import flash.system.Security;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
@@ -34,8 +37,14 @@ package
 		
 		static public var Music:FjSndItem = new FjSndItem(new (Assets.i().musicMain));
 		
-		private static var _lockedDomains:Array = ['localhost', 'miriti.ru', 'fgl.com', 'www.fgl.com', 'flashgamelicense.com', 'www.flashgamelicense.com'];
+		private static var _lockedDomains:Array = ['localhost', 'www.fgl.com', 'fgl.com', 'flashgamelicense.com', 'www.flashgamelicense.com'];
 		private var _lockedState:Boolean = false;
+		
+		/** GameButtlers.COM API **/
+		private var gb_api_loaded:Boolean;
+		private var gb_api_loader:Loader = new Loader();
+		
+		public static var gb_api:* = null;
 		
 		/**
 		 * Application entry point
@@ -45,7 +54,7 @@ package
 		{
 			_stageQuality = StageQuality.BEST;
 			
-			super(SCENE_WIDTH, SCENE_HEIGHT);				
+			super(SCENE_WIDTH, SCENE_HEIGHT);
 			
 			var nc:LocalConnection = new LocalConnection();
 			
@@ -53,6 +62,7 @@ package
 			{
 				FjSprite.SharpBlitting = false;
 				FjSprite.Smoothing = true;
+				_initGameButlersAPI();
 				_initSounds();
 			}
 			else
@@ -61,19 +71,41 @@ package
 				_lockedState = true;
 				addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			}
-		}		
+		}
 		
 		private function onAddedToStage(e:Event):void
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
 			var _locked:TextField = new TextField();
-			_locked.text = "You can not run game on this domain. Sorry.";
+			_locked.text = "You can not run game on this domain.\n Sorry.";
 			_locked.autoSize = TextFieldAutoSize.LEFT;
 			_locked.setTextFormat(new TextFormat(null, 40, 0xff0000, true));
 			_locked.x = (width - _locked.width) / 2;
 			_locked.y = (height - _locked.height) / 2;
 			addChild(_locked);
+		}
+		
+		private function gb_apiInitHandler(e:Event):void
+		{
+			if (!gb_api_loaded)
+			{
+				gb_api = gb_api_loader.content;
+				gb_api_loaded = true;
+				stage.addChild(gb_api);
+				gb_api.init("evilsun_gb781C", stage.loaderInfo.url.split("/")[2], stage.stageHeight, stage.stageWidth);
+			}
+		}
+		
+		private function _initGameButlersAPI():void
+		{
+			Security.allowDomain("http://www.gbapi.net/");
+			addChild(gb_api_loader);
+			var gb_apiRequest:URLRequest = new URLRequest("http://www.gbapi.net/api/v1/api");
+			gb_api_loader.contentLoaderInfo.addEventListener(Event.INIT, gb_apiInitHandler);
+			gb_api_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, gb_apiInitHandler);
+			
+			gb_api_loader.load(gb_apiRequest);
 		}
 		
 		/**
@@ -103,14 +135,17 @@ package
 			FjSnd.addSound(new (Assets.i().soundWeaponSelect), 'weapon-select', ['sound']);
 		}
 		
-		override public function startup():void 
+		override public function startup():void
 		{
-			Camera.lagCompensation = true;
-			Camera.LookAt(new Menu());
-			Camera.scale = SCENE_WIDTH / CONTENT_WIDTH;			
-			Music.loop = true;
-			Music.volume = 0.3;
-			Music.play();
+			if (!_lockedState)
+			{
+				Camera.lagCompensation = true;
+				Camera.LookAt(new Menu());
+				Camera.scale = SCENE_WIDTH / CONTENT_WIDTH;
+				Music.loop = true;
+				Music.volume = 0.3;
+				Music.play();
+			}
 		}
 	}
 }

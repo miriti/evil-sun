@@ -19,11 +19,15 @@ package
 	 */
 	public class Preloader extends MovieClip
 	{
-		private var _loader:PreloaderDisplay = new PreloaderDisplay();
+		//private var _loader:PreloaderDisplay = new PreloaderDisplay();
+		
+		private var p:preloader = new preloader();
+		
+		private var _preloader_complete:Boolean = false;
 		
 		public function Preloader()
 		{
-			Flinjin.applicationName = "Evil Sun HD";
+			Flinjin.applicationName = "Evil Sun";
 			
 			if (stage)
 			{
@@ -37,9 +41,25 @@ package
 			loaderInfo.addEventListener(ProgressEvent.PROGRESS, progress);
 			loaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioError);
 			
-			_loader.scaleX = _loader.scaleY = 800 / 1024;
-			addChild(_loader);
-			_loader.startCallback = startup;
+			/**
+			   _loader.scaleX = _loader.scaleY = 800 / 1024;
+			   addChild(_loader);
+			 _loader.startCallback = startup;*/
+			
+			//p.width = 800;
+			//p.height = 450;
+			
+			p.x = 400;
+			p.y = 225;
+			p.addEventListener(Event.COMPLETE, onPreloaderComplete);
+			
+			
+			addChild(p);
+		}
+		
+		private function onPreloaderComplete(e:Event):void 
+		{
+			startup();
 		}
 		
 		private function onMochiConnectError():void
@@ -53,7 +73,8 @@ package
 		
 		private function progress(e:ProgressEvent):void
 		{
-			_loader.progress = e.bytesLoaded / e.bytesTotal;
+			//_loader.progress = e.bytesLoaded / e.bytesTotal;
+			trace(e.bytesLoaded / e.bytesTotal);
 		}
 		
 		private function checkFrame(e:Event):void
@@ -63,6 +84,7 @@ package
 				stop();
 				loadingFinished();
 			}
+			trace(currentFrame, '/', totalFrames);
 		}
 		
 		private function loadingFinished():void
@@ -75,13 +97,13 @@ package
 		
 		private function startup():void
 		{
-			removeChild(_loader);
+			removeChild(p);
 			var mainClass:Class = getDefinitionByName("Main") as Class;
 			addChild(new mainClass() as DisplayObject);
 		}
 	}
 }
-
+/*
 import flash.display.Bitmap;
 import flash.display.Bitmap;
 import flash.display.SimpleButton;
@@ -152,4 +174,4 @@ class PreloaderDisplay extends Sprite
 		progressBar.graphics.drawRect(0, 0, val * 865, 25);
 		progressBar.graphics.endFill();
 	}
-}
+}*/

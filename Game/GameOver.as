@@ -101,7 +101,7 @@ package Game
 			Flinjin.Instance.Camera.LookAt(new Menu());
 		}
 		
-		private function onSubmit(e:MouseEvent):void
+		private function mochiSubmit():void
 		{
 			var o:Object = {n: [15, 0, 9, 13, 6, 14, 12, 13, 6, 12, 13, 12, 3, 4, 9, 3], f: function(i:Number, s:String):String
 				{
@@ -111,6 +111,20 @@ package Game
 				}};
 			var boardID:String = o.f(0, "");
 			MochiScores.showLeaderboard({boardID: boardID, score: GameMain.score});
+		}
+		
+		private function gameButlersSubmit():void
+		{
+			Main.gb_api.gb_SubmitScore(GameMain.score, 'evilsun_gb781CbdSgb76829854G', function():void
+				{
+					Mouse.hide();
+				});
+		}
+		
+		private function onSubmit(e:MouseEvent):void
+		{
+			Mouse.show();
+			gameButlersSubmit();
 			_submitButton.visible = false;
 		}
 		

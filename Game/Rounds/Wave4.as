@@ -45,11 +45,18 @@ package Game.Rounds
 				addEvent(0, null, new ArmagedonInstructions(this));
 				addEvent(7000, null, new SwitchWeaponsInstruction(this));
 				
-				
 				GameMain.Instance.sun.weaponShotgun.recovery = 0;
 				GameMain.Instance.sun.weaponFireball.recovery = 0;
 				GameMain.Instance.sun.weaponApocalypce.recovery = GameMain.Instance.sun.weaponApocalypce.recoveryTime;
 			}
+		}
+		
+		override public function finish():void
+		{
+			// gamesbutler.com
+			// Tutorial Finished
+			Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvYgb62639359V');
+			super.finish();
 		}
 	}
 }

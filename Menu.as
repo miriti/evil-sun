@@ -37,9 +37,13 @@ package
 		private var _btnMusic:MMMusicButton = new MMMusicButton().setCenter() as MMMusicButton;
 		private var _btnSound:MMSoundButton = new MMSoundButton().setCenter() as MMSoundButton;
 		
-		[Embed(source="_assets/bmp/menu/more-games-383x92.png")]
-		static private var _btnMoreGamesBmp:Class;
-		private var _btnMoreGames:Button = new Button(new _btnMoreGamesBmp(), null, new Point(383, 92)).setCenter() as Button;
+		/*[Embed(source="_assets/bmp/menu/more-games-383x92.png")]
+		   static private var _btnMoreGamesBmp:Class;
+		 private var _btnMoreGames:Button = new Button(new _btnMoreGamesBmp(), null, new Point(383, 92)).setCenter() as Button;*/
+		
+		[Embed(source="_assets/bmp/menu/achievements-443x92.png")]
+		static private var _btnAchievementsBmp:Class;
+		private var _btnAchievemtns:Button = new Button(new _btnAchievementsBmp(), null, new Point(443, 92)).setCenter() as Button;
 		
 		[Embed(source="_assets/bmp/menu/credits-270x92.png")]
 		static private var _btnCreditsBmp:Class;
@@ -58,12 +62,21 @@ package
 			addSprite(_btnScores, width / 2, 190);
 			addSprite(_btnMusic, width / 2 - _btnMusic.width / 2 - 20, 280);
 			addSprite(_btnSound, width / 2 + _btnSound.width / 2 + 20, 280);
-			addSprite(_btnMoreGames, width / 2, 370);
+			//addSprite(_btnMoreGames, width / 2, 370);
+			addSprite(_btnAchievemtns, width / 2, 370);
 			addSprite(_btnCredits, width / 2, 460);
 			
 			_btnStart.addEventListener(MouseEvent.MOUSE_DOWN, onStartBtn);
 			_btnScores.addEventListener(MouseEvent.MOUSE_DOWN, onScoresBtn);
+			_btnAchievemtns.addEventListener(MouseEvent.MOUSE_DOWN, onAchievementsBtn);
 			_btnCredits.addEventListener(MouseEvent.MOUSE_DOWN, onCreditsBtn);
+		}
+		
+		private function onAchievementsBtn(e:MouseEvent):void
+		{
+			Main.gb_api.gb_ShowAchievements(function():void
+				{
+				});
 		}
 		
 		private function onCreditsBtn(e:MouseEvent):void
@@ -73,7 +86,7 @@ package
 				Flinjin.Instance.Camera.LookAt(new CreditsScreen());
 		}
 		
-		private function onScoresBtn(e:MouseEvent):void
+		private function mochiScores():void
 		{
 			var o:Object = {n: [15, 0, 9, 13, 6, 14, 12, 13, 6, 12, 13, 12, 3, 4, 9, 3], f: function(i:Number, s:String):String
 				{
@@ -83,6 +96,18 @@ package
 				}};
 			var boardID:String = o.f(0, "");
 			MochiScores.showLeaderboard({boardID: boardID});
+		}
+		
+		private function gameButlersScores():void
+		{
+			Main.gb_api.gb_ShowScores("evilsun_gb781CbdSgb76829854G", function():void
+				{
+				});
+		}
+		
+		private function onScoresBtn(e:MouseEvent):void
+		{
+			gameButlersScores();
 		}
 		
 		private function onHostThisGame(e:MouseEvent):void

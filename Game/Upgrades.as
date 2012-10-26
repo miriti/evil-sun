@@ -4,6 +4,8 @@ package Game
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.net.navigateToURL;
+	import flash.net.URLRequest;
 	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
 	import flash.ui.Mouse;
@@ -51,12 +53,17 @@ package Game
 		[Embed(source="../_assets/bmp/hud/shop/button-repair-factory-270x57.png")]
 		static private var _bitmapRepairFactoryButton:Class;
 		
+		[Embed(source="../_assets/bmp/hud/shop/gamebuttler-logo-250x54.png")]
+		static private var _bitmapGameButtler:Class;
+		
 		private var _arrowButton:Button;
 		private var _repairFactoryButton:RepairFactoryButton;
 		private var _backmenuButton:Button;
+		
 		private var _moneyTitle:FjSpriteText;
 		private var _soundButton:SoundButton = new SoundButton();
 		private var _musicButton:MusicButton = new MusicButton();
+		private var _gamebuttlerButton:Button;
 		
 		public function Upgrades()
 		{
@@ -93,10 +100,16 @@ package Game
 			_backmenuButton = new Button(new Assets.bitmapBackmenuButton(), null, new Point(238, 51));
 			_backmenuButton.setCenter();
 			_backmenuButton.addEventListener(MouseEvent.MOUSE_DOWN, onBackMenu);
-			addSprite(_backmenuButton, width - 200, _repairFactoryButton.y + _repairFactoryButton.height + 20);
+			addSprite(_backmenuButton, width - 200, _repairFactoryButton.y + _repairFactoryButton.height + 10);
 			
-			addSprite(_musicButton, width - 200 - _musicButton.width - 10, _backmenuButton.y + _backmenuButton.height + 20);
-			addSprite(_soundButton, width - 200 + 10, _backmenuButton.y + _backmenuButton.height + 20);
+			_gamebuttlerButton = new Button(new _bitmapGameButtler(), null, new Point(250, 54)).setCenter() as Button;
+			_gamebuttlerButton.addEventListener(MouseEvent.MOUSE_DOWN, function (e:MouseEvent):void {
+				navigateToURL(new URLRequest('http://gamesbutler.com/'), '_blank');
+			});
+			addSprite(_gamebuttlerButton, width - 200, _backmenuButton.y + _backmenuButton.height + 10);
+			
+			addSprite(_musicButton, width - 200 - _musicButton.width - 10, _backmenuButton.y + _backmenuButton.height + 45);
+			addSprite(_soundButton, width - 200 + 10, _backmenuButton.y + _backmenuButton.height + 45);
 			
 			_moneyTitle = new FjSpriteText("$ 0", new TextFormat("gameFont", 36, 0xffe492));
 			addSprite(_moneyTitle, _gradeButtons["apocalypse"].x + _gradeButtons["apocalypse"].width, 307);
@@ -235,16 +248,18 @@ package Game
 import flash.display.Bitmap;
 import flash.events.MouseEvent;
 import flash.geom.Point;
-import flash.sampler.NewObjectSample;
 import flinjin.events.FlinjinSpriteEvent;
 import flinjin.graphics.FjLayer;
 import flinjin.graphics.FjSprite;
 import flinjin.graphics.FjSpriteAnimation;
-import flinjin.FjInput;
+import Game.Achivs;
 import Game.GameMain;
 import Game.HUD.Button;
 import Game.HUD.ButtonHintSmall;
 import Game.Objects.Factory;
+import Game.Weapons.Fireball;
+import Game.Weapons.Ray;
+import Game.Weapons.Shotgun;
 import Game.Weapons.Weapon;
 
 class UpgradeButton extends FjLayer
@@ -352,6 +367,34 @@ class UpgradeButton extends FjLayer
 			_hint.hintText = "DONE";
 			_plusButton.interactive = false;
 			_plusButton.alpha = 0.5;
+			
+			if (_weapon is Ray)
+			{
+				if (!Achivs.rayUpgrade)
+				{
+					// gamebutles achiv
+					Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvQgb63584260G');
+					Achivs.rayUpgrade = true;
+				}
+			}
+			else if (_weapon is Shotgun)
+			{
+				if (!Achivs.shotgunUpgrade)
+				{
+					// gamebutles achiv
+					Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvBgb29341804F');
+					Achivs.shotgunUpgrade = true;
+				}
+			}
+			else if (_weapon is Fireball)
+			{
+				if (!Achivs.fireballUpgrade)
+				{
+					// gamebutles achiv
+					Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvGgb46278261G');
+					Achivs.fireballUpgrade = true;
+				}
+			}
 		}
 		
 		if ((_price <= GameMain.money) && (((_weapon != null) && (_weapon.recovery >= 0)) || ((_factory != null) && (_factory.healthPoints < _factory.healthPointsMax))) && (_weapon.level < 6))

@@ -70,6 +70,8 @@ package Game
 		static private const SUN_X:Number = 250;
 		static private const SUN_Y:Number = 190;
 		
+		private var _totalPlayTime:Number = 0;
+		
 		public function GameMain()
 		{
 			super(Main.CONTENT_WIDTH, Main.CONTENT_HEIGHT);
@@ -176,6 +178,13 @@ package Game
 				{
 					super.update(deltaTime);
 					scenario.update(deltaTime);
+					_totalPlayTime += deltaTime;
+					
+					if ((_totalPlayTime > 1000 * 60 * 10) && (!Achivs.a10mins))
+					{
+						Achivs.a10mins = true;
+						Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvKgb18311381F');
+					}
 				}
 				else
 				{
@@ -276,6 +285,18 @@ package Game
 			
 			scoreCounter.text = "$" + _money.toString();
 			scoreCounter.alpha = 1;
+			
+			if ((_score >= 20000) && (!Achivs.a20k))
+			{
+				Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvTgb65662580O');
+				Achivs.a20k = true;
+			}
+			
+			if ((_score >= 100000) && (Achivs.a100k))
+			{
+				Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvKgb89274613A');
+				Achivs.a100k = true;
+			}
 		}
 		
 		public function get upgragesMode():Boolean

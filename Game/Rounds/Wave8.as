@@ -34,6 +34,14 @@ package Game.Rounds
 				addEvent(20000 * k + 6000, Paratrooper);
 			}
 		}
+		
+		override public function finish():void 
+		{
+			// http://gamesbutler.com/
+			// aerostats defeated
+			Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvPgb58261051S');
+			super.finish();
+		}
 	
 	}
 
