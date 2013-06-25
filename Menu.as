@@ -41,6 +41,10 @@ package
 		   static private var _btnMoreGamesBmp:Class;
 		 private var _btnMoreGames:Button = new Button(new _btnMoreGamesBmp(), null, new Point(383, 92)).setCenter() as Button;*/
 		
+		[Embed(source="_assets/bmp/menu/host-this-game-481x92.png")]
+		static private var _btnHostThisGameBmp:Class;
+		private var _btnHostThisGame:Button = new Button(new _btnHostThisGameBmp(), null, new Point(481, 92)).setCenter() as Button;
+		
 		[Embed(source="_assets/bmp/menu/achievements-443x92.png")]
 		static private var _btnAchievementsBmp:Class;
 		private var _btnAchievemtns:Button = new Button(new _btnAchievementsBmp(), null, new Point(443, 92)).setCenter() as Button;
@@ -63,12 +67,14 @@ package
 			addSprite(_btnMusic, width / 2 - _btnMusic.width / 2 - 20, 280);
 			addSprite(_btnSound, width / 2 + _btnSound.width / 2 + 20, 280);
 			//addSprite(_btnMoreGames, width / 2, 370);
-			addSprite(_btnAchievemtns, width / 2, 370);
+			//addSprite(_btnAchievemtns, width / 2, 370);
+			addSprite(_btnHostThisGame, width / 2, 370);
 			addSprite(_btnCredits, width / 2, 460);
 			
 			_btnStart.addEventListener(MouseEvent.MOUSE_DOWN, onStartBtn);
 			_btnScores.addEventListener(MouseEvent.MOUSE_DOWN, onScoresBtn);
-			_btnAchievemtns.addEventListener(MouseEvent.MOUSE_DOWN, onAchievementsBtn);
+			//_btnAchievemtns.addEventListener(MouseEvent.MOUSE_DOWN, onAchievementsBtn);
+			_btnHostThisGame.addEventListener(MouseEvent.MOUSE_DOWN, onHostThisGame);
 			_btnCredits.addEventListener(MouseEvent.MOUSE_DOWN, onCreditsBtn);
 		}
 		
@@ -107,12 +113,13 @@ package
 		
 		private function onScoresBtn(e:MouseEvent):void
 		{
-			gameButlersScores();
+			//gameButlersScores();
+			mochiScores();
 		}
 		
 		private function onHostThisGame(e:MouseEvent):void
 		{
-			var hostUrl:URLRequest = new URLRequest('http://www.flinjin.com/p/evil-sun.html?utm_source=ingame&utm_medium=hostthisgame&utm_campaign=Evil%2BSun');
+			var hostUrl:URLRequest = new URLRequest("http://blog.miriti.ru/p/evil-sun.html");
 			navigateToURL(hostUrl, "_blank");
 		}
 		

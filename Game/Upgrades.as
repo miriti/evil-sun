@@ -53,8 +53,8 @@ package Game
 		[Embed(source="../_assets/bmp/hud/shop/button-repair-factory-270x57.png")]
 		static private var _bitmapRepairFactoryButton:Class;
 		
-		[Embed(source="../_assets/bmp/hud/shop/gamebuttler-logo-250x54.png")]
-		static private var _bitmapGameButtler:Class;
+		//[Embed(source="../_assets/bmp/hud/shop/gamebuttler-logo-250x54.png")]
+		//static private var _bitmapGameButtler:Class;
 		
 		private var _arrowButton:Button;
 		private var _repairFactoryButton:RepairFactoryButton;
@@ -102,11 +102,11 @@ package Game
 			_backmenuButton.addEventListener(MouseEvent.MOUSE_DOWN, onBackMenu);
 			addSprite(_backmenuButton, width - 200, _repairFactoryButton.y + _repairFactoryButton.height + 10);
 			
-			_gamebuttlerButton = new Button(new _bitmapGameButtler(), null, new Point(250, 54)).setCenter() as Button;
+			/*_gamebuttlerButton = new Button(new _bitmapGameButtler(), null, new Point(250, 54)).setCenter() as Button;
 			_gamebuttlerButton.addEventListener(MouseEvent.MOUSE_DOWN, function (e:MouseEvent):void {
 				navigateToURL(new URLRequest('http://gamesbutler.com/'), '_blank');
 			});
-			addSprite(_gamebuttlerButton, width - 200, _backmenuButton.y + _backmenuButton.height + 10);
+			addSprite(_gamebuttlerButton, width - 200, _backmenuButton.y + _backmenuButton.height + 10);*/
 			
 			addSprite(_musicButton, width - 200 - _musicButton.width - 10, _backmenuButton.y + _backmenuButton.height + 45);
 			addSprite(_soundButton, width - 200 + 10, _backmenuButton.y + _backmenuButton.height + 45);
@@ -373,7 +373,7 @@ class UpgradeButton extends FjLayer
 				if (!Achivs.rayUpgrade)
 				{
 					// gamebutles achiv
-					Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvQgb63584260G');
+					// Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvQgb63584260G');
 					Achivs.rayUpgrade = true;
 				}
 			}
@@ -382,7 +382,7 @@ class UpgradeButton extends FjLayer
 				if (!Achivs.shotgunUpgrade)
 				{
 					// gamebutles achiv
-					Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvBgb29341804F');
+					// Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvBgb29341804F');
 					Achivs.shotgunUpgrade = true;
 				}
 			}
@@ -391,7 +391,7 @@ class UpgradeButton extends FjLayer
 				if (!Achivs.fireballUpgrade)
 				{
 					// gamebutles achiv
-					Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvGgb46278261G');
+					// Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvGgb46278261G');
 					Achivs.fireballUpgrade = true;
 				}
 			}

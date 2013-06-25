@@ -37,7 +37,7 @@ package
 		
 		static public var Music:FjSndItem = new FjSndItem(new (Assets.i().musicMain));
 		
-		private static var _lockedDomains:Array = ['localhost', 'www.fgl.com', 'fgl.com', 'flashgamelicense.com', 'www.flashgamelicense.com'];
+		private static var _lockedDomains:Array = [];
 		private var _lockedState:Boolean = false;
 		
 		/** GameButtlers.COM API **/
@@ -58,11 +58,11 @@ package
 			
 			var nc:LocalConnection = new LocalConnection();
 			
-			if (_lockedDomains.indexOf(nc.domain) != -1)
+			if ((_lockedDomains.indexOf(nc.domain) != -1) || (_lockedDomains.length == 0))
 			{
 				FjSprite.SharpBlitting = false;
 				FjSprite.Smoothing = true;
-				_initGameButlersAPI();
+				//_initGameButlersAPI();
 				_initSounds();
 			}
 			else

@@ -183,7 +183,7 @@ package Game
 					if ((_totalPlayTime > 1000 * 60 * 10) && (!Achivs.a10mins))
 					{
 						Achivs.a10mins = true;
-						Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvKgb18311381F');
+						//// Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvKgb18311381F');
 					}
 				}
 				else
@@ -288,13 +288,13 @@ package Game
 			
 			if ((_score >= 20000) && (!Achivs.a20k))
 			{
-				Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvTgb65662580O');
+				// Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvTgb65662580O');
 				Achivs.a20k = true;
 			}
 			
 			if ((_score >= 100000) && (Achivs.a100k))
 			{
-				Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvKgb89274613A');
+				// Main.gb_api.gb_SubmitAchievement('evilsun_gb781CacvKgb89274613A');
 				Achivs.a100k = true;
 			}
 		}
